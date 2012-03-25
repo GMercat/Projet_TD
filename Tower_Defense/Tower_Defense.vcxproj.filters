@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Case.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Defined.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Ennemi.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IA.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Jeu.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Menu.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Moteur.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Plateau.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Timer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ressources\BoutonNew.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\BoutonPause.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\BoutonQuit.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\BoutonReprendre.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Ennemi.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\JeuPause.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Menu.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Mur_25.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Mur_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\PCC_25.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\PCC_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Tour1_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Tour2_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Tour3_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Tour4_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Tour5_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Tour6_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Vide_25.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+    <None Include="..\ressources\Vide_50.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Case.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Ennemi.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IA.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Jeu.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Menu.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Moteur.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Plateau.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Timer.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
