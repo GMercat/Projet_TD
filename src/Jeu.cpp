@@ -36,6 +36,7 @@ void CJeu::OnClic (int aX, int aY)
 
    if (mbPartieEnCours)
    {
+      // TODO Calcul direct de la case avec les X et Y
       //On parcourt tout le plateau pour trouver la case associée
       for (	 IterLargeur;
             (IterLargeur < mLargeur) && (false == bCaseTrouve);
@@ -112,12 +113,15 @@ void CJeu::ChangerEtatPartie (bool abEtatPartie)
 
 bool CJeu::PlacementEstAutorise  (void)
 {
-   bool bEstAutorise = false;
+   bool bEstAutorise = true;
+
+   std::vector<int> PlusCourtChemin;
    // Parcours la liste des ennemis afin de vérifier le placement de la tour
    std::list <CEnnemi>::iterator IterEnnemi;
-   for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
+   for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (bEstAutorise); IterEnnemi++)
    {
-//      mpIA->CalculPlusCourtChemin ((*IterEnnemi).DetermineCaseCourante (),mPlateau.GetNumCaseArrivee (),);
+      PlusCourtChemin.clear ();
+      bEstAutorise = mpIA->CalculPlusCourtChemin ((*IterEnnemi).DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
    }
 
    return bEstAutorise;
