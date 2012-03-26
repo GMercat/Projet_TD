@@ -23,12 +23,14 @@ public:
    void  SetType (EType aType);
 
    bool OnInit          (void);
-   bool CalculPCChemin  (void);
+
+   void  SetPCCheminCase (std::vector<int>& aPPCheminCase);
 
    int   DetermineCaseCourante   (void);
    void  CalculPCCheminReel      (std::vector<int>& aPCChemin);
 
 private:
+   void  CalculPCChemin  (void);
    void  Avance (void);
 
 private:
@@ -39,6 +41,7 @@ private:
    int                           mVitesse;
    TCoordonnee                   mCoordonnee;
    int                           mNumCaseArrivee;
+   std::vector<int>              mPCCheminCase;
    std::list<TVecteurChemin>     mPCCheminReel;
 
    SDL_Surface*  mpImage;

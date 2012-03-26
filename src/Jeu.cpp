@@ -122,6 +122,7 @@ bool CJeu::PlacementEstAutorise  (void)
    {
       PlusCourtChemin.clear ();
       bEstAutorise = mpIA->CalculPlusCourtChemin ((*IterEnnemi).DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
+      // SetPPCheminCase
    }
 
    return bEstAutorise;

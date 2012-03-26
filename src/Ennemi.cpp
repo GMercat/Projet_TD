@@ -60,23 +60,14 @@ bool CEnnemi::OnInit (void)
 	return bReturn;
 }
 
-bool CEnnemi::CalculPCChemin  (void)
+void CEnnemi::SetPCCheminCase (std::vector<int>& aPPCheminCase)
 {
-   bool bReturn = false;
+   mPCCheminCase = aPPCheminCase;
+}
 
-   bool bCalculCheminOk = false;
-   std::vector <int> PCChemin;
-
-   int NumCaseCourante = DetermineCaseCourante ();
-
-   bCalculCheminOk = mIA->CalculPlusCourtChemin (NumCaseCourante, mNumCaseArrivee, PCChemin);
-
-   if (bCalculCheminOk)
-   {
-      CalculPCCheminReel (PCChemin);
-   }
-
-   return bReturn;
+void CEnnemi::CalculPCChemin  (void)
+{
+   CalculPCCheminReel (mPCCheminCase);
 }
 
 void CEnnemi::CalculPCCheminReel (std::vector<int>& aPCChemin)
