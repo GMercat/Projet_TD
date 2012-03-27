@@ -62,6 +62,10 @@ int main( int argc, char *argv[ ] )
 			}
 		}
 
+      // Déplacement des ennemis
+      Moteur.OnProgression ();
+
+      // Affichage de toutes les parties du jeu
 		Moteur.OnAffiche (pScreen);
 		SDL_Flip(pScreen);
 

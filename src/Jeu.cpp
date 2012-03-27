@@ -85,7 +85,11 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    mPlateau.OnAffiche (apScreen);
    
    // Affichage des ennemis
-   // TODO boucle sur ennemi
+   std::list<CEnnemi>::iterator IterEnnemi;
+   for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
+   {
+
+   }
 }
 
 void CJeu::OnReset   (void)
@@ -100,6 +104,15 @@ void CJeu::OnQuit (void)
 
    Event.type = SDL_QUIT;
    SDL_PushEvent (&Event);
+}
+
+void CJeu::OnProgression   (void)
+{
+   std::list<CEnnemi>::iterator IterEnnemi;
+   for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
+   {
+
+   }
 }
 
 CPlateau& CJeu::GetPlateau (void)

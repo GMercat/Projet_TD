@@ -9,19 +9,15 @@
 class CMoteur
 {
 public:
-	//Constructeur/Destructeur
+	// Constructeur/Destructeur
 	CMoteur();
 	~CMoteur();
-
-	//La fonction d'initialisation
-	bool OnInit (void);
-	//La fonction clic
-	void OnClic (int aX, int aY);
-	//La fonction d'affichage
-	void OnAffiche (SDL_Surface* apScreen);
-	
-	//Recupere la touche pressee et ajuste la vitesse du point
-   void handle_input(SDL_Event* apEvent);
+   	
+	bool OnInit          (void);                    // La fonction d'initialisation	
+	void OnClic          (int aX, int aY);          // La fonction clic	
+	void OnAffiche       (SDL_Surface* apScreen);   // La fonction d'affichage   
+   void OnProgression   (void);                    // La fonction de progression des ennemis
+	void handle_input    (SDL_Event* apEvent);      // Recupere la touche pressee et ajuste la vitesse du point
 	
 private:
 	//Le plateau de jeu

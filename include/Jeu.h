@@ -15,17 +15,17 @@ public:
 	CJeu (CIA* apIA);
 	~CJeu (void);
 
-	bool OnInit		(void);
-	void OnClic		(int aX, int aY);
-	void OnAffiche	(SDL_Surface* apScreen);
-   void OnReset   (void);
-   void OnQuit    (void);
-
+	bool OnInit		      (void);
+	void OnClic		      (int aX, int aY);
+	void OnAffiche	      (SDL_Surface* apScreen);
+   void OnReset         (void);
+   void OnQuit          (void);
+   void OnProgression   (void);
+   
    CPlateau& GetPlateau (void);
 
-   bool PartieEnCours      (void);
-   void ChangerEtatPartie  (bool abEtatPartie);
-
+   bool PartieEnCours         (void);
+   void ChangerEtatPartie     (bool abEtatPartie);
    bool PlacementEstAutorise  (void);
    void AnnuleDerniereModif   (void);
 

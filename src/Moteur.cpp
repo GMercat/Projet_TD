@@ -19,7 +19,6 @@ bool CMoteur::OnInit (void)
 	bReturn  = mJeu.OnInit ();
 
    mIA.ConstruireMatriceGraphe ();
-   //mIA.CalculPlusCourtChemin ();
    
 	return bReturn;
 }
@@ -35,14 +34,18 @@ void CMoteur::OnClic (int aX, int aY)
 
    mIA.ConstruireMatriceGraphe ();
 
-   // Vérification de la possibilité de poser la tour
+   // Vérification de la possibilité de poser la tour en parcourant les listes des énnemi
    bAutorisePlacementTour = mJeu.PlacementEstAutorise ();
-   //bPlusCourtChemintrouvee = mIA.CalculPlusCourtChemin ();
 
    if (false == bAutorisePlacementTour)
    {
       mJeu.AnnuleDerniereModif ();
    }
+}
+
+void CMoteur::OnProgression   (void)
+{
+   mJeu.OnProgression ();
 }
 
 void CMoteur::OnAffiche (SDL_Surface* apScreen)
