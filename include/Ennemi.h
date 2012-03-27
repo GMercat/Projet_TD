@@ -22,17 +22,19 @@ public:
    EType GetType (void);
    void  SetType (EType aType);
 
-   bool OnInit          (void);
+   bool OnInit    (void);
+   void OnAffiche (SDL_Surface* apScreen);
 
    void  SetPCCheminCase (std::vector<int>& aPPCheminCase);
 
    int   DetermineCaseCourante   (void);
    void  CalculPCCheminReel      (std::vector<int>& aPCChemin);
 
-private:
-   void  CalculPCChemin  (void);
    void  Avance (void);
 
+private:
+   void  CalculPCChemin  (void);
+   
 private:
    CIA*  mIA;
 

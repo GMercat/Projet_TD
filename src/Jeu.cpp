@@ -88,7 +88,7 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    std::list<CEnnemi>::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
    {
-
+      (*IterEnnemi).OnAffiche (apScreen);
    }
 }
 
@@ -111,7 +111,7 @@ void CJeu::OnProgression   (void)
    std::list<CEnnemi>::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
    {
-
+      (*IterEnnemi).Avance ();
    }
 }
 

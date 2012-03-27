@@ -57,7 +57,15 @@ bool CEnnemi::OnInit (void)
 	if(SDL_SetColorKey (mpImage, SDL_SRCCOLORKEY, SDL_MapRGB(mpImage->format, 255, 255, 255)) == -1)
 		std::cout << "Erreur avec la transparence" << std::endl;
 		
+   mPosition.w = mpImage->w;
+   mPosition.h = mpImage->h;
+
 	return bReturn;
+}
+
+void CEnnemi::OnAffiche (SDL_Surface* apScreen)
+{
+   SDL_BlitSurface (mpImage,NULL,apScreen,&mPosition);
 }
 
 void CEnnemi::SetPCCheminCase (std::vector<int>& aPPCheminCase)
@@ -165,6 +173,9 @@ int CEnnemi::DetermineCaseCourante (void)
 
 void CEnnemi::Avance (void)
 {
+   // Calcul du chemin réel
+   CalculPCChemin ();
+
    // Récupération du vecteur courant
    TVecteurChemin VecteurCourant = mPCCheminReel.front ();
 
@@ -200,4 +211,7 @@ void CEnnemi::Avance (void)
    mCoordonnee.second += (int)((VecteurCourant.second.second - mCoordonnee.second) * PourcentageVecteurParcouru);
    (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
    (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
+
+   mPosition.x = mCoordonnee.first + (mpImage->w / 2);
+   mPosition.y = mCoordonnee.second + (mpImage->h / 2);
 }

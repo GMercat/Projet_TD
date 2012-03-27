@@ -39,6 +39,7 @@ void CMoteur::OnClic (int aX, int aY)
 
    if (false == bAutorisePlacementTour)
    {
+      std::cout << "Placement non autorisé" << std::endl;
       mJeu.AnnuleDerniereModif ();
    }
 }
