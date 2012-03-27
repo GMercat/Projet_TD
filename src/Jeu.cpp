@@ -78,8 +78,14 @@ void CJeu::OnClic (int aX, int aY)
 
 void CJeu::OnAffiche (SDL_Surface* apScreen)
 {
+   // Affichage du menu
+   mMenu.   OnAffiche (apScreen);
+
+   // Affichage du plateau
    mPlateau.OnAffiche (apScreen);
-   mMenu.OnAffiche (apScreen);
+   
+   // Affichage des ennemis
+   // TODO boucle sur ennemi
 }
 
 void CJeu::OnReset   (void)
@@ -122,7 +128,7 @@ bool CJeu::PlacementEstAutorise  (void)
    {
       PlusCourtChemin.clear ();
       bEstAutorise = mpIA->CalculPlusCourtChemin ((*IterEnnemi).DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
-      // SetPPCheminCase
+      (*IterEnnemi).SetPCCheminCase (PlusCourtChemin);
    }
 
    return bEstAutorise;
