@@ -19,7 +19,8 @@ bool CMoteur::OnInit (void)
 	bReturn  = mJeu.OnInit ();
 
    mIA.ConstruireMatriceGraphe ();
-   
+   mJeu.PlacementEstAutorise ();
+
 	return bReturn;
 }
 

@@ -16,7 +16,7 @@ public:
    };
 
 public:
-   CEnnemi  (CIA* apIA, int aNumCaseArrivee);
+   CEnnemi  (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee);
    ~CEnnemi (void);
 
    EType GetType (void);

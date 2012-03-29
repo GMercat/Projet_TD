@@ -25,6 +25,11 @@ bool CJeu::OnInit (void)
 	bool bReturn = mPlateau.OnInit ();
    bReturn |= mMenu.OnInit ();
 
+   CEnnemi Ennemi (mpIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ());
+   Ennemi.OnInit ();
+
+   mListEnnemi.push_back (Ennemi);
+
   	return bReturn;
 }
 

@@ -198,14 +198,14 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::v
    }
 
    bReturn = (NbIter != NbIterMax);
-   /*
+
 #ifdef DEBUG
-   std::vector <int>::iterator IterPlusCourtChemin = PlusCourtChemin.begin ();
-   for (IterPlusCourtChemin; IterPlusCourtChemin != PlusCourtChemin.end (); IterPlusCourtChemin++)
+   std::vector <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
+   for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
       std::cout << (*IterPlusCourtChemin) << " " << std::endl;
    }
-#endif*/
+#endif
 
    return bReturn;
 }

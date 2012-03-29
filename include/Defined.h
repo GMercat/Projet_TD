@@ -8,7 +8,7 @@
 
 //#ifdef DEBUG
 //#endif
-//#define DEBUG
+#define DEBUG
 
 // Le nombre de frame par seconde
 const int IMAGES_PAR_SECONDE = 50;
