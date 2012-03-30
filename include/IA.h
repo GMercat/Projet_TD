@@ -13,7 +13,7 @@ public:
 	~CIA (void);
 
    void ConstruireMatriceGraphe (void);
-   bool CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::vector<int>& aPlusCourtChemin);
+   bool CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin);
    
    void AfficherMatrice (void);
 

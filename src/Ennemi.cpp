@@ -72,7 +72,7 @@ void CEnnemi::OnAffiche (SDL_Surface* apScreen)
    SDL_BlitSurface (mpImage,NULL,apScreen,&mPosition);
 }
 
-void CEnnemi::SetPCCheminCase (std::vector<int>& aPPCheminCase)
+void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
 {
    mPCCheminCase = aPPCheminCase;
 }
@@ -82,10 +82,13 @@ void CEnnemi::CalculPCChemin  (void)
    CalculPCCheminReel (mPCCheminCase);
 }
 
-void CEnnemi::CalculPCCheminReel (std::vector<int>& aPCChemin)
+void CEnnemi::CalculPCCheminReel (std::list<int>& aPCChemin)
 {
    std::list<TVecteurChemin>::iterator  IterCheminReel;
-   std::vector<int>::iterator             IterPCChemin   = aPCChemin.begin ();
+   std::list<int>::iterator             IterPCChemin   = aPCChemin.begin ();
+
+   std::list<int>::iterator   IterPCCheminNext = IterPCChemin;
+   IterPCCheminNext++;
 
    TVecteurChemin VecteurChemin;
    VecteurChemin.first.first  = mCoordonnee.first;
@@ -99,28 +102,28 @@ void CEnnemi::CalculPCCheminReel (std::vector<int>& aPCChemin)
    int XCase = ((*IterPCChemin) - Temp * NB_CASE_LARGEUR) * LARGEUR_CASE;
    int YCase = ((int)((*IterPCChemin) / (double)NB_CASE_LARGEUR)) * HAUTEUR_CASE;
    // Si la prochaine case est celle de gauche
-   if ((*(IterPCChemin + 1)) == ((*IterPCChemin) - 1))
+   if ((*IterPCCheminNext) == ((*IterPCChemin) - 1))
    {
       VecteurChemin.second.first  = XCase;
       VecteurChemin.second.second = YCase + HAUTEUR_CASE / 2;
    }
    // Si la prochaine case est celle de droite
-   else if ((*(IterPCChemin + 1)) == ((*IterPCChemin) + 1))
+   else if ((*IterPCCheminNext) == ((*IterPCChemin) + 1))
    {
-      VecteurChemin.second.first  = XCase + LARGEUR_CASE;
+      VecteurChemin.second.first  = XCase + LARGEUR_CASE - 1;
       VecteurChemin.second.second = YCase + HAUTEUR_CASE / 2;
    }
    // Si la prochaine case est celle du haut
-   else if ((*(IterPCChemin + 1)) == ((*IterPCChemin) - NB_CASE_LARGEUR))
+   else if ((*IterPCCheminNext) == ((*IterPCChemin) - NB_CASE_LARGEUR))
    {
       VecteurChemin.second.first  = XCase + LARGEUR_CASE / 2;
       VecteurChemin.second.second = YCase;
    }
    // Si la prochaine case est celle du bas
-   else if ((*(IterPCChemin + 1)) == ((*IterPCChemin) + NB_CASE_LARGEUR))
+   else if ((*IterPCCheminNext) == ((*IterPCChemin) + NB_CASE_LARGEUR))
    {
       VecteurChemin.second.first  = XCase + LARGEUR_CASE / 2;
-      VecteurChemin.second.second = YCase + HAUTEUR_CASE;
+      VecteurChemin.second.second = YCase + HAUTEUR_CASE - 1;
    }
    else
    {
@@ -130,39 +133,52 @@ void CEnnemi::CalculPCCheminReel (std::vector<int>& aPCChemin)
    mPCCheminReel.push_back (VecteurChemin);
    IterCheminReel = mPCCheminReel.begin ();
    IterPCChemin++;
-   for (IterPCChemin; IterPCChemin != (aPCChemin.end () - 1); ++IterPCChemin)
+   std::list<int>::iterator IterLast = aPCChemin.end ();
+   IterLast--;
+   for (IterPCChemin; IterPCChemin != IterLast; ++IterPCChemin)
    {
-      // TODO PAS DE +1 tout le temps
-      VecteurChemin.first.first  = (*IterCheminReel).second.first + 1;
-      VecteurChemin.first.second = (*IterCheminReel).second.second + 1;
+      IterPCCheminNext = IterPCChemin;
+      IterPCCheminNext++;
 
       // Calcul du x, y de sortie de la case courante
       // Coin supérieur gauche de la case courante
       XCase = ((*IterPCChemin) - ((int)((*IterPCChemin) / (double)NB_CASE_LARGEUR)) * NB_CASE_LARGEUR) * LARGEUR_CASE;
       YCase = ((int)((*IterPCChemin) / (double)NB_CASE_LARGEUR)) * HAUTEUR_CASE;
       // Si la prochaine case est celle de gauche
-      if ((*(IterPCChemin + 1)) == ((*IterPCChemin) - 1))
+      if ((*IterPCCheminNext) == ((*IterPCChemin) - 1))
       {
+         VecteurChemin.first.first  = (*IterCheminReel).second.first - 1;
+         VecteurChemin.first.second = (*IterCheminReel).second.second;
+
          VecteurChemin.second.first  = XCase;
          VecteurChemin.second.second = YCase + HAUTEUR_CASE / 2;
       }
       // Si la prochaine case est celle de droite
-      else if ((*(IterPCChemin + 1)) == ((*IterPCChemin) + 1))
+      else if ((*IterPCCheminNext) == ((*IterPCChemin) + 1))
       {
-         VecteurChemin.second.first  = XCase + LARGEUR_CASE;
+         VecteurChemin.first.first  = (*IterCheminReel).second.first + 1;
+         VecteurChemin.first.second = (*IterCheminReel).second.second;
+
+         VecteurChemin.second.first  = XCase + LARGEUR_CASE - 1;
          VecteurChemin.second.second = YCase + HAUTEUR_CASE / 2;
       }
       // Si la prochaine case est celle du haut
-      else if ((*(IterPCChemin + 1)) == ((*IterPCChemin) - NB_CASE_LARGEUR))
+      else if ((*IterPCCheminNext) == ((*IterPCChemin) - NB_CASE_LARGEUR))
       {
+         VecteurChemin.first.first  = (*IterCheminReel).second.first;
+         VecteurChemin.first.second = (*IterCheminReel).second.second - 1;
+
          VecteurChemin.second.first  = XCase + LARGEUR_CASE / 2;
          VecteurChemin.second.second = YCase;
       }
       // Si la prochaine case est celle du bas
-      else if ((*(IterPCChemin + 1)) == ((*IterPCChemin) + NB_CASE_LARGEUR))
+      else if ((*IterPCCheminNext) == ((*IterPCChemin) + NB_CASE_LARGEUR))
       {
+         VecteurChemin.first.first  = (*IterCheminReel).second.first;
+         VecteurChemin.first.second = (*IterCheminReel).second.second + 1;
+
          VecteurChemin.second.first  = XCase + LARGEUR_CASE / 2;
-         VecteurChemin.second.second = YCase + HAUTEUR_CASE;
+         VecteurChemin.second.second = YCase + HAUTEUR_CASE - 1;
       }
       else
       {
@@ -175,7 +191,7 @@ void CEnnemi::CalculPCCheminReel (std::vector<int>& aPCChemin)
 
    // TODO PAS DE +1 tout le temps
    VecteurChemin.first.first  = (*IterCheminReel).second.first + 1;
-   VecteurChemin.first.second = (*IterCheminReel).second.second + 1;
+   VecteurChemin.first.second = (*IterCheminReel).second.second;
    VecteurChemin.second.first  = VecteurChemin.first.first + LARGEUR_CASE;
    VecteurChemin.second.second = VecteurChemin.first.second;
 }
@@ -220,6 +236,8 @@ void CEnnemi::Avance (void)
    
    if (AvancementSurVecteur > DistanceRestante)
    {
+      // On passe à la case suivante
+      mPCCheminCase.pop_front ();
       // On passe au vecteur suivant
       mPCCheminReel.pop_front ();
       VecteurCourant = mPCCheminReel.front ();

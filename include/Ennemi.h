@@ -25,10 +25,10 @@ public:
    bool OnInit    (void);
    void OnAffiche (SDL_Surface* apScreen);
 
-   void  SetPCCheminCase (std::vector<int>& aPPCheminCase);
+   void  SetPCCheminCase (std::list<int>& aPPCheminCase);
 
    int   DetermineCaseCourante   (void);
-   void  CalculPCCheminReel      (std::vector<int>& aPCChemin);
+   void  CalculPCCheminReel      (std::list<int>& aPCChemin);
 
    void  Avance (void);
 
@@ -43,7 +43,7 @@ private:
    int                           mVitesse;
    TCoordonnee                   mCoordonnee;
    int                           mNumCaseArrivee;
-   std::vector<int>              mPCCheminCase;
+   std::list<int>                mPCCheminCase;
    std::list<TVecteurChemin>     mPCCheminReel;
 
    SDL_Surface*  mpImage;

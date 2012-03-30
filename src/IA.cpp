@@ -139,7 +139,7 @@ void CIA::ConstruireMatriceGraphe (void)
    }
 }
 
-bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::vector<int>& aPlusCourtChemin)
+bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin)
 {
    bool bReturn = false;
 
@@ -200,7 +200,7 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::v
    bReturn = (NbIter != NbIterMax);
 
 #ifdef DEBUG
-   std::vector <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
+   std::list <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
    for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
       std::cout << (*IterPlusCourtChemin) << " " << std::endl;

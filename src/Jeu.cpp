@@ -139,7 +139,7 @@ bool CJeu::PlacementEstAutorise  (void)
 {
    bool bEstAutorise = true;
 
-   std::vector<int> PlusCourtChemin;
+   std::list<int> PlusCourtChemin;
    // Parcours la liste des ennemis afin de vérifier le placement de la tour
    std::list <CEnnemi>::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (bEstAutorise); IterEnnemi++)
@@ -156,7 +156,7 @@ void CJeu::AnnuleDerniereModif (void)
 {
    mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetEtat (CCase::eVide);
    mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetPlusCourtChemin (
-      mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
+   mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
 }
 
 CCase::EEtat CJeu::GetTourSelectionnee  (void)
