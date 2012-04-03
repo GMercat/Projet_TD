@@ -13,13 +13,15 @@ public:
 	~CIA (void);
 
    void ConstruireMatriceGraphe  (void);
-   void MiseAJourMatriceGraphe   (int aNumCase);
+   void MiseAJourMatriceGraphe   (int aNumCase, bool abEstOccuped);
+   void CalculCheminMinimaux     (void);
    bool CalculPlusCourtChemin    (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin);
    
    void AfficherMatrice (void);
 
 private:
-   int mMatriceGraph [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
+   int mMatriceGraph    [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
+   int mCheminsMinimaux [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
 
    CPlateau& mPlateau;
 };

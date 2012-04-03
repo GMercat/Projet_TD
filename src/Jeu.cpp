@@ -30,6 +30,9 @@ bool CJeu::OnInit (void)
 
 int CJeu::OnClic (int aX, int aY)
 {
+   int TickEnd = 0;
+   int TickStart = SDL_GetTicks();
+
    int NumCase = -1;
    bool bCaseTrouve = false;
    int IterLargeur  = 0;
@@ -154,14 +157,17 @@ void CJeu::ChangerEtatPartie (bool abEtatPartie)
 bool CJeu::PlacementEstAutorise  (void)
 {
    bool bEstAutorise = true;
-
+   
    std::list<int> PlusCourtChemin;
+   bEstAutorise = mpIA->CalculPlusCourtChemin (mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
+   
+   PlusCourtChemin.clear ();
    // Parcours la liste des ennemis afin de vérifier le placement de la tour
    std::list <CEnnemiPtr>::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (bEstAutorise); IterEnnemi++)
    {
       PlusCourtChemin.clear ();
-      bEstAutorise = mpIA->CalculPlusCourtChemin ((*IterEnnemi)->DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
+      bEstAutorise &= mpIA->CalculPlusCourtChemin ((*IterEnnemi)->DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
       (*IterEnnemi)->SetPCCheminCase (PlusCourtChemin);
    }
 

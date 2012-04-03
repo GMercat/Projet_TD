@@ -168,7 +168,9 @@ void CMenu::OnClic (int aX, int aY)
             && (mPositions[IdBouton].y < aY) && (aY < (mPositions[IdBouton].y + mPositions[IdBouton].h)))
          {
             bBoutonTrouve = true;
+#ifdef DEGUB
             std::cout << "Bouton trouve ON : " << IdBouton << std::endl;
+#endif
          }
       }
 
@@ -227,7 +229,9 @@ void CMenu::OnClic (int aX, int aY)
             && (mPositions[IdBouton].y < aY) && (aY < (mPositions[IdBouton].y + mPositions[IdBouton].h)))
          {
             bBoutonTrouve = true;
+#ifdef DEGUB
             std::cout << "Bouton trouve OFF : " << IdBouton << std::endl;
+#endif
          }
       }
 

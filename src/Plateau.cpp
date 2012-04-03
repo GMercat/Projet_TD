@@ -176,8 +176,10 @@ bool CPlateau::OnInit (void)
 	Rect.w = LARGEUR_CASE;
 	Rect.h = HAUTEUR_CASE;
 
+#ifdef DEBUG
    std::cout << "Largeur = " << NB_CASE_LARGEUR << ", Hauteur = " << NB_CASE_HAUTEUR << std::endl;
-  
+#endif  
+
 	// Initialisation du plateau
 	for (int iLargeur = 0; iLargeur < NB_CASE_LARGEUR; iLargeur++)
 	{

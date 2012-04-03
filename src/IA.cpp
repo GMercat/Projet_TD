@@ -137,13 +137,14 @@ void CIA::ConstruireMatriceGraphe (void)
          }
       }
    }
+   
+   CalculCheminMinimaux ();
 }
 
-void CIA::MiseAJourMatriceGraphe (int aNumCase)
+void CIA::MiseAJourMatriceGraphe (int aNumCase, bool abEstOccuped)
 {
    // Si on a ajouté une tour
-   // Toujours true pour le moment
-   if (true)
+   if (abEstOccuped)
    {
       // Si on est pas sur le bord supérieur
       if (aNumCase >= NB_CASE_LARGEUR)
@@ -170,15 +171,44 @@ void CIA::MiseAJourMatriceGraphe (int aNumCase)
          mMatriceGraph[aNumCase - 1][aNumCase] = 999;
       }
    }
+   else
+   {
+      int Temp = (int)(aNumCase / (double)NB_CASE_LARGEUR);
+      int IterLargeur = (aNumCase - Temp * NB_CASE_LARGEUR);
+      int IterHauteur = ((int)(aNumCase / (double)NB_CASE_LARGEUR));
+   
+      // Si on est pas sur le bord supérieur ET que la case du haut est Vide
+      if ((aNumCase >= NB_CASE_LARGEUR) && (mPlateau.GetCase(IterLargeur, IterHauteur - 1)->EstVide ()))
+      {   
+         mMatriceGraph[aNumCase][aNumCase - NB_CASE_LARGEUR] = 1;
+         mMatriceGraph[aNumCase - NB_CASE_LARGEUR][aNumCase] = 1;
+      }
+      // Si on est pas sur le bord droit ET que la case de droite est Vide
+      if ((((aNumCase + 1) % NB_CASE_LARGEUR ) != 0) && (mPlateau.GetCase(IterLargeur + 1, IterHauteur)->EstVide ()))
+      {
+         mMatriceGraph[aNumCase][aNumCase + 1] = 1;
+         mMatriceGraph[aNumCase + 1][aNumCase] = 1;
+      }
+      // Si on est pas sur le bord inférieur ET que la case du dessous est Vide
+      if ((aNumCase < (NB_CASE_LARGEUR * (NB_CASE_HAUTEUR - 1))) && (mPlateau.GetCase(IterLargeur, IterHauteur + 1)->EstVide ()))
+      {
+         mMatriceGraph[aNumCase][aNumCase + NB_CASE_LARGEUR] = 1;
+         mMatriceGraph[aNumCase + NB_CASE_LARGEUR][aNumCase] = 1;
+      }
+      // Si on est pas sur le bord gauche ET que la case de gauche est Vide
+      if (((aNumCase % NB_CASE_LARGEUR) != 0) && (mPlateau.GetCase(IterLargeur - 1, IterHauteur)->EstVide ()))
+      {
+         mMatriceGraph[aNumCase][aNumCase - 1] = 1;
+         mMatriceGraph[aNumCase - 1][aNumCase] = 1;
+      }
+   }
+
+   CalculCheminMinimaux ();
 }
 
-
-bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin)
+void CIA::CalculCheminMinimaux (void)
 {
-   bool bReturn = false;
-
    int MatriceGraphCalcul [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
-   int CheminsMinimaux [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
 
    for (int IterLigne = 0; IterLigne < NB_CASE_LARGEUR * NB_CASE_HAUTEUR; IterLigne++)
    {
@@ -187,11 +217,11 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
          MatriceGraphCalcul[IterLigne][IterColonne] = mMatriceGraph[IterLigne][IterColonne];
          if ((IterLigne != IterColonne) && (mMatriceGraph[IterLigne][IterColonne] != 999))
          {
-            CheminsMinimaux[IterLigne][IterColonne] = IterLigne;
+            mCheminsMinimaux[IterLigne][IterColonne] = IterLigne;
          }
          else
          {
-            CheminsMinimaux[IterLigne][IterColonne] = 999;
+            mCheminsMinimaux[IterLigne][IterColonne] = 999;
          }
       }
    }
@@ -210,22 +240,27 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
                if (Cheminij < MatriceGraphCalcul[IterLigne][IterColonne])
                {
                   MatriceGraphCalcul[IterLigne][IterColonne] = Cheminij;
-                  CheminsMinimaux[IterLigne][IterColonne] = CheminsMinimaux[IterInterm][IterColonne];
+                  mCheminsMinimaux[IterLigne][IterColonne] = mCheminsMinimaux[IterInterm][IterColonne];
                }
             }
          }
       }
    }
+}
+
+bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin)
+{
+   bool bReturn = false;
 
    // Récupération du plus court chemin
    int NumCaseCourante  = aNumCaseDepart;
-   int NbIterMax = 50000;
+   int NbIterMax = NB_CASE_HAUTEUR * NB_CASE_LARGEUR;
    int NbIter = 0;
 
    aPlusCourtChemin.push_back (NumCaseCourante);
    while ((NbIter != NbIterMax) && (NumCaseCourante != aNumCaseArrivee))
    {
-      NumCaseCourante = CheminsMinimaux[aNumCaseArrivee][NumCaseCourante];
+      NumCaseCourante = mCheminsMinimaux[aNumCaseArrivee][NumCaseCourante];
       aPlusCourtChemin.push_back (NumCaseCourante);
 
       ++NbIter;
@@ -234,6 +269,8 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
    bReturn = (NbIter != NbIterMax);
 
 #ifdef DEBUG
+   std::cout << "Nombre d'iteration : " << NbIter << std::endl;
+
    std::list <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
    for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {

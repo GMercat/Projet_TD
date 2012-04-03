@@ -1,5 +1,6 @@
 #include "../include/Ennemi.h"
 #include "../include/IA.h"
+#include <math.h>
 
 CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
    mpImage           (NULL),
