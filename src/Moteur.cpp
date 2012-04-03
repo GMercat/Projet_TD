@@ -36,7 +36,6 @@ void CMoteur::OnClic (int aX, int aY)
 
    if (NumCase != -1)
    {
-      std::cout << "Case trouvée" << std::endl;
       mIA.MiseAJourMatriceGraphe (NumCase);
       mIA.ConstruireMatriceGraphe ();
 
