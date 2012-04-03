@@ -139,6 +139,40 @@ void CIA::ConstruireMatriceGraphe (void)
    }
 }
 
+void CIA::MiseAJourMatriceGraphe (int aNumCase)
+{
+   // Si on a ajouté une tour
+   // Toujours true pour le moment
+   if (true)
+   {
+      // Si on est pas sur le bord supérieur
+      if (aNumCase >= NB_CASE_LARGEUR)
+      {   
+         mMatriceGraph[aNumCase][aNumCase - NB_CASE_LARGEUR] = 999;
+         mMatriceGraph[aNumCase - NB_CASE_LARGEUR][aNumCase] = 999;
+      }
+      // Si on est pas sur le bord droit
+      if (((aNumCase + 1) % NB_CASE_LARGEUR ) != 0)
+      {
+         mMatriceGraph[aNumCase][aNumCase + 1] = 999;
+         mMatriceGraph[aNumCase + 1][aNumCase] = 999;
+      }
+      // Si on est pas sur le bord inférieur
+      if (aNumCase < (NB_CASE_LARGEUR * (NB_CASE_HAUTEUR - 1)))
+      {
+         mMatriceGraph[aNumCase][aNumCase + NB_CASE_LARGEUR] = 999;
+         mMatriceGraph[aNumCase + NB_CASE_LARGEUR][aNumCase] = 999;
+      }
+      // Si on est pas sur le bord gauche
+      if ((aNumCase % NB_CASE_LARGEUR) != 0)
+      {
+         mMatriceGraph[aNumCase][aNumCase - 1] = 999;
+         mMatriceGraph[aNumCase - 1][aNumCase] = 999;
+      }
+   }
+}
+
+
 bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin)
 {
    bool bReturn = false;

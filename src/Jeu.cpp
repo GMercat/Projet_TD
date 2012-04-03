@@ -25,60 +25,52 @@ bool CJeu::OnInit (void)
 	bool bReturn = mPlateau.OnInit ();
    bReturn |= mMenu.OnInit ();
 
-   CEnnemi Ennemi (mpIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ());
-   Ennemi.OnInit ();
-
-   mListEnnemi.push_back (Ennemi);
-
   	return bReturn;
 }
 
-void CJeu::OnClic (int aX, int aY)
+int CJeu::OnClic (int aX, int aY)
 {
+   int NumCase = -1;
    bool bCaseTrouve = false;
    int IterLargeur  = 0;
    int IterHauteur  = 0;
 
    if (mbPartieEnCours)
    {
-      // TODO Calcul direct de la case avec les X et Y
-      //On parcourt tout le plateau pour trouver la case associée
-      for (	 IterLargeur;
-            (IterLargeur < mLargeur) && (false == bCaseTrouve);
-             IterLargeur++)
+      // Test si on est sur le plateau
+      if((aX < (NB_CASE_LARGEUR * LARGEUR_CASE)) && aY < (NB_CASE_HAUTEUR * HAUTEUR_CASE))
       {
-         for (	IterHauteur = 0;
-               (IterHauteur < mHauteur) && (false == bCaseTrouve);
-               IterHauteur++)
-         {
-            //Si le clic a touché cette case
-            if (mPlateau.GetCase(IterLargeur, IterHauteur)->EstDedans(aX, aY))
-            {
+         IterLargeur = (int)(aX / LARGEUR_CASE);
+         IterHauteur = (int)(aY / HAUTEUR_CASE);
+
 #ifdef DEBUG
-               std::cout << "Case (" << IterLargeur << ", " << IterHauteur << ")" << std::endl;
+         std::cout << "Case (" << IterLargeur << ", " << IterHauteur << ")" << std::endl;
 #endif
 
-               //Si la case est vide
-               if (mPlateau.GetCase(IterLargeur, IterHauteur)->EstVide())
-               {
-                  //On met le type à jour
-                  mPlateau.GetCase(IterLargeur, IterHauteur)->SetEtat (mTypeTourSelect);
-                  mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
-                  mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
-               }
-
-               //On dit qu'on a trouvé la case associé
-               bCaseTrouve = true;
-            }
+         //Si la case est vide
+         if (mPlateau.GetCase(IterLargeur, IterHauteur)->EstVide())
+         {
+            //On met le type à jour
+            mPlateau.GetCase(IterLargeur, IterHauteur)->SetEtat (mTypeTourSelect);
+            mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
+            mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
          }
+
+         //On dit qu'on a trouvé la case associé
+         bCaseTrouve = true;
       }
    }
-
 
    if (false == bCaseTrouve)
    {
       mMenu.OnClic (aX, aY);
    }
+   else
+   {
+      NumCase = mPlateau.GetCase(IterLargeur, IterHauteur)->GetNumCase ();
+   }
+
+   return NumCase;
 }
 
 void CJeu::OnAffiche (SDL_Surface* apScreen)
@@ -90,10 +82,10 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    mPlateau.OnAffiche (apScreen);
    
    // Affichage des ennemis
-   std::list<CEnnemi>::iterator IterEnnemi;
+   std::list<CEnnemiPtr>::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
    {
-      (*IterEnnemi).OnAffiche (apScreen);
+      (*IterEnnemi)->OnAffiche (apScreen);
    }
 }
 
@@ -113,11 +105,35 @@ void CJeu::OnQuit (void)
 
 void CJeu::OnProgression   (void)
 {
-   std::list<CEnnemi>::iterator IterEnnemi;
-   for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
+   std::list<CEnnemiPtr>::iterator IterEnnemi = mListEnnemi.begin ();
+   std::list<CEnnemiPtr>::iterator IterEnnemiEnd = mListEnnemi.end ();
+   while (IterEnnemi != IterEnnemiEnd)
    {
-      (*IterEnnemi).Avance ();
+      (*IterEnnemi)->Avance ();
+
+      if ((*IterEnnemi)->EstArrive ())
+      {
+         IterEnnemi = mListEnnemi.erase (IterEnnemi);
+      }
+      else
+      {
+         ++IterEnnemi;
+      }
    }
+}
+
+void CJeu::AjoutEnnemi (void)
+{
+   std::list<int> PlusCourtChemin;
+
+   CEnnemiPtr EnnemiPtr (new CEnnemi(mpIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()));
+   
+   EnnemiPtr->OnInit ();
+   
+   mpIA->CalculPlusCourtChemin (EnnemiPtr->DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
+   EnnemiPtr->SetPCCheminCase (PlusCourtChemin);
+
+   mListEnnemi.push_back (EnnemiPtr);
 }
 
 CPlateau& CJeu::GetPlateau (void)
@@ -141,12 +157,12 @@ bool CJeu::PlacementEstAutorise  (void)
 
    std::list<int> PlusCourtChemin;
    // Parcours la liste des ennemis afin de vérifier le placement de la tour
-   std::list <CEnnemi>::iterator IterEnnemi;
+   std::list <CEnnemiPtr>::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (bEstAutorise); IterEnnemi++)
    {
       PlusCourtChemin.clear ();
-      bEstAutorise = mpIA->CalculPlusCourtChemin ((*IterEnnemi).DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
-      (*IterEnnemi).SetPCCheminCase (PlusCourtChemin);
+      bEstAutorise = mpIA->CalculPlusCourtChemin ((*IterEnnemi)->DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
+      (*IterEnnemi)->SetPCCheminCase (PlusCourtChemin);
    }
 
    return bEstAutorise;

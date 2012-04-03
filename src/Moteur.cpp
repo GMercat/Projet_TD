@@ -31,17 +31,23 @@ void CMoteur::OnClic (int aX, int aY)
 #ifdef DEBUG
 	std::cout << "Moteur.OnClic (" << aX << ", " << aY << ")" << std::endl;
 #endif
-	mJeu.OnClic (aX, aY);
+	
+   int NumCase = mJeu.OnClic (aX, aY);
 
-   mIA.ConstruireMatriceGraphe ();
-
-   // Vérification de la possibilité de poser la tour en parcourant les listes des énnemi
-   bAutorisePlacementTour = mJeu.PlacementEstAutorise ();
-
-   if (false == bAutorisePlacementTour)
+   if (NumCase != -1)
    {
-      std::cout << "Placement non autorisé" << std::endl;
-      mJeu.AnnuleDerniereModif ();
+      std::cout << "Case trouvée" << std::endl;
+      mIA.MiseAJourMatriceGraphe (NumCase);
+      mIA.ConstruireMatriceGraphe ();
+
+      // Vérification de la possibilité de poser la tour en parcourant les listes des énnemi
+      bAutorisePlacementTour = mJeu.PlacementEstAutorise ();
+
+      if (false == bAutorisePlacementTour)
+      {
+         std::cout << "Placement non autorisé" << std::endl;
+         mJeu.AnnuleDerniereModif ();
+      }
    }
 }
 

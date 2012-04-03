@@ -38,7 +38,7 @@ int main( int argc, char *argv[ ] )
 	while(!done)
 	{
 		//On demarre le timer fps
-        Fps.Start();
+      Fps.Start();
 
 		//Traiter les evenements
 		while(SDL_PollEvent(&Event))
@@ -69,12 +69,11 @@ int main( int argc, char *argv[ ] )
 		Moteur.OnAffiche (pScreen);
 		SDL_Flip(pScreen);
 
-		
-        //Tant que le timer fps n'est pas assez haut
-        while( Fps.GetNbTicks () < 1000 / IMAGES_PAR_SECONDE )
-        {
-            //On attend...
-        }
+      //Tant que le timer fps n'est pas assez haut
+      while( Fps.GetNbTicks () < 1000 / IMAGES_PAR_SECONDE )
+      {
+         //On attend...
+      }
 	}
 
 	SDL_Quit();

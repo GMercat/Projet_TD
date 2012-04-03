@@ -64,6 +64,12 @@ CMenu::CMenu (CJeu& aJeu):
    mPositions[eTour6].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 130;
    mPositions[eTour6].w = LARGEUR_CASE;
    mPositions[eTour6].h = HAUTEUR_CASE;
+
+   mPositions[eNewEnnemi].x = mPositions[eFond].x + 25;
+   mPositions[eNewEnnemi].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 190;
+   mPositions[eNewEnnemi].w = LARGEUR_CASE;
+   mPositions[eNewEnnemi].h = HAUTEUR_CASE;
+
 }
 
 CMenu::~CMenu (void)
@@ -127,6 +133,10 @@ bool CMenu::OnInit (void)
 
          case eTour6:
             mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
+            break;
+
+         case eNewEnnemi:
+            mImages[IterImage] = SDL_LoadBMP("../Ressources/NewEnnemi_50.bmp");
             break;
 
          default:
@@ -196,6 +206,10 @@ void CMenu::OnClic (int aX, int aY)
                mJeu.SelectTour (CCase::eTour6);
                break;
 
+            case eNewEnnemi:
+               mJeu.AjoutEnnemi ();
+               break;
+
             default:
                break;
          }
@@ -254,13 +268,14 @@ void CMenu::OnAffiche (SDL_Surface* apScreen)
 
   if (mJeu.PartieEnCours ())
    {
-      SDL_BlitSurface(mImages[ePause],NULL,apScreen,&(mPositions[ePause]));
-      SDL_BlitSurface(mImages[eTour1],NULL,apScreen,&(mPositions[eTour1]));
-      SDL_BlitSurface(mImages[eTour2],NULL,apScreen,&(mPositions[eTour2]));
-      SDL_BlitSurface(mImages[eTour3],NULL,apScreen,&(mPositions[eTour3]));
-      SDL_BlitSurface(mImages[eTour4],NULL,apScreen,&(mPositions[eTour4]));
-      SDL_BlitSurface(mImages[eTour5],NULL,apScreen,&(mPositions[eTour5]));
-      SDL_BlitSurface(mImages[eTour6],NULL,apScreen,&(mPositions[eTour6]));
+      SDL_BlitSurface(mImages[ePause], NULL, apScreen, &(mPositions[ePause]));
+      SDL_BlitSurface(mImages[eTour1], NULL, apScreen, &(mPositions[eTour1]));
+      SDL_BlitSurface(mImages[eTour2], NULL, apScreen, &(mPositions[eTour2]));
+      SDL_BlitSurface(mImages[eTour3], NULL, apScreen, &(mPositions[eTour3]));
+      SDL_BlitSurface(mImages[eTour4], NULL, apScreen, &(mPositions[eTour4]));
+      SDL_BlitSurface(mImages[eTour5], NULL, apScreen, &(mPositions[eTour5]));
+      SDL_BlitSurface(mImages[eTour6], NULL, apScreen, &(mPositions[eTour6]));
+      SDL_BlitSurface(mImages[eNewEnnemi], NULL, apScreen, &(mPositions[eNewEnnemi]));
    }
    else
    {

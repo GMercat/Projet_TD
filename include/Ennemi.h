@@ -32,6 +32,8 @@ public:
 
    void  Avance (void);
 
+   bool EstArrive (void);
+
 private:
    void  CalculPCChemin  (void);
    
@@ -49,5 +51,7 @@ private:
    SDL_Surface*  mpImage;
    SDL_Rect      mPosition;
 };
+
+typedef boost::shared_ptr<CEnnemi> CEnnemiPtr;
 
 #endif

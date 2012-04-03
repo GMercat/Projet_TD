@@ -18,6 +18,7 @@ public:
       eTour4,
       eTour5,
       eTour6,
+      eNewEnnemi,
 
       eNew,
       eReprendre,

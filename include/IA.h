@@ -12,8 +12,9 @@ public:
 	CIA (CPlateau& aPlateau);
 	~CIA (void);
 
-   void ConstruireMatriceGraphe (void);
-   bool CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin);
+   void ConstruireMatriceGraphe  (void);
+   void MiseAJourMatriceGraphe   (int aNumCase);
+   bool CalculPlusCourtChemin    (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin);
    
    void AfficherMatrice (void);
 
