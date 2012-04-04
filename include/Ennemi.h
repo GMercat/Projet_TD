@@ -44,6 +44,7 @@ private:
 
    int                           mVitesse;
    TCoordonnee                   mCoordonnee;
+   
    int                           mNumCaseArrivee;
    std::list<int>                mPCCheminCase;
    std::list<TVecteurChemin>     mPCCheminReel;

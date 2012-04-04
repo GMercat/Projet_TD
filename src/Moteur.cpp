@@ -55,6 +55,11 @@ void CMoteur::OnProgression   (void)
    mJeu.OnProgression ();
 }
 
+void CMoteur::OnTire (void)
+{
+    mJeu.OnTire ();
+}
+
 void CMoteur::OnAffiche (SDL_Surface* apScreen)
 {
 	mJeu.OnAffiche (apScreen);

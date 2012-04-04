@@ -21,7 +21,8 @@ public:
    void OnReset         (void);
    void OnQuit          (void);
    void OnProgression   (void);
-   
+   void OnTire          (void);
+
    CPlateau& GetPlateau (void);
 
    void AjoutEnnemi (void);
@@ -31,8 +32,8 @@ public:
    bool PlacementEstAutorise  (void);
    void AnnuleDerniereModif   (void);
 
-   CCase::EEtat   GetTourSelectionnee  (void);
-   void           SelectTour           (CCase::EEtat aTypeTourSelect);
+   CCase::ETypeCase  GetTourSelectionnee  (void);
+   void              SelectTour           (CCase::ETypeCase aTypeTourSelect);
 
 private:
 	int mHauteur;
@@ -40,8 +41,8 @@ private:
 
    std::pair<int, int>  mCoordonneesDerniereCaseModifiee;
 
-   bool           mbPartieEnCours;
-   CCase::EEtat   mTypeTourSelect;
+   bool              mbPartieEnCours;
+   CCase::ETypeCase  mTypeTourSelect;
    
    std::list<CEnnemiPtr>   mListEnnemi;
 

@@ -2,11 +2,12 @@
 #define _CASE_H_
 
 #include "Defined.h"
+#include "Projectile.h"
 
 class CCase
 {
 public:
-	enum EEtat {
+	enum ETypeCase {
 		eVide = 0,
 		eMur,
 
@@ -16,7 +17,7 @@ public:
       eTour4,
       eTour5,
       eTour6,
-      eNbEtat
+      eNbType
 	};
 
 
@@ -32,23 +33,28 @@ public:
 
 	void GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY);
 	
-   const EEtat	GetEtat (void) const;
-   void	SetEtat (EEtat aeNouvelEtat);
-   void	SetPosition (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
-   void  SetNumCase (int aNumCase);
-   int   GetNumCase (void);
+   const ETypeCase	GetEtat (void) const;
+         void	      SetEtat (ETypeCase aeNouvelEtat);
+         void	      SetPosition (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
+         void        SetNumCase (int aNumCase);
+         int         GetNumCase (void);
 
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
 
 private:
-	int							   mIdPlateauX;
-	int							   mIdPlateauY;
-	EEtat						      mEtat;
-	int							   mCourImage; // L'image à afficher
-	SDL_Rect					      mPosition;	// Position de la case
+	ETypeCase   			      mEtat;
+   
    int                        mNumCase;
    bool                       mbEstPlusCourtChemin;
+
+   int							   mIdPlateauX;
+	int							   mIdPlateauY;
+	
+   std::list<CProjectilePtr>       mListeProjectilesTirees;
+
+	int							   mCourImage; // L'image à afficher
+	SDL_Rect					      mPosition;	// Position de la case
 };
 
 #endif

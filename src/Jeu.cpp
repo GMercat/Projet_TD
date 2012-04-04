@@ -125,6 +125,11 @@ void CJeu::OnProgression   (void)
    }
 }
 
+void CJeu::OnTire (void)
+{
+   // Gestion des tires des tours
+}
+
 void CJeu::AjoutEnnemi (void)
 {
    std::list<int> PlusCourtChemin;
@@ -181,12 +186,12 @@ void CJeu::AnnuleDerniereModif (void)
    mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
 }
 
-CCase::EEtat CJeu::GetTourSelectionnee  (void)
+CCase::ETypeCase CJeu::GetTourSelectionnee  (void)
 {
    return mTypeTourSelect;
 }
 
-void CJeu::SelectTour (CCase::EEtat aTypeTourSelect)
+void CJeu::SelectTour (CCase::ETypeCase aTypeTourSelect)
 {
    mTypeTourSelect = aTypeTourSelect;
 }

@@ -46,12 +46,12 @@ bool CCase::EstVide (void)
    return (mEtat == eVide);
 }
 
-const CCase::EEtat	CCase::GetEtat (void) const
+const CCase::ETypeCase	CCase::GetEtat (void) const
 {
 	return mEtat;
 }
 
-void CCase::SetEtat (CCase::EEtat aeNouvelEtat)
+void CCase::SetEtat (CCase::ETypeCase aeNouvelEtat)
 {
 	switch (aeNouvelEtat)
 	{

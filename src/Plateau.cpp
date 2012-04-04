@@ -5,10 +5,10 @@ CPlateau::CPlateau (CJeu& aJeu):
    mJeu           (aJeu),
    mNumCaseDepart (-1),
    mNumCaseArrivee(-1),
-   mpImagePause (NULL),
-   mpImagePCC (NULL)
+   mpImagePause   (NULL),
+   mpImagePCC     (NULL)
 {
-   mImages.resize (CCase::eNbEtat);
+   mImages.resize (CCase::eNbType);
 
    std::vector<SDL_Surface*>::iterator IterImage;
    for (IterImage = mImages.begin (); IterImage != mImages.end (); ++IterImage)
