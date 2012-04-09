@@ -185,19 +185,19 @@ bool CPlateau::OnInit (void)
 	{
 		for (int iHauteur = 0; iHauteur < NB_CASE_HAUTEUR; iHauteur++)
 		{
-			CCase Case;
+			CCasePtr CasePtr (new CCase());
 
-			Case.OnInit ();
+			CasePtr->OnInit ();
 			Rect.x = iLargeur * LARGEUR_CASE;
 			Rect.y = iHauteur * HAUTEUR_CASE;
-			Case.SetPosition  (&Rect, iLargeur, iHauteur);
-         Case.SetNumCase   (iLargeur + (NB_CASE_LARGEUR * iHauteur));
+			CasePtr->SetPosition  (&Rect, iLargeur, iHauteur);
+         CasePtr->SetNumCase   (iLargeur + (NB_CASE_LARGEUR * iHauteur));
 
 			if ((iLargeur == 0) || (iLargeur == (NB_CASE_LARGEUR - 1)) || (iHauteur == 0) || (iHauteur == (NB_CASE_HAUTEUR -1)))
 			{
 			   if (((iLargeur != 0) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))) || ((iLargeur != (NB_CASE_LARGEUR - 1)) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))))
 			   {
-				   Case.SetEtat (CCase::eMur);
+				   CasePtr->SetEtat (CCase::eMur);
 				}
             else if ((iLargeur == 0) && (iHauteur == ((int)NB_CASE_HAUTEUR/2)))
             {
@@ -209,7 +209,7 @@ bool CPlateau::OnInit (void)
             }
 			}
 
-			mPlateau[iLargeur][iHauteur] = Case;
+			mPlateau[iLargeur][iHauteur] = CasePtr;
 		}
 	}
 
@@ -223,13 +223,13 @@ void CPlateau::OnReset (void)
 	{
 		for (int iHauteur = 0; iHauteur < NB_CASE_HAUTEUR; iHauteur++)
 		{
-			mPlateau[iLargeur][iHauteur].OnInit ();
+			mPlateau[iLargeur][iHauteur]->OnInit ();
 
 			if ((iLargeur == 0) || (iLargeur == (NB_CASE_LARGEUR - 1)) || (iHauteur == 0) || (iHauteur == (NB_CASE_HAUTEUR -1)))
 			{
 			   if (((iLargeur != 0) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))) || ((iLargeur != (NB_CASE_LARGEUR - 1)) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))))
 			   {
-				   mPlateau[iLargeur][iHauteur].SetEtat (CCase::eMur);
+				   mPlateau[iLargeur][iHauteur]->SetEtat (CCase::eMur);
 				}
             else if ((iLargeur == 0) && (iHauteur == ((int)NB_CASE_HAUTEUR/2)))
             {
@@ -254,13 +254,13 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
    {
       for(IterHauteur = 0; IterHauteur < NB_CASE_HAUTEUR; IterHauteur++)
       {
-         if (false == mPlateau[IterLargeur][IterHauteur].EstPlusCourtChemin ())
+         if (false == mPlateau[IterLargeur][IterHauteur]->EstPlusCourtChemin ())
          {
-            mPlateau[IterLargeur][IterHauteur].OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur].GetEtat()] );
+            mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
          }
          else
          {
-            mPlateau[IterLargeur][IterHauteur].OnAffiche (apEcran, mpImagePCC);
+            mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mpImagePCC);
          }
       }
    }
@@ -276,9 +276,16 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
    }
 }
 
-CCase* CPlateau::GetCase (int aX, int aY)
+CCasePtr& CPlateau::GetCase (int aNumCase)
 {
-   return &(mPlateau[aX][aY]);
+   int IterHauteur = aNumCase / (NB_CASE_LARGEUR);
+   int IterLargeur = aNumCase % (NB_CASE_LARGEUR);
+   return mPlateau[IterLargeur][IterHauteur];
+}
+
+CCasePtr& CPlateau::GetCase (int aX, int aY)
+{
+   return mPlateau[aX][aY];
 }
 
 int CPlateau::GetNumCaseDepart  (void)
@@ -299,7 +306,7 @@ void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
    {
       for(IterHauteur = 0; IterHauteur < NB_CASE_HAUTEUR; IterHauteur++)
       {
-         mPlateau[IterLargeur][IterHauteur].SetPlusCourtChemin (false);
+         mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (false);
       }
    }
    
@@ -308,6 +315,6 @@ void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
    {
       IterHauteur = (*IterPlusCourtChemin) / (NB_CASE_LARGEUR);
       IterLargeur = (*IterPlusCourtChemin) % (NB_CASE_LARGEUR);
-      mPlateau[IterLargeur][IterHauteur].SetPlusCourtChemin (true);
+      mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (true);
    }
 }

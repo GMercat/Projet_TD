@@ -30,9 +30,6 @@ bool CJeu::OnInit (void)
 
 int CJeu::OnClic (int aX, int aY)
 {
-   int TickEnd = 0;
-   int TickStart = SDL_GetTicks();
-
    int NumCase = -1;
    bool bCaseTrouve = false;
    int IterLargeur  = 0;
@@ -128,6 +125,8 @@ void CJeu::OnProgression   (void)
 void CJeu::OnTire (void)
 {
    // Gestion des tires des tours
+   // Parcours des tours pour rechercher les ennemis à la porté
+
 }
 
 void CJeu::AjoutEnnemi (void)
@@ -142,6 +141,11 @@ void CJeu::AjoutEnnemi (void)
    EnnemiPtr->SetPCCheminCase (PlusCourtChemin);
 
    mListEnnemi.push_back (EnnemiPtr);
+}
+
+void CJeu::AjoutTour (int aNumCase)
+{
+   mListTour.push_back (mPlateau.GetCase(aNumCase));
 }
 
 CPlateau& CJeu::GetPlateau (void)

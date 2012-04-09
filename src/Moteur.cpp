@@ -38,10 +38,14 @@ void CMoteur::OnClic (int aX, int aY)
    {
       mIA.MiseAJourMatriceGraphe (NumCase, true);
 
-      // Vérification de la possibilité de poser la tour en parcourant les listes des énnemi
+      // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
       bAutorisePlacementTour = mJeu.PlacementEstAutorise ();
 
-      if (false == bAutorisePlacementTour)
+      if (bAutorisePlacementTour)
+      {
+         mJeu.AjoutTour (NumCase);
+      }
+      else
       {
          std::cout << "Placement non autorisé" << std::endl;
          mJeu.AnnuleDerniereModif ();

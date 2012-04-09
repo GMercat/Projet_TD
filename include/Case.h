@@ -57,4 +57,6 @@ private:
 	SDL_Rect					      mPosition;	// Position de la case
 };
 
+typedef boost::shared_ptr<CCase> CCasePtr;
+
 #endif

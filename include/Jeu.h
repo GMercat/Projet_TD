@@ -25,7 +25,8 @@ public:
 
    CPlateau& GetPlateau (void);
 
-   void AjoutEnnemi (void);
+   void AjoutEnnemi  (void);
+   void AjoutTour    (int aNumCase);
 
    bool PartieEnCours         (void);
    void ChangerEtatPartie     (bool abEtatPartie);
@@ -44,6 +45,7 @@ private:
    bool              mbPartieEnCours;
    CCase::ETypeCase  mTypeTourSelect;
    
+   std::list<CCasePtr>     mListTour;
    std::list<CEnnemiPtr>   mListEnnemi;
 
    CPlateau mPlateau;
