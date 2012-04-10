@@ -33,11 +33,13 @@ public:
 
 	void GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY);
 	
-   const ETypeCase	GetEtat (void) const;
-         void	      SetEtat (ETypeCase aeNouvelEtat);
-         void	      SetPosition (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
-         void        SetNumCase (int aNumCase);
-         int         GetNumCase (void);
+   const ETypeCase	GetEtat        (void) const;
+         void	      SetEtat        (ETypeCase aeNouvelEtat);
+         void	      SetPosition    (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
+         void        SetNumCase     (int aNumCase);
+         int         GetNumCase     (void);
+         int         GetPorteeTire  (void);
+         void        GetCentre      (int& aXCentre, int &aYCentre); 
 
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
@@ -51,7 +53,8 @@ private:
    int							   mIdPlateauX;
 	int							   mIdPlateauY;
 	
-   std::list<CProjectilePtr>       mListeProjectilesTirees;
+   int                        mPorteeTire;
+   std::list<CProjectilePtr>  mListeProjectilesTirees;
 
 	int							   mCourImage; // L'image à afficher
 	SDL_Rect					      mPosition;	// Position de la case

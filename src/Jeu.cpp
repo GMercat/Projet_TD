@@ -124,9 +124,35 @@ void CJeu::OnProgression   (void)
 
 void CJeu::OnTire (void)
 {
-   // Gestion des tires des tours
-   // Parcours des tours pour rechercher les ennemis à la porté
+   int DistanceEnnemi   = 0;
+   int XTour            = 0;
+   int Ytour            = 0;
+   int XEnnemi          = 0;
+   int YEnnemi          = 0;
 
+   // Gestion des tires des tours
+   std::list<CCasePtr>::iterator    IterTour;
+   std::list<CEnnemiPtr>::iterator  IterEnnemi;
+
+   // Parcours des tours pour rechercher les ennemis à la porté
+   for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
+   {
+      for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); ++IterEnnemi)
+      {
+         // Récupération des positions de l'ennemi et de la tour
+         (*IterTour)->GetCentre (XTour, Ytour);
+         (*IterEnnemi)->GetCentre (XEnnemi, YEnnemi);
+
+         DistanceEnnemi = sqrt ((double)((XTour   - XEnnemi) * (XTour - XEnnemi))
+                                    + (double)((Ytour - YEnnemi) * (Ytour - YEnnemi)));
+
+         // Détermine si l'ennemi est à la porté de la tour
+         if ((*IterTour)->GetPorteeTire () > DistanceEnnemi)
+         {
+
+         }
+      }
+   }
 }
 
 void CJeu::AjoutEnnemi (void)

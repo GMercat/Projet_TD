@@ -84,9 +84,20 @@ void  CCase::SetNumCase (int aNumCase)
    mNumCase = aNumCase;
 }
 
-int   CCase::GetNumCase (void)
+int CCase::GetNumCase (void)
 {
    return mNumCase;
+}
+
+int CCase::GetPorteeTire  (void)
+{
+   return mPorteeTire;
+}
+
+void CCase::GetCentre (int& aXCentre, int &aYCentre)
+{
+   aXCentre = mPosition.x + (mPosition.w / 2);
+   aYCentre = mPosition.y + (mPosition.h / 2);
 }
 
 void CCase::SetPlusCourtChemin (bool abEstPlusCourtChemin)

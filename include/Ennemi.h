@@ -22,17 +22,17 @@ public:
    EType GetType (void);
    void  SetType (EType aType);
 
-   bool OnInit    (void);
-   void OnAffiche (SDL_Surface* apScreen);
+   bool  OnInit    (void);
+   void  OnAffiche (SDL_Surface* apScreen);
 
    void  SetPCCheminCase (std::list<int>& aPPCheminCase);
+   void  GetCentre (int& aXCentre, int& aYCentre);
 
    int   DetermineCaseCourante   (void);
    void  CalculPCCheminReel      (std::list<int>& aPCChemin);
 
    void  Avance (void);
-
-   bool EstArrive (void);
+   bool  EstArrive (void);
 
 private:
    void  CalculPCChemin  (void);
@@ -43,7 +43,7 @@ private:
    EType mType;
 
    int                           mVitesse;
-   TCoordonnee                   mCoordonnee;
+   TCoordonnee                   mCoordonnee; // Coordonnée du centre de l'ennmi
    
    int                           mNumCaseArrivee;
    std::list<int>                mPCCheminCase;

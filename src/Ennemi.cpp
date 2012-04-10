@@ -78,6 +78,12 @@ void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
    mPCCheminCase = aPPCheminCase;
 }
 
+void CEnnemi::GetCentre (int& aXCentre, int& aYCentre)
+{
+   aXCentre = mCoordonnee.first;
+   aYCentre = mCoordonnee.second;
+}
+
 void CEnnemi::CalculPCChemin  (void)
 {
    CalculPCCheminReel (mPCCheminCase);
