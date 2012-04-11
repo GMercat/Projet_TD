@@ -2,29 +2,21 @@
 #define _PROJECTILE_H_
 
 #include "Defined.h"
+#include "Ennemi.h"
 
 class CProjectile
 {
 public:
- 	enum ETypeProjectile {
-      eProjectile1 = 0,
-      eProjectile2,
-      eProjectile3,
-      eProjectile4,
-      eProjectile5,
-      eProjectile6,
-      eNbType
-	};
-
-public:
-   CProjectile   (ETypeProjectile aeType);
+   CProjectile   (CEnnemiPtr& aEnnemiCiblePtr, int aPuissance, int aVitesse);
    ~CProjectile  (void);
 
-private:
-   ETypeProjectile meType;
+   void  OnAffiche (SDL_Surface* apScreen);
 
+private:
    int   mPuissance;
    int   mVitesse;
+
+   CEnnemiPtr& mEnnemiCiblePtr; // Ennemi visé par le projectile
 };
 
 typedef boost::shared_ptr<CProjectile> CProjectilePtr;

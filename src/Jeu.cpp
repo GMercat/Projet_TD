@@ -137,19 +137,24 @@ void CJeu::OnTire (void)
    // Parcours des tours pour rechercher les ennemis à la porté
    for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
    {
-      for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); ++IterEnnemi)
+      // Si la tour peut tirer
+      if ((*IterTour)->AutoriseATirer ())
       {
-         // Récupération des positions de l'ennemi et de la tour
-         (*IterTour)->GetCentre (XTour, Ytour);
-         (*IterEnnemi)->GetCentre (XEnnemi, YEnnemi);
-
-         DistanceEnnemi = sqrt ((double)((XTour   - XEnnemi) * (XTour - XEnnemi))
-                                    + (double)((Ytour - YEnnemi) * (Ytour - YEnnemi)));
-
-         // Détermine si l'ennemi est à la porté de la tour
-         if ((*IterTour)->GetPorteeTire () > DistanceEnnemi)
+         for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); ++IterEnnemi)
          {
+            // TODO Selectionner l'ennemi le plus avancé ?
+            // Récupération des positions de l'ennemi et de la tour
+            (*IterTour)->GetCentre (XTour, Ytour);
+            (*IterEnnemi)->GetCentre (XEnnemi, YEnnemi);
 
+            DistanceEnnemi = sqrt ((double)((XTour   - XEnnemi) * (XTour - XEnnemi))
+                                       + (double)((Ytour - YEnnemi) * (Ytour - YEnnemi)));
+
+            // Détermine si l'ennemi est à la porté de la tour
+            if ((*IterTour)->GetPorteeTire () > DistanceEnnemi)
+            {
+               (*IterTour)->Tire (*IterEnnemi);
+            }
          }
       }
    }

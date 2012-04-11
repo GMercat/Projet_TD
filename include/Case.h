@@ -3,6 +3,9 @@
 
 #include "Defined.h"
 #include "Projectile.h"
+#include "Ennemi.h"
+#include "../include/Timer.h"
+
 
 class CCase
 {
@@ -44,6 +47,9 @@ public:
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
 
+   bool AutoriseATirer  (void);
+   void Tire            (CEnnemiPtr& aEnnemiCiblePtr);
+   
 private:
 	ETypeCase   			      mEtat;
    
@@ -52,9 +58,12 @@ private:
 
    int							   mIdPlateauX;
 	int							   mIdPlateauY;
-	
+
+   CTimer                     mTimer;           
+
    int                        mPorteeTire;
-   std::list<CProjectilePtr>  mListeProjectilesTirees;
+   int                        mCadenceTire;           // Cadence de tire en seconde
+   std::list<CProjectilePtr>  mListeProjectilesTires;
 
 	int							   mCourImage; // L'image à afficher
 	SDL_Rect					      mPosition;	// Position de la case
