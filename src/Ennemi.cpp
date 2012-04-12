@@ -14,12 +14,15 @@ CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
    {
       case eType1:
          mVitesse = 1;
+         mVie     = 100;
          break;
       case eType2:
          mVitesse = 10;
+         mVie     = 50;
          break;
       default:
          mVitesse = 1;
+         mVie     = 100;
          break;
    }
 }
@@ -241,17 +244,6 @@ void CEnnemi::Avance (void)
    DistanceRestante = sqrt ((double)((VecteurCourant.second.first  - mCoordonnee.first)  * (VecteurCourant.second.first  - mCoordonnee.first))
                                 + (double)((VecteurCourant.second.second - mCoordonnee.second) * (VecteurCourant.second.second - mCoordonnee.second)));
    
-/*   if (AvancementSurVecteur <= DistanceRestante)
-   {
-      // 2 - A - On reste sur le même vecteur
-      double PourcentageVecteurParcouru = AvancementSurVecteur / DistanceRestante;
-      mCoordonnee.first += (VecteurCourant.second.first - mCoordonnee.first) * PourcentageVecteurParcouru;
-      mCoordonnee.second += (VecteurCourant.second.second - mCoordonnee.second) * PourcentageVecteurParcouru;
-      (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
-      (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
-   }
-   */
-
    PourcentageVecteurParcouru = AvancementSurVecteur / DistanceRestante;
    
    if (AvancementSurVecteur > DistanceRestante)
@@ -304,4 +296,18 @@ bool CEnnemi::EstArrive (void)
    }
 
    return bEstArrive;
+}
+
+bool CEnnemi::Touche (int aPuissance)
+{
+   bool bVivant = true;
+
+   mVie -= aPuissance;
+
+   if (mVie <= 0)
+   {
+      bVivant = false;
+   }
+
+   return bVivant;
 }

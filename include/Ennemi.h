@@ -34,6 +34,8 @@ public:
    void  Avance (void);
    bool  EstArrive (void);
 
+   bool  Touche (int aPuissance);
+
 private:
    void  CalculPCChemin  (void);
    
@@ -42,9 +44,10 @@ private:
 
    EType mType;
 
-   int                           mVitesse;
-   TCoordonnee                   mCoordonnee; // Coordonnée du centre de l'ennmi
-   
+   int         mVitesse;
+   TCoordonnee mCoordonnee; // Coordonnée du centre de l'ennmi
+   int         mVie;
+
    int                           mNumCaseArrivee;
    std::list<int>                mPCCheminCase;
    std::list<TVecteurChemin>     mPCCheminReel;

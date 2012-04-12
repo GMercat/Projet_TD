@@ -25,12 +25,13 @@ public:
 
 
 public:
-	CCase	(void);
+	CCase	   (void);
 	~CCase	(void);
 
-	void OnInit (void);
-	void OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
-
+	void OnInit                (void);
+	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
+   void OnAvanceProjectiles   (void);
+   
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);
 

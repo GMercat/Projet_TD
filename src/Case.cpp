@@ -31,6 +31,16 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 	SDL_BlitSurface(apSurfaceCase,NULL,apSurfaceDest,&mPosition);
 
    // Gérer ici l'affichage des projetctiles ?
+
+}
+
+void CCase::OnAvanceProjectiles (void)
+{
+   std::list<CProjectilePtr>::iterator IterProjectile;
+   for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end ();++IterProjectile)
+   {
+      (*IterProjectile)->Avance ();
+   }
 }
 
 bool CCase::EstDedans (int aX, int aY)
@@ -174,7 +184,7 @@ void CCase::Tire (CEnnemiPtr& aEnnemiCiblePtr)
    }
 
    // Création et ajout du projectile dans la liste des projectiles tirés
-   CProjectilePtr ProjectileTire (new CProjectile(PuissanceProjectile, VitesseProjectile, aEnnemiCiblePtr));
+   CProjectilePtr ProjectileTire (new CProjectile(aEnnemiCiblePtr, PuissanceProjectile, VitesseProjectile));
    mListeProjectilesTires.push_back (ProjectileTire);
 
    // Gestion de la cadence de tire de la tour
