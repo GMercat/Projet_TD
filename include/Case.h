@@ -4,7 +4,7 @@
 #include "Defined.h"
 #include "Projectile.h"
 #include "Ennemi.h"
-#include "../include/Timer.h"
+#include "Timer.h"
 
 
 class CCase
@@ -30,7 +30,7 @@ public:
 
 	void OnInit                (void);
 	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
-   void OnAvanceProjectiles   (void);
+   bool OnAvanceProjectiles   (void);
    
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);

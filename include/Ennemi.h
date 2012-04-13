@@ -34,7 +34,9 @@ public:
    void  Avance (void);
    bool  EstArrive (void);
 
-   bool  Touche (int aPuissance);
+   void  Touche (int aPuissance);
+   
+   bool  EstVivant (void);
 
 private:
    void  CalculPCChemin  (void);

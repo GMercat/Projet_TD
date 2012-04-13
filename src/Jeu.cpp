@@ -1,6 +1,6 @@
 #include "../include/Jeu.h"
-
 #include "../include/IA.h"
+#include <cmath>
 
 CJeu::CJeu (CIA* apIA):
    mpIA              (apIA),
@@ -105,13 +105,29 @@ void CJeu::OnQuit (void)
 
 void CJeu::OnProgression   (void)
 {
+   // Progression des projectiles
+   std::list<CCasePtr>::iterator IterTourTiree    = mListTourTiree.begin ();
+   std::list<CCasePtr>::iterator IterTourTireeEnd = mListTourTiree.end ();
+   while (IterTourTiree != IterTourTireeEnd)
+   {
+      if (false == (*IterTourTiree)->OnAvanceProjectiles ())
+      {
+         IterTourTiree = mListTourTiree.erase (IterTourTiree);
+      }
+      else
+      {
+         ++IterTourTiree;
+      }
+   }
+
+   // Progression des ennemis
    std::list<CEnnemiPtr>::iterator IterEnnemi = mListEnnemi.begin ();
    std::list<CEnnemiPtr>::iterator IterEnnemiEnd = mListEnnemi.end ();
    while (IterEnnemi != IterEnnemiEnd)
    {
       (*IterEnnemi)->Avance ();
 
-      if ((*IterEnnemi)->EstArrive ())
+      if ((*IterEnnemi)->EstArrive () || (false == (*IterEnnemi)->EstVivant ()))
       {
          IterEnnemi = mListEnnemi.erase (IterEnnemi);
       }
@@ -147,13 +163,14 @@ void CJeu::OnTire (void)
             (*IterTour)->GetCentre (XTour, Ytour);
             (*IterEnnemi)->GetCentre (XEnnemi, YEnnemi);
 
-            DistanceEnnemi = sqrt ((double)((XTour   - XEnnemi) * (XTour - XEnnemi))
+            DistanceEnnemi = (int)sqrt ((double)((XTour   - XEnnemi) * (XTour - XEnnemi))
                                        + (double)((Ytour - YEnnemi) * (Ytour - YEnnemi)));
 
             // Détermine si l'ennemi est à la porté de la tour
             if ((*IterTour)->GetPorteeTire () > DistanceEnnemi)
             {
                (*IterTour)->Tire (*IterEnnemi);
+               mListTourTiree.push_back ((*IterTour));
             }
          }
       }

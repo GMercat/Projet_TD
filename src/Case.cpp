@@ -30,17 +30,37 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 {   
 	SDL_BlitSurface(apSurfaceCase,NULL,apSurfaceDest,&mPosition);
 
-   // Gérer ici l'affichage des projetctiles ?
-
+   // Affichage des projectiles lié à la tour
+   std::list<CProjectilePtr>::iterator IterProjectile;
+   for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end (); ++IterProjectile)
+   {
+      (*IterProjectile)->OnAffiche (apSurfaceDest);
+   }
 }
 
-void CCase::OnAvanceProjectiles (void)
+bool CCase::OnAvanceProjectiles (void)
 {
-   std::list<CProjectilePtr>::iterator IterProjectile;
-   for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end ();++IterProjectile)
+   std::cout << "OnAvanceProjectiles" << std::endl;
+
+   bool bProjectileDetruit = false;
+      
+   std::list<CProjectilePtr>::iterator IterProjectile    = mListeProjectilesTires.begin ();
+   std::list<CProjectilePtr>::iterator IterProjectileEnd = mListeProjectilesTires.end ();
+   while (IterProjectile != IterProjectileEnd)
    {
-      (*IterProjectile)->Avance ();
+      bProjectileDetruit = (*IterProjectile)->Avance ();
+
+      if (bProjectileDetruit)
+      {
+         IterProjectile = mListeProjectilesTires.erase (IterProjectile);
+      }
+      else
+      {
+         ++IterProjectile;
+      }
    }
+   
+   return (false == mListeProjectilesTires.empty ());
 }
 
 bool CCase::EstDedans (int aX, int aY)
@@ -72,7 +92,11 @@ void CCase::SetEtat (CCase::ETypeCase aeNouvelEtat)
 		case eVide:
 		case eMur:
       case eTour1:
+         mPorteeTire  = 100;
+         mCadenceTire = 1;
       case eTour2:
+         mPorteeTire  = 150;
+         mCadenceTire = 2;
       case eTour3:
       case eTour4:
       case eTour5:
@@ -167,12 +191,12 @@ void CCase::Tire (CEnnemiPtr& aEnnemiCiblePtr)
    {
       case eTour1:
          PuissanceProjectile = 2;
-         VitesseProjectile   = 2;
+         VitesseProjectile   = 20;
          break;
       
       case eTour2:
          PuissanceProjectile = 4;
-         VitesseProjectile   = 4;
+         VitesseProjectile   = 10;
          break;
 
       case eTour3:
@@ -184,8 +208,13 @@ void CCase::Tire (CEnnemiPtr& aEnnemiCiblePtr)
    }
 
    // Création et ajout du projectile dans la liste des projectiles tirés
-   CProjectilePtr ProjectileTire (new CProjectile(aEnnemiCiblePtr, PuissanceProjectile, VitesseProjectile));
-   mListeProjectilesTires.push_back (ProjectileTire);
+   CProjectilePtr ProjectileTirePtr (new CProjectile( aEnnemiCiblePtr,
+                                                      mPosition.x + (mPosition.w / 2),
+                                                      mPosition.y + (mPosition.h / 2),
+                                                      PuissanceProjectile,
+                                                      VitesseProjectile));
+   ProjectileTirePtr->OnInit ();
+   mListeProjectilesTires.push_back (ProjectileTirePtr);
 
    // Gestion de la cadence de tire de la tour
    mTimer.Start ();

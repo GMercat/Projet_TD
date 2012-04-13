@@ -31,7 +31,7 @@ const int LARGEUR_CASE = 50;
 const int HAUTEUR_CASE = 50;
 
 // Base de vitesse
-const int BASE_VITESSE = 5;
+const int BASE_VITESSE = 2;
 
 typedef std::pair<int, int> TCoordonnee;
 

@@ -1,6 +1,6 @@
 #include "../include/Ennemi.h"
 #include "../include/IA.h"
-#include <math.h>
+#include <cmath>
 
 CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
    mpImage           (NULL),
@@ -29,7 +29,7 @@ CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
 
 CEnnemi::~CEnnemi (void)
 {
-   ;
+   SDL_FreeSurface (mpImage);
 }
 
 CEnnemi::EType CEnnemi::GetType (void)
@@ -73,7 +73,7 @@ bool CEnnemi::OnInit (void)
 
 void CEnnemi::OnAffiche (SDL_Surface* apScreen)
 {
-   SDL_BlitSurface (mpImage,NULL,apScreen,&mPosition);
+   SDL_BlitSurface (mpImage, NULL, apScreen, &mPosition);
 }
 
 void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
@@ -229,6 +229,8 @@ void CEnnemi::Avance (void)
    double PourcentageVecteurParcouru   = 0.0;
    double DistanceRestante             = 0.0;
 
+   std::cout << "Ennemi::Avance" << std::endl;
+
    // Calcul du chemin réel
    CalculPCChemin ();
 
@@ -298,16 +300,12 @@ bool CEnnemi::EstArrive (void)
    return bEstArrive;
 }
 
-bool CEnnemi::Touche (int aPuissance)
+void CEnnemi::Touche (int aPuissance)
 {
-   bool bVivant = true;
-
    mVie -= aPuissance;
+}
 
-   if (mVie <= 0)
-   {
-      bVivant = false;
-   }
-
-   return bVivant;
+bool CEnnemi::EstVivant (void)
+{
+   return (mVie > 0);
 }

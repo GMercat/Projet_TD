@@ -46,6 +46,7 @@ private:
    CCase::ETypeCase  mTypeTourSelect;
    
    std::list<CCasePtr>     mListTour;
+   std::list<CCasePtr>     mListTourTiree;
    std::list<CEnnemiPtr>   mListEnnemi;
 
    CPlateau mPlateau;
