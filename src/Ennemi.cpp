@@ -228,9 +228,7 @@ void CEnnemi::Avance (void)
 {
    double PourcentageVecteurParcouru   = 0.0;
    double DistanceRestante             = 0.0;
-
-   std::cout << "Ennemi::Avance" << std::endl;
-
+   
    // Calcul du chemin réel
    CalculPCChemin ();
 
@@ -268,9 +266,9 @@ void CEnnemi::Avance (void)
       PourcentageVecteurParcouru = AvancementSurVecteur / DistanceRestante;
    }
 
-   
-   mCoordonnee.first += (int)((VecteurCourant.second.first - mCoordonnee.first) * PourcentageVecteurParcouru);
-   mCoordonnee.second += (int)((VecteurCourant.second.second - mCoordonnee.second) * PourcentageVecteurParcouru);
+   // TODO Arrondi à l'entier supérieur sinon à faible vitesse on avance pas
+   mCoordonnee.first += ceil ((VecteurCourant.second.first - mCoordonnee.first) * (PourcentageVecteurParcouru));
+   mCoordonnee.second += ceil ((VecteurCourant.second.second - mCoordonnee.second) * (PourcentageVecteurParcouru));
    (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
    (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
 
@@ -303,6 +301,8 @@ bool CEnnemi::EstArrive (void)
 void CEnnemi::Touche (int aPuissance)
 {
    mVie -= aPuissance;
+
+   std::cout << "Vie restante = " << mVie << std::endl;
 }
 
 bool CEnnemi::EstVivant (void)

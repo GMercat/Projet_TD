@@ -55,11 +55,6 @@ void CProjectile::OnAffiche (SDL_Surface* apScreen)
 
 bool CProjectile::Avance (void)
 {
-   std::cout << "CProjectile::Avance" << std::endl;
-   /*
-   std::cout << "X = " << mCoordonnee.first << std::endl;
-   std::cout << "Y = " << mCoordonnee.second << std::endl;
-   */
    bool bEstDetruit = false;
    
    // Si l'ennemi est pas encore détruit
@@ -78,8 +73,6 @@ bool CProjectile::Avance (void)
       double DistanceRestante = sqrt ((double)((XEnnemi - mCoordonnee.first)  * (XEnnemi - mCoordonnee.first))
                                    +  (double)((YEnnemi - mCoordonnee.second) * (YEnnemi - mCoordonnee.second)));
    
-      //std::cout << "DistanceRestante = " << DistanceRestante << std::endl;
-
       double PourcentageParcouru = Avance / DistanceRestante;
    
       if (Avance > DistanceRestante)

@@ -40,8 +40,6 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 
 bool CCase::OnAvanceProjectiles (void)
 {
-   std::cout << "OnAvanceProjectiles" << std::endl;
-
    bool bProjectileDetruit = false;
       
    std::list<CProjectilePtr>::iterator IterProjectile    = mListeProjectilesTires.begin ();
@@ -191,12 +189,12 @@ void CCase::Tire (CEnnemiPtr& aEnnemiCiblePtr)
    {
       case eTour1:
          PuissanceProjectile = 2;
-         VitesseProjectile   = 20;
+         VitesseProjectile   = 10;
          break;
       
       case eTour2:
          PuissanceProjectile = 4;
-         VitesseProjectile   = 10;
+         VitesseProjectile   = 7;
          break;
 
       case eTour3:
