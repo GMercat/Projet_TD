@@ -45,86 +45,43 @@ bool CPlateau::OnInit (void)
       }
 
       //On charge toutes les images dans les surfaces associées
-	   if ((LARGEUR_CASE == 50) && (HAUTEUR_CASE == 50))
-	   {
-         switch (iImage)
-         {
-            case CCase::eVide :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Vide_50.bmp");
-               break;
+      switch (iImage)
+      {
+         case CCase::eVide :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Vide_50.bmp");
+            break;
 
-            case CCase::eMur :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Mur_50.bmp");
-               break;
+         case CCase::eMur :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Mur_50.bmp");
+            break;
 
-            case CCase::eTour1 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour1_50.bmp");
-               break;
+         case CCase::eTour1 :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Tour1_50.bmp");
+            break;
 
-            case CCase::eTour2 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour2_50.bmp");
-               break;
+         case CCase::eTour2 :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Tour2_50.bmp");
+            break;
 
-            case CCase::eTour3 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour3_50.bmp");
-               break;
+         case CCase::eTour3 :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Tour3_50.bmp");
+            break;
 
-            case CCase::eTour4 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour4_50.bmp");
-               break;
+         case CCase::eTour4 :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Tour4_50.bmp");
+            break;
 
-            case CCase::eTour5 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour5_50.bmp");
-               break;
+         case CCase::eTour5 :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Tour5_50.bmp");
+            break;
 
-            case CCase::eTour6 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
-               break;
+         case CCase::eTour6 :
+            (*IterImage) = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
+            break;
 
-            default:
-               break;
-         }
-	   }
-	   else if ((LARGEUR_CASE == 25) && (HAUTEUR_CASE == 25))
-	   {
-         switch (iImage)
-         {
-            case CCase::eVide :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Vide_25.bmp");
-               break;
-
-            case CCase::eMur :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Mur_25.bmp");
-               break;
-
-            case CCase::eTour1 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour1_25.bmp");
-               break;
-
-            case CCase::eTour2 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour2_25.bmp");
-               break;
-
-            case CCase::eTour3 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour3_25.bmp");
-               break;
-
-            case CCase::eTour4 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour4_25.bmp");
-               break;
-
-            case CCase::eTour5 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour5_25.bmp");
-               break;
-
-            case CCase::eTour6 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour6_25.bmp");
-               break;
-
-            default:
-               break;
-         }
-	   }
+         default:
+            break;
+      }
 
       //On teste le retour du chargement
 	   if ((*IterImage) == NULL)
@@ -148,10 +105,6 @@ bool CPlateau::OnInit (void)
    if ((LARGEUR_CASE == 50) && (HAUTEUR_CASE == 50))
    {
       mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
-   }
-   else if ((LARGEUR_CASE == 25) && (HAUTEUR_CASE == 25)) 
-   {
-      mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_25.bmp");
    }
    
    mpImagePause = SDL_LoadBMP("../Ressources/JeuPause.bmp");
