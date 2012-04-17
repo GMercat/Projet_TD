@@ -56,12 +56,18 @@ void CMoteur::OnClic (int aX, int aY)
 
 void CMoteur::OnProgression   (void)
 {
-   mJeu.OnProgression ();
+   if (mJeu.PartieEnCours ())
+   {
+      mJeu.OnProgression ();
+   }
 }
 
 void CMoteur::OnTire (void)
 {
-    mJeu.OnTire ();
+   if (mJeu.PartieEnCours ())
+   {
+      mJeu.OnTire ();
+   }
 }
 
 void CMoteur::OnAffiche (SDL_Surface* apScreen)
