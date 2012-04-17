@@ -1,0 +1,3 @@
+nbCaseLargeur=18
+nbCaseHauteur=11
+baseVitesse=2
