@@ -207,14 +207,14 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
    {
       for(IterHauteur = 0; IterHauteur < NB_CASE_HAUTEUR; IterHauteur++)
       {
-         if (false == mPlateau[IterLargeur][IterHauteur]->EstPlusCourtChemin ())
-         {
+         /*if (false == mPlateau[IterLargeur][IterHauteur]->EstPlusCourtChemin ())
+         {*/
             mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
-         }
+         /*}
          else
          {
             mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mpImagePCC);
-         }
+         }*/
       }
    }
 

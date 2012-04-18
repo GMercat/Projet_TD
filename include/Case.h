@@ -30,6 +30,7 @@ public:
 
 	void OnInit                (void);
 	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
+   void OnAfficheProjectiles  (SDL_Surface* apSurfaceDest);
    bool OnAvanceProjectiles   (void);
    
 	bool EstDedans	(int aX, int aY);

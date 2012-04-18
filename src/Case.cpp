@@ -29,7 +29,10 @@ void CCase::OnInit (void)
 void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 {   
 	SDL_BlitSurface(apSurfaceCase,NULL,apSurfaceDest,&mPosition);
+}
 
+void CCase::OnAfficheProjectiles(SDL_Surface* apSurfaceDest)
+{
    // Affichage des projectiles lié à la tour
    std::list<CProjectilePtr>::iterator IterProjectile;
    for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end (); ++IterProjectile)

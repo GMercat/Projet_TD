@@ -87,6 +87,13 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    {
       (*IterEnnemi)->OnAffiche (apScreen);
    }
+
+   // Affichage des projectiles
+   std::list<CCasePtr>::iterator IterTourTiree = mListTourTiree.begin ();
+   for (IterTourTiree; IterTourTiree != mListTourTiree.end (); ++IterTourTiree)
+   {
+      (*IterTourTiree)->OnAfficheProjectiles (apScreen);
+   }
 }
 
 void CJeu::OnReset   (void)
