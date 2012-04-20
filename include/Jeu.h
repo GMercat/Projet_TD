@@ -36,6 +36,9 @@ public:
    CCase::ETypeCase  GetTourSelectionnee  (void);
    void              SelectTour           (CCase::ETypeCase aTypeTourSelect);
 
+   int GetNbCaseLargeur (void);
+   int GetNbCaseHauteur (void);
+
 private:
 	int mHauteur;
 	int mLargeur;

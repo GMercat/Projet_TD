@@ -1,6 +1,8 @@
 #include "../include/Plateau.h"
 #include "../include/Jeu.h"
 
+
+
 CPlateau::CPlateau (CJeu& aJeu):
    mJeu           (aJeu),
    mNumCaseDepart (-1),
@@ -130,41 +132,61 @@ bool CPlateau::OnInit (void)
 	Rect.h = HAUTEUR_CASE;
 
 #ifdef DEBUG
-   std::cout << "Largeur = " << NB_CASE_LARGEUR << ", Hauteur = " << NB_CASE_HAUTEUR << std::endl;
+   std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
 #endif  
 
-	// Initialisation du plateau
-	for (int iLargeur = 0; iLargeur < NB_CASE_LARGEUR; iLargeur++)
-	{
-		for (int iHauteur = 0; iHauteur < NB_CASE_HAUTEUR; iHauteur++)
+   // Lecture du fichier de configuration
+   mConfig.Chargement ("../conf/Jeu.txt");
+   bool bConfig = true;
+   bConfig &= mConfig.Get ("nbCaseLargeur", mNbCasesLargeur);
+   bConfig &= mConfig.Get ("nbCaseHauteur", mNbCasesHauteur);
+
+   if (bConfig)
+   {
+#ifdef DEBUG
+      std::cout << "NbCaseLargeur = " << mNbCasesLargeur << std::endl;
+      std::cout << "NbCaseHauteur = " << mNbCasesHauteur << std::endl;
+#endif
+      
+	   // Initialisation du plateau
+      for (int iHauteur = 0; iHauteur < mNbCasesHauteur; iHauteur++)
 		{
-			CCasePtr CasePtr (new CCase());
+	      for (int iLargeur = 0; iLargeur < mNbCasesLargeur; iLargeur++)
+	      {
+		      CCasePtr CasePtr (new CCase());
 
-			CasePtr->OnInit ();
-			Rect.x = iLargeur * LARGEUR_CASE;
-			Rect.y = iHauteur * HAUTEUR_CASE;
-			CasePtr->SetPosition  (&Rect, iLargeur, iHauteur);
-         CasePtr->SetNumCase   (iLargeur + (NB_CASE_LARGEUR * iHauteur));
+			   CasePtr->OnInit ();
+			   Rect.x = iLargeur * LARGEUR_CASE;
+			   Rect.y = iHauteur * HAUTEUR_CASE;
+			   CasePtr->SetPosition  (&Rect, iLargeur, iHauteur);
+            CasePtr->SetNumCase   (iLargeur + (mNbCasesLargeur * iHauteur));
 
-			if ((iLargeur == 0) || (iLargeur == (NB_CASE_LARGEUR - 1)) || (iHauteur == 0) || (iHauteur == (NB_CASE_HAUTEUR -1)))
-			{
-			   if (((iLargeur != 0) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))) || ((iLargeur != (NB_CASE_LARGEUR - 1)) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))))
+			   if ((iLargeur == 0) || (iLargeur == (mNbCasesLargeur - 1)) || (iHauteur == 0) || (iHauteur == (mNbCasesHauteur -1)))
 			   {
-				   CasePtr->SetEtat (CCase::eMur);
-				}
-            else if ((iLargeur == 0) && (iHauteur == ((int)NB_CASE_HAUTEUR/2)))
-            {
-               mNumCaseDepart = iLargeur + (NB_CASE_LARGEUR * iHauteur);
-            }
-            else if ((iLargeur == (NB_CASE_LARGEUR - 1)) && (iHauteur == ((int)NB_CASE_HAUTEUR/2)))
-            {
-               mNumCaseArrivee = iLargeur + (NB_CASE_LARGEUR * iHauteur);
-            }
-			}
+			      if (((iLargeur != 0) && (iHauteur != (mNbCasesHauteur / 2))) || ((iLargeur != (mNbCasesLargeur - 1)) && (iHauteur != (mNbCasesHauteur / 2))))
+			      {
+				      CasePtr->SetEtat (CCase::eMur);
+				   }
+               else if ((iLargeur == 0) && (iHauteur == (mNbCasesHauteur / 2)))
+               {
+                  mNumCaseDepart = iLargeur + (mNbCasesLargeur * iHauteur);
+               }
+               else if ((iLargeur == (mNbCasesLargeur - 1)) && (iHauteur == (mNbCasesHauteur / 2)))
+               {
+                  mNumCaseArrivee = iLargeur + (mNbCasesLargeur * iHauteur);
+               }
+			   }
+            mCases.push_back (CasePtr);
+			   //mPlateau[iLargeur][iHauteur] = CasePtr;
+		   }
+	   }
+   }
+   else
+   {
+      bReturn = false;
 
-			mPlateau[iLargeur][iHauteur] = CasePtr;
-		}
-	}
+      std::cout << "Erreur de lecture de la configuration du plateau" << std::endl;
+   }
 
    return bReturn;
 }
@@ -172,25 +194,27 @@ bool CPlateau::OnInit (void)
 void CPlateau::OnReset (void)
 {
 	// Initialisation du plateau
-	for (int iLargeur = 0; iLargeur < NB_CASE_LARGEUR; iLargeur++)
+	for (int iHauteur = 0; iHauteur < mNbCasesHauteur; iHauteur++)
 	{
-		for (int iHauteur = 0; iHauteur < NB_CASE_HAUTEUR; iHauteur++)
-		{
-			mPlateau[iLargeur][iHauteur]->OnInit ();
+      for (int iLargeur = 0; iLargeur < mNbCasesLargeur; iLargeur++)
+	   {
+         mCases[iHauteur * mNbCasesLargeur + iLargeur]->OnInit ();
+			//mPlateau[iLargeur][iHauteur]->OnInit ();
 
-			if ((iLargeur == 0) || (iLargeur == (NB_CASE_LARGEUR - 1)) || (iHauteur == 0) || (iHauteur == (NB_CASE_HAUTEUR -1)))
+			if ((iLargeur == 0) || (iLargeur == (mNbCasesLargeur - 1)) || (iHauteur == 0) || (iHauteur == (mNbCasesHauteur -1)))
 			{
-			   if (((iLargeur != 0) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))) || ((iLargeur != (NB_CASE_LARGEUR - 1)) && (iHauteur != ((int)NB_CASE_HAUTEUR/2))))
+			   if (((iLargeur != 0) && (iHauteur != (mNbCasesHauteur / 2))) || ((iLargeur != (mNbCasesLargeur - 1)) && (iHauteur != (mNbCasesHauteur / 2))))
 			   {
-				   mPlateau[iLargeur][iHauteur]->SetEtat (CCase::eMur);
+               mCases[iHauteur * mNbCasesLargeur + iLargeur]->SetEtat (CCase::eMur);
+				   //mPlateau[iLargeur][iHauteur]->SetEtat (CCase::eMur);
 				}
-            else if ((iLargeur == 0) && (iHauteur == ((int)NB_CASE_HAUTEUR/2)))
+            else if ((iLargeur == 0) && (iHauteur == (mNbCasesHauteur / 2)))
             {
-               mNumCaseDepart = iLargeur + (NB_CASE_LARGEUR * iHauteur);
+               mNumCaseDepart = iLargeur + (mNbCasesLargeur * iHauteur);
             }
-            else if ((iLargeur == (NB_CASE_LARGEUR - 1)) && (iHauteur == ((int)NB_CASE_HAUTEUR/2)))
+            else if ((iLargeur == (mNbCasesLargeur - 1)) && (iHauteur == (mNbCasesHauteur / 2)))
             {
-               mNumCaseArrivee = iLargeur + (NB_CASE_LARGEUR * iHauteur);
+               mNumCaseArrivee = iLargeur + (mNbCasesLargeur * iHauteur);
             }
 			}
 		}
@@ -203,13 +227,15 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
    int IterHauteur = 0;
 
    //Dessiner chaque case
-   for(IterLargeur; IterLargeur < NB_CASE_LARGEUR; IterLargeur++)
+   for(IterHauteur = 0; IterHauteur < mNbCasesHauteur; IterHauteur++)
    {
-      for(IterHauteur = 0; IterHauteur < NB_CASE_HAUTEUR; IterHauteur++)
+      for(IterLargeur = 0; IterLargeur < mNbCasesLargeur; IterLargeur++)
       {
          /*if (false == mPlateau[IterLargeur][IterHauteur]->EstPlusCourtChemin ())
          {*/
-            mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
+         CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetEtat ();
+         mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImages[EtatCase]);
+         //mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
          /*}
          else
          {
@@ -223,22 +249,49 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
       SDL_Rect Position;
       Position.x = 0;
       Position.y = 0;
-      Position.w = NB_CASE_LARGEUR * LARGEUR_CASE;
-      Position.h = NB_CASE_HAUTEUR * HAUTEUR_CASE;
+      Position.w = mNbCasesLargeur * LARGEUR_CASE;
+      Position.h = mNbCasesHauteur * HAUTEUR_CASE;
       SDL_BlitSurface(mpImagePause, NULL, apEcran, &Position);
    }
 }
 
+int CPlateau::GetNbCaseLargeur (void)
+{
+   return mNbCasesLargeur;
+}
+
+int CPlateau::GetNbCaseHauteur (void)
+{
+   return mNbCasesHauteur;
+}
+
 CCasePtr& CPlateau::GetCase (int aNumCase)
 {
-   int IterHauteur = aNumCase / (NB_CASE_LARGEUR);
-   int IterLargeur = aNumCase % (NB_CASE_LARGEUR);
-   return mPlateau[IterLargeur][IterHauteur];
+   int IterHauteur = aNumCase / mNbCasesLargeur;
+   int IterLargeur = aNumCase % mNbCasesLargeur;
+   return mCases[IterHauteur * mNbCasesLargeur + IterLargeur];
 }
 
 CCasePtr& CPlateau::GetCase (int aX, int aY)
 {
-   return mPlateau[aX][aY];
+   return mCases[aY * mNbCasesLargeur + aX];
+}
+
+void CPlateau::GetCoordonneesCaseParNumero (int aNumero, TCoordonnee& aCoordonnees)
+{
+   int IterHauteur = aNumero / mNbCasesLargeur;
+   int IterLargeur = aNumero % mNbCasesLargeur;
+   
+   mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetCentre (aCoordonnees.first, aCoordonnees.second);
+
+}
+
+int CPlateau::GetNumCaseParCoordonnees (TCoordonnee& aCoordonnees)
+{
+   int IndexCaseX = aCoordonnees.first  / LARGEUR_CASE;
+   int IndexCaseY = aCoordonnees.second / HAUTEUR_CASE;
+
+   return IndexCaseY * mNbCasesLargeur + IndexCaseX;
 }
 
 int CPlateau::GetNumCaseDepart  (void)
@@ -253,21 +306,23 @@ int CPlateau::GetNumCaseArrivee (void)
 
 void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
 {
-   int IterLargeur = 0;
    int IterHauteur = 0;
-   for(IterLargeur; IterLargeur < NB_CASE_LARGEUR; IterLargeur++)
+   int IterLargeur = 0;
+   for(IterHauteur = 0; IterHauteur < mNbCasesHauteur; IterHauteur++)
    {
-      for(IterHauteur = 0; IterHauteur < NB_CASE_HAUTEUR; IterHauteur++)
+      for(IterLargeur = 0; IterLargeur < mNbCasesLargeur; IterLargeur++)
       {
-         mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (false);
+         mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->SetPlusCourtChemin (false);
+         //mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (false);
       }
    }
    
    std::vector<int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
    for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
-      IterHauteur = (*IterPlusCourtChemin) / (NB_CASE_LARGEUR);
-      IterLargeur = (*IterPlusCourtChemin) % (NB_CASE_LARGEUR);
-      mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (true);
+      IterHauteur = (*IterPlusCourtChemin) / mNbCasesLargeur;
+      IterLargeur = (*IterPlusCourtChemin) % mNbCasesLargeur;
+      mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->SetPlusCourtChemin (true);
+      //mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (true);
    }
 }

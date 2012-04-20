@@ -9,67 +9,6 @@ CMenu::CMenu (CJeu& aJeu):
    {
       mImages[IterImages] = NULL;
    }
-
-   mPositions[eFond].x = NB_CASE_LARGEUR * LARGEUR_CASE;
-   mPositions[eFond].y = 0;
-   mPositions[eFond].w = LARGEUR_MENU;
-   mPositions[eFond].h = NB_CASE_HAUTEUR * HAUTEUR_CASE;
-
-   mPositions[eNew].x = mPositions[eFond].x + 25;
-   mPositions[eNew].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE )  / 2 + 25;
-   mPositions[eNew].w = LARGEUR_MENU - 25;
-   mPositions[eNew].h = 40;
-      
-   mPositions[eReprendre].x = mPositions[eFond].x +25;
-   mPositions[eReprendre].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE )  / 2 + 75;
-   mPositions[eReprendre].w = LARGEUR_MENU - 25;
-   mPositions[eReprendre].h = 40;
-
-   mPositions[eQuit].x = mPositions[eFond].x + 25;
-   mPositions[eQuit].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE )  / 2 + 125;
-   mPositions[eQuit].w = LARGEUR_MENU - 25;
-   mPositions[eQuit].h = 40;
-
-   mPositions[ePause].x = mPositions[eFond].x + 25;
-   mPositions[ePause].y = 25;
-   mPositions[ePause].w = LARGEUR_MENU - 25;
-   mPositions[ePause].h = 40;
-
-   mPositions[eTour1].x = mPositions[eFond].x + 25;
-   mPositions[eTour1].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 10;
-   mPositions[eTour1].w = LARGEUR_CASE;
-   mPositions[eTour1].h = HAUTEUR_CASE;
-
-   mPositions[eTour2].x = mPositions[eFond].x + 125;
-   mPositions[eTour2].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 10;
-   mPositions[eTour2].w = LARGEUR_CASE;
-   mPositions[eTour2].h = HAUTEUR_CASE;
-
-   mPositions[eTour3].x = mPositions[eFond].x + 25;
-   mPositions[eTour3].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 70;
-   mPositions[eTour3].w = LARGEUR_CASE;
-   mPositions[eTour3].h = HAUTEUR_CASE;
-
-   mPositions[eTour4].x = mPositions[eFond].x + 125;
-   mPositions[eTour4].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 70;
-   mPositions[eTour4].w = LARGEUR_CASE;
-   mPositions[eTour4].h = HAUTEUR_CASE;
-
-   mPositions[eTour5].x = mPositions[eFond].x + 25;
-   mPositions[eTour5].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 130;
-   mPositions[eTour5].w = LARGEUR_CASE;
-   mPositions[eTour5].h = HAUTEUR_CASE;
-
-   mPositions[eTour6].x = mPositions[eFond].x + 125;
-   mPositions[eTour6].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 130;
-   mPositions[eTour6].w = LARGEUR_CASE;
-   mPositions[eTour6].h = HAUTEUR_CASE;
-
-   mPositions[eNewEnnemi].x = mPositions[eFond].x + 25;
-   mPositions[eNewEnnemi].y = (NB_CASE_HAUTEUR * HAUTEUR_CASE ) / 2 + 190;
-   mPositions[eNewEnnemi].w = LARGEUR_CASE;
-   mPositions[eNewEnnemi].h = HAUTEUR_CASE;
-
 }
 
 CMenu::~CMenu (void)
@@ -83,6 +22,69 @@ CMenu::~CMenu (void)
 bool CMenu::OnInit (void)
 {
    bool bReturn = false;
+
+   int NbCaseLargeur = mJeu.GetNbCaseLargeur ();
+   int NbCaseHauteur = mJeu.GetNbCaseHauteur ();
+
+   mPositions[eFond].x = NbCaseLargeur * LARGEUR_CASE;
+   mPositions[eFond].y = 0;
+   mPositions[eFond].w = LARGEUR_MENU;
+   mPositions[eFond].h = NbCaseHauteur * HAUTEUR_CASE;
+
+   mPositions[eNew].x = mPositions[eFond].x + 25;
+   mPositions[eNew].y = (NbCaseHauteur * HAUTEUR_CASE )  / 2 + 25;
+   mPositions[eNew].w = LARGEUR_MENU - 25;
+   mPositions[eNew].h = 40;
+      
+   mPositions[eReprendre].x = mPositions[eFond].x +25;
+   mPositions[eReprendre].y = (NbCaseHauteur * HAUTEUR_CASE )  / 2 + 75;
+   mPositions[eReprendre].w = LARGEUR_MENU - 25;
+   mPositions[eReprendre].h = 40;
+
+   mPositions[eQuit].x = mPositions[eFond].x + 25;
+   mPositions[eQuit].y = (NbCaseHauteur * HAUTEUR_CASE )  / 2 + 125;
+   mPositions[eQuit].w = LARGEUR_MENU - 25;
+   mPositions[eQuit].h = 40;
+
+   mPositions[ePause].x = mPositions[eFond].x + 25;
+   mPositions[ePause].y = 25;
+   mPositions[ePause].w = LARGEUR_MENU - 25;
+   mPositions[ePause].h = 40;
+
+   mPositions[eTour1].x = mPositions[eFond].x + 25;
+   mPositions[eTour1].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 10;
+   mPositions[eTour1].w = LARGEUR_CASE;
+   mPositions[eTour1].h = HAUTEUR_CASE;
+
+   mPositions[eTour2].x = mPositions[eFond].x + 125;
+   mPositions[eTour2].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 10;
+   mPositions[eTour2].w = LARGEUR_CASE;
+   mPositions[eTour2].h = HAUTEUR_CASE;
+
+   mPositions[eTour3].x = mPositions[eFond].x + 25;
+   mPositions[eTour3].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 70;
+   mPositions[eTour3].w = LARGEUR_CASE;
+   mPositions[eTour3].h = HAUTEUR_CASE;
+
+   mPositions[eTour4].x = mPositions[eFond].x + 125;
+   mPositions[eTour4].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 70;
+   mPositions[eTour4].w = LARGEUR_CASE;
+   mPositions[eTour4].h = HAUTEUR_CASE;
+
+   mPositions[eTour5].x = mPositions[eFond].x + 25;
+   mPositions[eTour5].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 130;
+   mPositions[eTour5].w = LARGEUR_CASE;
+   mPositions[eTour5].h = HAUTEUR_CASE;
+
+   mPositions[eTour6].x = mPositions[eFond].x + 125;
+   mPositions[eTour6].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 130;
+   mPositions[eTour6].w = LARGEUR_CASE;
+   mPositions[eTour6].h = HAUTEUR_CASE;
+
+   mPositions[eNewEnnemi].x = mPositions[eFond].x + 25;
+   mPositions[eNewEnnemi].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 190;
+   mPositions[eNewEnnemi].w = LARGEUR_CASE;
+   mPositions[eNewEnnemi].h = HAUTEUR_CASE;
 
    //Vérification de l'allocation des surfaces
    for (int IterImage = 0; IterImage < eNbBouton; IterImage++)

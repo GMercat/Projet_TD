@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Config.h" />
     <ClInclude Include="..\include\Projectile.h" />
     <ClInclude Include="..\include\Case.h" />
     <ClInclude Include="..\include\Defined.h" />
@@ -109,6 +110,7 @@
     <None Include="..\ressources\Vide_50.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Config.cpp" />
     <ClCompile Include="..\src\Projectile.cpp" />
     <ClCompile Include="..\src\Case.cpp" />
     <ClCompile Include="..\src\Ennemi.cpp" />

@@ -13,9 +13,10 @@ public:
 	CMoteur();
 	~CMoteur();
    	
-	bool OnInit          (void);                    // La fonction d'initialisation	
+	bool OnInit          (void);                    // La fonction d'initialisation
+	void OnQuit          (void);                    // La fonction de quit
 	void OnClic          (int aX, int aY);          // La fonction clic	
-	void OnAffiche       (SDL_Surface* apScreen);   // La fonction d'affichage   
+	void OnAffiche       (void);                    // La fonction d'affichage   
    void OnProgression   (void);                    // La fonction de progression des ennemis
    void OnTire          (void);                    // La fonction de tire des tours
 	void handle_input    (SDL_Event* apEvent);      // Recupere la touche pressee et ajuste la vitesse du point
@@ -23,7 +24,9 @@ public:
 private:
 	//Le plateau de jeu
 	CJeu mJeu;
-   CIA mIA;
+   CIA  mIA;
+   
+   SDL_Surface*	mpScreen;
 };
 
 #endif

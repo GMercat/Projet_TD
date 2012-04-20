@@ -2,7 +2,7 @@
 #define _PLATEAU_H_
 
 #include "Defined.h"
-
+#include "Config.h"
 #include "Case.h"
 
 class CJeu;
@@ -17,17 +17,27 @@ public:
    void OnReset (void);
    void OnAffiche (SDL_Surface* apEcran);
 
-   CCasePtr& GetCase           (int aNumCase);
-   CCasePtr& GetCase           (int aX, int aY);
-   int       GetNumCaseDepart  (void);
-   int       GetNumCaseArrivee (void);
+   int GetNbCaseLargeur (void);
+   int GetNbCaseHauteur (void);
+
+   CCasePtr&   GetCase                       (int aNumCase);
+   CCasePtr&   GetCase                       (int aX, int aY); // Index dans le tableau
+   void        GetCoordonneesCaseParNumero   (int aNumero, TCoordonnee& aCoordonnees);
+   int         GetNumCaseParCoordonnees      (TCoordonnee& aCoordonnees); // Coordonnées
+   int         GetNumCaseDepart              (void);
+   int         GetNumCaseArrivee             (void);
 
    void RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin);
 
 private:
-   CJeu& mJeu;
+   CConfiguration mConfig;
+   CJeu&          mJeu;
 
-	CCasePtr mPlateau[NB_CASE_LARGEUR][NB_CASE_HAUTEUR];
+   int mNbCasesLargeur; // Nombre de cases du plateau en largeur lu dans le fichier de config
+   int mNbCasesHauteur; // Nombre de cases du plateau en hauteur lu dans le fichier de config
+
+	//CCasePtr mPlateau[NB_CASE_LARGEUR][NB_CASE_HAUTEUR];
+   std::vector<CCasePtr> mCases;
 
    int mNumCaseDepart;
    int mNumCaseArrivee;

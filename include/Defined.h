@@ -18,12 +18,6 @@ const int IMAGES_PAR_SECONDE = 50;
 // Largeur menu
 const int LARGEUR_MENU = 200;
 
-// Nombre de case en largeur dans le plateau
-const int NB_CASE_LARGEUR = 18;
-
-// Nombre de case en hauteur dans le plateau
-const int NB_CASE_HAUTEUR = 11;
-
 // Largeur d'une case
 const int LARGEUR_CASE = 50;
 
@@ -33,7 +27,7 @@ const int HAUTEUR_CASE = 50;
 // Base de vitesse
 const int BASE_VITESSE = 2;
 
-typedef std::pair<int, int> TCoordonnee;
-
+typedef std::pair<int, int>                  TCoordonnee;
+typedef std::pair<TCoordonnee, TCoordonnee > TVecteurChemin ;
 
 #endif

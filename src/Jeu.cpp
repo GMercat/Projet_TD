@@ -6,8 +6,8 @@ CJeu::CJeu (CIA* apIA):
    mpIA              (apIA),
    mMenu             (*this),
    mPlateau          (*this),
-	mHauteur          (NB_CASE_HAUTEUR),
-	mLargeur          (NB_CASE_LARGEUR),
+	mHauteur          (1),
+	mLargeur          (1),
    mbPartieEnCours   (true),
    mTypeTourSelect   (CCase::eVide)
 {
@@ -38,7 +38,7 @@ int CJeu::OnClic (int aX, int aY)
    if (mbPartieEnCours)
    {
       // Test si on est sur le plateau
-      if((aX < (NB_CASE_LARGEUR * LARGEUR_CASE)) && aY < (NB_CASE_HAUTEUR * HAUTEUR_CASE))
+      if((aX < (mPlateau.GetNbCaseLargeur () * LARGEUR_CASE)) && aY < (mPlateau.GetNbCaseHauteur () * HAUTEUR_CASE))
       {
          IterLargeur = (int)(aX / LARGEUR_CASE);
          IterHauteur = (int)(aY / HAUTEUR_CASE);
@@ -254,3 +254,14 @@ void CJeu::SelectTour (CCase::ETypeCase aTypeTourSelect)
 {
    mTypeTourSelect = aTypeTourSelect;
 }
+
+int CJeu::GetNbCaseLargeur (void)
+{
+   return mPlateau.GetNbCaseLargeur ();
+}
+
+int CJeu::GetNbCaseHauteur (void)
+{
+   return mPlateau.GetNbCaseHauteur ();
+}
+

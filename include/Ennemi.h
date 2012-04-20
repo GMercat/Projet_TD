@@ -5,8 +5,6 @@
 
 class CIA;
 
-typedef std::pair<TCoordonnee, TCoordonnee > TVecteurChemin ;
-
 class CEnnemi
 {
 public:
@@ -29,7 +27,7 @@ public:
    void  GetCentre (int& aXCentre, int& aYCentre);
 
    int   DetermineCaseCourante   (void);
-   void  CalculPCCheminReel      (std::list<int>& aPCChemin);
+   //void  CalculPCCheminReel      (std::list<int>& aPCChemin);
 
    void  Avance (void);
    bool  EstArrive (void);
@@ -39,10 +37,10 @@ public:
    bool  EstVivant (void);
 
 private:
-   void  CalculPCChemin  (void);
+   //void  CalculPCChemin  (void);
    
 private:
-   CIA*  mIA;
+   CIA*  mpIA;
 
    EType mType;
 

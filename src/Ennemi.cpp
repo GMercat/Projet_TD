@@ -4,12 +4,15 @@
 
 CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
    mpImage           (NULL),
-   mIA               (apIA),
+   mpIA              (apIA),
    mNumCaseArrivee   (aNumCaseArrivee)
 {
    mType = eType1;
-   mCoordonnee.first  = (aNumCaseDepart - ((int)(aNumCaseDepart / NB_CASE_LARGEUR)) * NB_CASE_LARGEUR) * LARGEUR_CASE + (LARGEUR_CASE / 2);
-   mCoordonnee.second = ((int)(aNumCaseDepart / NB_CASE_LARGEUR)) * HAUTEUR_CASE + (HAUTEUR_CASE / 2);
+   
+   mpIA->GetCoordonneesCaseParNumero (aNumCaseDepart, mCoordonnee);
+   
+//   mCoordonnee.first  = (aNumCaseDepart - ((int)(aNumCaseDepart / NB_CASE_LARGEUR)) * NB_CASE_LARGEUR) * LARGEUR_CASE + (LARGEUR_CASE / 2);
+//   mCoordonnee.second = ((int)(aNumCaseDepart / NB_CASE_LARGEUR)) * HAUTEUR_CASE + (HAUTEUR_CASE / 2);
    switch (mType)
    {
       case eType1:
@@ -83,13 +86,15 @@ void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
 
 void CEnnemi::GetCentre (int& aXCentre, int& aYCentre)
 {
+   //TODO BUG quand ennemi mort
    aXCentre = mCoordonnee.first;
    aYCentre = mCoordonnee.second;
 }
-
+/*
 void CEnnemi::CalculPCChemin  (void)
 {
-   CalculPCCheminReel (mPCCheminCase);
+   mpIA->CalculPCCheminReel (mPCCheminCase, mCoordonnee, mPCCheminReel);
+   //CalculPCCheminReel (mPCCheminCase);
 }
 
 void CEnnemi::CalculPCCheminReel (std::list<int>& aPCChemin)
@@ -217,11 +222,11 @@ void CEnnemi::CalculPCCheminReel (std::list<int>& aPCChemin)
 
       mPCCheminReel.push_back (VecteurChemin);
    }
-}
+}*/
 
 int CEnnemi::DetermineCaseCourante (void)
 {
-   return ((int)(mCoordonnee.first / LARGEUR_CASE) + (int)(mCoordonnee.second / HAUTEUR_CASE) * NB_CASE_LARGEUR);
+   return mpIA->GetNumCaseParCoordonnees (mCoordonnee);
 }
 
 void CEnnemi::Avance (void)
@@ -230,7 +235,8 @@ void CEnnemi::Avance (void)
    double DistanceRestante             = 0.0;
    
    // Calcul du chemin réel
-   CalculPCChemin ();
+   mpIA->CalculPCCheminReel (mPCCheminCase, mCoordonnee, mPCCheminReel);
+//   CalculPCChemin ();
 
    // Récupération du vecteur courant
    TVecteurChemin VecteurCourant = mPCCheminReel.front ();
