@@ -7,7 +7,7 @@
 class CProjectile
 {
 public:
-   CProjectile   (CEnnemiPtr& aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse);
+   CProjectile   (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse);
    ~CProjectile  (void);
 
    bool  OnInit      (void); 
@@ -21,7 +21,7 @@ private:
 
    TCoordonnee mCoordonnee;
 
-   CEnnemiPtr& mEnnemiCiblePtr; // Ennemi visé par le projectile
+   CEnnemiPtr mEnnemiCiblePtr; // Ennemi visé par le projectile
    
    SDL_Surface*  mpImage;
    SDL_Rect      mPosition;

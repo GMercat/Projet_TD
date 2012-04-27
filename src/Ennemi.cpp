@@ -11,12 +11,10 @@ CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
    
    mpIA->GetCoordonneesCaseParNumero (aNumCaseDepart, mCoordonnee);
    
-//   mCoordonnee.first  = (aNumCaseDepart - ((int)(aNumCaseDepart / NB_CASE_LARGEUR)) * NB_CASE_LARGEUR) * LARGEUR_CASE + (LARGEUR_CASE / 2);
-//   mCoordonnee.second = ((int)(aNumCaseDepart / NB_CASE_LARGEUR)) * HAUTEUR_CASE + (HAUTEUR_CASE / 2);
    switch (mType)
    {
       case eType1:
-         mVitesse = 1;
+         mVitesse = 2;
          mVie     = 100;
          break;
       case eType2:
@@ -236,7 +234,6 @@ void CEnnemi::Avance (void)
    
    // Calcul du chemin réel
    mpIA->CalculPCCheminReel (mPCCheminCase, mCoordonnee, mPCCheminReel);
-//   CalculPCChemin ();
 
    // Récupération du vecteur courant
    TVecteurChemin VecteurCourant = mPCCheminReel.front ();
@@ -273,13 +270,17 @@ void CEnnemi::Avance (void)
    }
 
    // TODO Arrondi à l'entier supérieur sinon à faible vitesse on avance pas
-   mCoordonnee.first += ceil ((VecteurCourant.second.first - mCoordonnee.first) * (PourcentageVecteurParcouru));
-   mCoordonnee.second += ceil ((VecteurCourant.second.second - mCoordonnee.second) * (PourcentageVecteurParcouru));
+   mCoordonnee.first += /*ceil*/ ((VecteurCourant.second.first - mCoordonnee.first) * (PourcentageVecteurParcouru));
+   mCoordonnee.second += /*ceil*/ ((VecteurCourant.second.second - mCoordonnee.second) * (PourcentageVecteurParcouru));
    (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
    (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
 
    mPosition.x = mCoordonnee.first - (mpImage->w / 2);
    mPosition.y = mCoordonnee.second - (mpImage->h / 2);
+
+#ifdef DEBUG
+   std::cout << "X = " << mCoordonnee.first << ", Y = " << mCoordonnee.second << std::endl;
+#endif
 }
 
 bool CEnnemi::EstArrive (void)

@@ -1,3 +1,5 @@
 nbCaseLargeur=18
 nbCaseHauteur=11
+numeroCaseDepart=90
+numeroCaseArrivee=107
 baseVitesse=2

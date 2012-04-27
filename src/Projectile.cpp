@@ -1,7 +1,7 @@
 #include "../include/Projectile.h"
 #include <cmath>
 
-CProjectile::CProjectile (CEnnemiPtr& aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
+CProjectile::CProjectile (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
    mpImage           (NULL),
    mEnnemiCiblePtr   (aEnnemiCiblePtr),
    mPuissance        (aPuissance),
@@ -49,8 +49,6 @@ bool CProjectile::OnInit (void)
 
 void CProjectile::OnAffiche (SDL_Surface* apScreen)
 {
-   std::cout << "X = " << mPosition.x << ", Y = " << mPosition.y << std::endl;
-         
    SDL_BlitSurface (mpImage, NULL, apScreen, &mPosition);
 }
 
@@ -63,7 +61,7 @@ bool CProjectile::Avance (void)
    {
       int      XEnnemi  = 0;
       int      YEnnemi  = 0;
-   
+
       // Récupération de la position de l'ennemi
       mEnnemiCiblePtr->GetCentre (XEnnemi, YEnnemi);
 
@@ -92,6 +90,10 @@ bool CProjectile::Avance (void)
          mPosition.x = mCoordonnee.first  - (mPosition.w / 2);
          mPosition.y = mCoordonnee.second - (mPosition.h / 2);
       }
+   }
+   else
+   {
+      bEstDetruit = true;
    }
    
    return bEstDetruit;
