@@ -136,7 +136,7 @@ bool CPlateau::OnInit (void)
 #endif  
 
    // Lecture du fichier de configuration
-   mConfig.Chargement ("../conf/Jeu.txt");
+   mConfig.Chargement ("../conf/ConfJeu.txt");
    bool bConfig = true;
    bConfig &= mConfig.Get ("nbCaseLargeur", mNbCasesLargeur);
    bConfig &= mConfig.Get ("nbCaseHauteur", mNbCasesHauteur);
