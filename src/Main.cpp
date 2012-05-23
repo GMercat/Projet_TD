@@ -18,7 +18,7 @@ int main( int argc, char *argv[ ] )
    if(false == Moteur.OnInit ())
    {
       std::cout << "Problème rencontré à l'initialisation du moteur" << std::endl;
-      return 1;
+      Done = 1;
    }
 
 	//Boucle generale

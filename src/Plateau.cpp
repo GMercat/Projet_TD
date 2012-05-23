@@ -10,13 +10,7 @@ CPlateau::CPlateau (CJeu& aJeu):
    mpImagePause   (NULL),
    mpImagePCC     (NULL)
 {
-   mImages.resize (CCase::eNbType);
-
-   std::vector<SDL_Surface*>::iterator IterImage;
-   for (IterImage = mImages.begin (); IterImage != mImages.end (); ++IterImage)
-   {
-      (*IterImage) = NULL;
-   }
+   ;
 }
 
 CPlateau::~CPlateau (void)
@@ -36,115 +30,143 @@ bool CPlateau::OnInit (void)
    bool bReturn = true;
 
    int iImage = 0;
+   int NbTypeCase;
    std::vector<SDL_Surface*>::iterator IterImage;
-
-   //Vérification de l'allocation des surfaces
-   for (IterImage = mImages.begin (); IterImage != mImages.end (); ++IterImage)
-   {
-      if((*IterImage) != NULL)
-	   {
-		   SDL_FreeSurface(*IterImage), (*IterImage) = NULL;
-      }
-
-      //On charge toutes les images dans les surfaces associées
-      switch (iImage)
-      {
-         case CCase::eVide :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Vide_50.bmp");
-            break;
-
-         case CCase::eMur :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Mur_50.bmp");
-            break;
-
-         case CCase::eTour1 :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Tour1_50.bmp");
-            break;
-
-         case CCase::eTour2 :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Tour2_50.bmp");
-            break;
-
-         case CCase::eTour3 :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Tour3_50.bmp");
-            break;
-
-         case CCase::eTour4 :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Tour4_50.bmp");
-            break;
-
-         case CCase::eTour5 :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Tour5_50.bmp");
-            break;
-
-         case CCase::eTour6 :
-            (*IterImage) = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
-            break;
-
-         default:
-            break;
-      }
-
-      //On teste le retour du chargement
-	   if ((*IterImage) == NULL)
-	   {
-		   std::cout << "Probleme de chargement de l'image : " << iImage << std::endl;
-		   bReturn = false;
-	   }
-
-      iImage++;
-   }
-   
-   if(mpImagePCC != NULL)
-   {
-      SDL_FreeSurface(mpImagePCC), mpImagePCC = NULL;
-   }
-   if(mpImagePause != NULL)
-   {
-      SDL_FreeSurface(mpImagePause), mpImagePause = NULL;
-   }
-
-   if ((LARGEUR_CASE == 50) && (HAUTEUR_CASE == 50))
-   {
-      mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
-   }
-   
-   mpImagePause = SDL_LoadBMP("../Ressources/JeuPause.bmp");
-   
-	//On teste le retour du chargement
-	if ((mpImagePCC == NULL) || (mpImagePause == NULL))
-	{
-		std::cout << "Probleme de chargement des images" << std::endl;
-		bReturn = false;
-	}
-
-	//Mis en place de la transparence
-	//if(SDL_SetColorKey(o,SDL_SRCCOLORKEY,0)==-1)
-	//	std::cout << "Erreur avec la transparence du rond" << std::endl;
-	//if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
-	//	std::cout << "Erreur avec la transparence de la croix" << std::endl;
-
-   SDL_SetAlpha (mpImagePause, SDL_SRCALPHA, 128);
-
-   SDL_Rect	Rect;
-
-	Rect.w = LARGEUR_CASE;
-	Rect.h = HAUTEUR_CASE;
-
-#ifdef DEBUG
-   std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
-#endif  
 
    // Lecture du fichier de configuration
    mConfig.Chargement ("../conf/ConfJeu.txt");
+
    bool bConfig = true;
    bConfig &= mConfig.Get ("nbCaseLargeur", mNbCasesLargeur);
    bConfig &= mConfig.Get ("nbCaseHauteur", mNbCasesHauteur);
    bConfig &= mConfig.Get ("numeroCaseDepart", mNumCaseDepart);
    bConfig &= mConfig.Get ("numeroCaseArrivee", mNumCaseArrivee);
 
+   bConfig &= mConfig.Get ("nombreTypeCase", NbTypeCase);
+
+   for (iImage = 0; (iImage < NbTypeCase) && bConfig; ++iImage)
+   {
+      std::string NomRessourceImageStr;
+      //bConfig &= mConfig.Get ("nom", );
+      bConfig &= mConfig.Get ("ressource", NomRessourceImageStr);
+      //bConfig &= mConfig.Get ("portee", );
+      //bConfig &= mConfig.Get ("puissance", );
+      //bConfig &= mConfig.Get ("vitesse", );
+      //bConfig &= mConfig.Get ("cadence", );
+      mNomImages.push_back (NomRessourceImageStr);
+   }
+
    if (bConfig)
    {
+      iImage = 0;
+
+      mImages.resize (NbTypeCase);
+
+      //Vérification de l'allocation des surfaces
+      for (IterImage = mImages.begin (); IterImage != mImages.end (); ++IterImage)
+      {
+         (*IterImage) = NULL;
+
+/*         if((*IterImage) != NULL)
+	      {
+		      SDL_FreeSurface(*IterImage), (*IterImage) = NULL;
+         }*/
+
+         //On charge toutes les images dans les surfaces associées
+         std::string CheminRessource ("../Ressources/");
+         CheminRessource+=mNomImages[iImage];
+
+         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
+         
+         /*switch (iImage)
+         {
+            case CCase::eVide :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Vide_50.bmp");
+               break;
+
+            case CCase::eMur :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Mur_50.bmp");
+               break;
+
+            case CCase::eTour1 :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Tour1_50.bmp");
+               break;
+
+            case CCase::eTour2 :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Tour2_50.bmp");
+               break;
+
+            case CCase::eTour3 :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Tour3_50.bmp");
+               break;
+
+            case CCase::eTour4 :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Tour4_50.bmp");
+               break;
+
+            case CCase::eTour5 :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Tour5_50.bmp");
+               break;
+
+            case CCase::eTour6 :
+               (*IterImage) = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
+               break;
+
+            default:
+               break;
+         }*/
+
+         //On teste le retour du chargement
+	      if ((*IterImage) == NULL)
+	      {
+            std::cout << "Probleme de chargement de l'image : " << mNomImages[iImage].c_str () << std::endl;
+		      bReturn = false;
+	      }
+
+         iImage++;
+      }
+   
+      if(mpImagePCC != NULL)
+      {
+         SDL_FreeSurface(mpImagePCC), mpImagePCC = NULL;
+      }
+      if(mpImagePause != NULL)
+      {
+         SDL_FreeSurface(mpImagePause), mpImagePause = NULL;
+      }
+
+      if ((LARGEUR_CASE == 50) && (HAUTEUR_CASE == 50))
+      {
+         mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
+      }
+   
+      mpImagePause = SDL_LoadBMP("../Ressources/JeuPause.bmp");
+   
+	   //On teste le retour du chargement
+	   if ((mpImagePCC == NULL) || (mpImagePause == NULL))
+	   {
+		   std::cout << "Probleme de chargement des images" << std::endl;
+		   bReturn = false;
+	   }
+
+	   //Mis en place de la transparence
+	   //if(SDL_SetColorKey(o,SDL_SRCCOLORKEY,0)==-1)
+	   //	std::cout << "Erreur avec la transparence du rond" << std::endl;
+	   //if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
+	   //	std::cout << "Erreur avec la transparence de la croix" << std::endl;
+
+      SDL_SetAlpha (mpImagePause, SDL_SRCALPHA, 128);
+
+      SDL_Rect	Rect;
+
+	   Rect.w = LARGEUR_CASE;
+	   Rect.h = HAUTEUR_CASE;
+
+#ifdef DEBUG
+   std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
+#endif  
+
+
 #ifdef DEBUG
       std::cout << "NbCaseLargeur = " << mNbCasesLargeur << std::endl;
       std::cout << "NbCaseHauteur = " << mNbCasesHauteur << std::endl;

@@ -42,6 +42,7 @@ private:
    int mNumCaseDepart;
    int mNumCaseArrivee;
 
+   std::vector <std::string>  mNomImages;
    std::vector <SDL_Surface*> mImages;
    
    SDL_Surface*   mpImagePause;
