@@ -2,6 +2,7 @@
 #define _MENU_H_
 
 #include "Defined.h"
+#include "Config.h"
 
 class CJeu;
 
@@ -9,37 +10,40 @@ class CMenu
 {
 public:
    enum EBoutonMenu {
-      eFond = 0,
-      
-      ePause = 1,
-      eTour1,
-      eTour2,
-      eTour3,
-      eTour4,
-      eTour5,
-      eTour6,
-      eNewEnnemi,
-
-      eNew,
+      eNew = 0,
+      ePause,
       eReprendre,
       eQuit,
 
+      eNewEnnemi,
       eNbBouton
    };
 
 public:
-   CMenu    (CJeu& aJeu);
+   CMenu    (CConfiguration& aConfig, CJeu& aJeu);
    ~CMenu   (void);
 
    bool OnInit    (void);
    void OnClic		(int aX, int aY);
    void OnAffiche (SDL_Surface* apScreen);
 
+   int GetLargeur (void);
+
 private:
-   CJeu& mJeu;
+   CConfiguration&   mConfig;
+   CJeu&             mJeu;
+
+   int mLargeur;
+   int mNbTours;
    
-   SDL_Surface*   mImages[eNbBouton];
-   SDL_Rect       mPositions[eNbBouton];
+   SDL_Surface*   mImageFond;
+   SDL_Rect       mPositionFond;
+   std::vector<SDL_Surface*>  mImagesBoutons;
+   std::vector<SDL_Rect>      mPositionsBoutons;
+
+   std::vector <std::string>  mNomImagesTour;
+   std::vector<SDL_Surface*>  mImagesTours;
+   std::vector<SDL_Rect>      mPositionsTours;
 };
 
 #endif

@@ -3,26 +3,32 @@
 
 
 
-CPlateau::CPlateau (CJeu& aJeu):
+CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
+   mConfig        (aConfig),
    mJeu           (aJeu),
    mNumCaseDepart (-1),
    mNumCaseArrivee(-1),
-   mpImagePause   (NULL),
-   mpImagePCC     (NULL)
+   mpImagePause   (NULL)
+// TODO Non utilisé    mpImagePCC     (NULL)
 {
-   ;
+	mCoordonneesDerniereCaseModifiee.first = -1;
+   mCoordonneesDerniereCaseModifiee.second = -1;
 }
 
 CPlateau::~CPlateau (void)
 {
    std::vector<SDL_Surface*>::iterator IterImage;
-   for (IterImage = mImages.begin (); IterImage != mImages.end (); ++IterImage)
+   for (IterImage = mImagesCases.begin (); IterImage != mImagesCases.end (); ++IterImage)
+   {
+      SDL_FreeSurface (*IterImage);
+   }
+   for (IterImage = mImagesTours.begin (); IterImage != mImagesTours.end (); ++IterImage)
    {
       SDL_FreeSurface (*IterImage);
    }
 
    SDL_FreeSurface (mpImagePause);
-   SDL_FreeSurface (mpImagePCC);
+   // TODO Non utilisé SDL_FreeSurface (mpImagePCC);
 }
 
 bool CPlateau::OnInit (void)
@@ -30,120 +36,91 @@ bool CPlateau::OnInit (void)
    bool bReturn = true;
 
    int iImage = 0;
-   int NbTypeCase;
-   std::vector<SDL_Surface*>::iterator IterImage;
 
-   // Lecture du fichier de configuration
-   mConfig.Chargement ("../conf/ConfJeu.txt");
+   std::string NomRessourceImageStr;
+
+   std::vector<SDL_Surface*>::iterator IterImage;
 
    bool bConfig = true;
    bConfig &= mConfig.Get ("nbCaseLargeur", mNbCasesLargeur);
    bConfig &= mConfig.Get ("nbCaseHauteur", mNbCasesHauteur);
    bConfig &= mConfig.Get ("numeroCaseDepart", mNumCaseDepart);
    bConfig &= mConfig.Get ("numeroCaseArrivee", mNumCaseArrivee);
+   bConfig &= mConfig.Get ("largeurCase", mLargeurCase);
+   bConfig &= mConfig.Get ("hauteurCase", mHauteurCase);
 
-   bConfig &= mConfig.Get ("nombreTypeCase", NbTypeCase);
-
-   for (iImage = 0; (iImage < NbTypeCase) && bConfig; ++iImage)
-   {
-      std::string NomRessourceImageStr;
-      //bConfig &= mConfig.Get ("nom", );
-      bConfig &= mConfig.Get ("ressource", NomRessourceImageStr);
-      //bConfig &= mConfig.Get ("portee", );
-      //bConfig &= mConfig.Get ("puissance", );
-      //bConfig &= mConfig.Get ("vitesse", );
-      //bConfig &= mConfig.Get ("cadence", );
-      mNomImages.push_back (NomRessourceImageStr);
-   }
-
+   //bConfig &= mConfig.Get ("nombreTypeCase", NbTypeCase);
+   
+   bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
+   bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
+  
    if (bConfig)
    {
       iImage = 0;
 
-      mImages.resize (NbTypeCase);
+      mImagesCases.resize (mNomImagesCase.size ());
 
-      //Vérification de l'allocation des surfaces
-      for (IterImage = mImages.begin (); IterImage != mImages.end (); ++IterImage)
+      // Allocation des surfaces des cases
+      for (IterImage = mImagesCases.begin (); IterImage != mImagesCases.end (); ++IterImage)
       {
          (*IterImage) = NULL;
-
-/*         if((*IterImage) != NULL)
-	      {
-		      SDL_FreeSurface(*IterImage), (*IterImage) = NULL;
-         }*/
-
-         //On charge toutes les images dans les surfaces associées
-         std::string CheminRessource ("../Ressources/");
-         CheminRessource+=mNomImages[iImage];
-
-         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
          
-         /*switch (iImage)
-         {
-            case CCase::eVide :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Vide_50.bmp");
-               break;
-
-            case CCase::eMur :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Mur_50.bmp");
-               break;
-
-            case CCase::eTour1 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour1_50.bmp");
-               break;
-
-            case CCase::eTour2 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour2_50.bmp");
-               break;
-
-            case CCase::eTour3 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour3_50.bmp");
-               break;
-
-            case CCase::eTour4 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour4_50.bmp");
-               break;
-
-            case CCase::eTour5 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour5_50.bmp");
-               break;
-
-            case CCase::eTour6 :
-               (*IterImage) = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
-               break;
-
-            default:
-               break;
-         }*/
-
+         //On charge toutes les images dans les surfaces associées
+         std::string CheminRessource ("../ressources/");
+         CheminRessource += mNomImagesCase[iImage];
+         
+         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
+                  
          //On teste le retour du chargement
 	      if ((*IterImage) == NULL)
 	      {
-            std::cout << "Probleme de chargement de l'image : " << mNomImages[iImage].c_str () << std::endl;
+            std::cout << "Probleme de chargement de l'image : " << (mNomImagesCase[iImage]).c_str () << "(" << CheminRessource.c_str () << ")" << std::endl;
 		      bReturn = false;
 	      }
-
          iImage++;
       }
-   
-      if(mpImagePCC != NULL)
+
+      iImage = 0;
+      // Allocation des surfaces des tours
+      mImagesTours.resize (mNomImagesTour.size ());
+      for (IterImage = mImagesTours.begin (); IterImage != mImagesTours.end (); ++IterImage)
+      {
+         (*IterImage) = NULL;
+         
+         //On charge toutes les images dans les surfaces associées
+         std::string CheminRessource ("../ressources/");
+         CheminRessource += mNomImagesTour[iImage];
+         
+         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
+                  
+         //On teste le retour du chargement
+	      if ((*IterImage) == NULL)
+	      {
+            std::cout << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << "(" << CheminRessource.c_str () << ")" << std::endl;
+		      bReturn = false;
+	      }
+         iImage++;
+      }
+
+      // TODO Non utilisé 
+      /*if(mpImagePCC != NULL)
       {
          SDL_FreeSurface(mpImagePCC), mpImagePCC = NULL;
       }
+      if ((mLargeurCase == 50) && (mHauteurCase == 50))
+      {
+         mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
+      }*/
+
+
       if(mpImagePause != NULL)
       {
          SDL_FreeSurface(mpImagePause), mpImagePause = NULL;
-      }
-
-      if ((LARGEUR_CASE == 50) && (HAUTEUR_CASE == 50))
-      {
-         mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
-      }
-   
-      mpImagePause = SDL_LoadBMP("../Ressources/JeuPause.bmp");
+      }   
+      mpImagePause = SDL_LoadBMP("../ressources/JeuPause.bmp");
    
 	   //On teste le retour du chargement
-	   if ((mpImagePCC == NULL) || (mpImagePause == NULL))
+	   if (mpImagePause == NULL)
 	   {
 		   std::cout << "Probleme de chargement des images" << std::endl;
 		   bReturn = false;
@@ -159,8 +136,8 @@ bool CPlateau::OnInit (void)
 
       SDL_Rect	Rect;
 
-	   Rect.w = LARGEUR_CASE;
-	   Rect.h = HAUTEUR_CASE;
+	   Rect.w = mLargeurCase;
+	   Rect.h = mHauteurCase;
 
 #ifdef DEBUG
    std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
@@ -186,8 +163,8 @@ bool CPlateau::OnInit (void)
 		      CCasePtr CasePtr (new CCase());
 
 			   CasePtr->OnInit ();
-			   Rect.x = iLargeur * LARGEUR_CASE;
-			   Rect.y = iHauteur * HAUTEUR_CASE;
+			   Rect.x = iLargeur * mLargeurCase;
+			   Rect.y = iHauteur * mHauteurCase;
 			   CasePtr->SetPosition  (&Rect, iLargeur, iHauteur);
             CasePtr->SetNumCase   (NumCase);
 
@@ -241,6 +218,43 @@ void CPlateau::OnReset (void)
 	}
 }
 
+int CPlateau::OnClic (int aX, int aY)
+{
+   int NumeroCaseCliquee = -1;
+   int IterLargeur = 0;
+   int IterHauteur = 0;
+
+   mCoordonneesDerniereCaseModifiee.first    = -1;
+   mCoordonneesDerniereCaseModifiee.second   = -1;
+
+   // Test si on est sur le plateau
+   if((aX < (mNbCasesLargeur * mLargeurCase)) && aY < (mNbCasesHauteur * mHauteurCase))
+   {
+      IterLargeur = (int)(aX / mLargeurCase);
+      IterHauteur = (int)(aY / mHauteurCase);
+      
+      //On renseigne le numéro de la case que l'on a trouvé
+      NumeroCaseCliquee = IterHauteur * mNbCasesLargeur + IterLargeur;
+
+#ifdef DEBUG
+   std::cout << "Case (" << IterLargeur << ", " << IterHauteur << ")" << std::endl;
+#endif
+
+      // Si la case est vide ET on a sélectionnée un type de tour dans le menu
+      if (GetCase(NumeroCaseCliquee)->EstVide() && (mJeu.GetTourSelectionnee () != -1))
+      {
+         //On met le type à jour
+         //TODO Prévision Construction tour
+         GetCase(NumeroCaseCliquee)->SetEtat (CCase::eTour);
+         //GetCase(NumeroCaseCliquee)->SetEtat (mJeu.GetTourSelectionnee ());
+         mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
+         mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
+      }
+   }
+
+   return NumeroCaseCliquee;
+}
+
 void CPlateau::OnAffiche (SDL_Surface* apEcran)
 {
    int IterLargeur = 0;
@@ -253,11 +267,22 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
       {
          /*if (false ==  mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstPlusCourtChemin ())
          {*/
+         // TODO  Gérer le fait que ça peut être une case ou une tour !
+         //       Les surfaces ne sont pas les mêmes !
          CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetEtat ();
-         mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImages[EtatCase]);
+         if (EtatCase == CCase::eTour)
+         {
+            int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
+            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesTours[TypeCase]);
+         }
+         else
+         {
+            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesCases[EtatCase]);
+         }
          //mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
          /*}
          else
+
          {
              mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mpImagePCC);
          }*/
@@ -269,9 +294,31 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
       SDL_Rect Position;
       Position.x = 0;
       Position.y = 0;
-      Position.w = mNbCasesLargeur * LARGEUR_CASE;
-      Position.h = mNbCasesHauteur * HAUTEUR_CASE;
+      Position.w = mNbCasesLargeur * mLargeurCase;
+      Position.h = mNbCasesHauteur * mHauteurCase;
       SDL_BlitSurface(mpImagePause, NULL, apEcran, &Position);
+   }
+}
+
+CTourPtr& CPlateau::ConstruireTour (int aNumCaseCliquee)
+{
+   std::string Ressource; // Non utilisé ici !
+   int Portee;
+   int Puissance;
+   int Vitesse;
+   int Cadence;
+
+   mConfig.GetCaracsTourParId (mJeu.GetTourSelectionnee (), Ressource, Portee, Puissance, Vitesse, Cadence);
+   return GetCase (aNumCaseCliquee)->ConstruireTour (mJeu.GetTourSelectionnee (), Portee, Puissance, Vitesse, Cadence);
+}
+
+void CPlateau::AnnuleDerniereModif (void)
+{
+   if (mCoordonneesDerniereCaseModifiee.first != -1 && mCoordonneesDerniereCaseModifiee.second != -1)
+   {
+      GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetEtat (CCase::eVide);
+      GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)
+         ->SetPlusCourtChemin (GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
    }
 }
 
@@ -283,6 +330,16 @@ int CPlateau::GetNbCaseLargeur (void)
 int CPlateau::GetNbCaseHauteur (void)
 {
    return mNbCasesHauteur;
+}
+
+int CPlateau::GetLargeurCase   (void)
+{
+   return mLargeurCase;
+}
+
+int CPlateau::GetHauteurCase   (void)
+{
+   return mHauteurCase;
 }
 
 CCasePtr& CPlateau::GetCase (int aNumCase)
@@ -308,8 +365,8 @@ void CPlateau::GetCoordonneesCaseParNumero (int aNumero, TCoordonnee& aCoordonne
 
 int CPlateau::GetNumCaseParCoordonnees (TCoordonnee& aCoordonnees)
 {
-   int IndexCaseX = aCoordonnees.first  / LARGEUR_CASE;
-   int IndexCaseY = aCoordonnees.second / HAUTEUR_CASE;
+   int IndexCaseX = aCoordonnees.first  / mLargeurCase;
+   int IndexCaseY = aCoordonnees.second / mHauteurCase;
 
    return IndexCaseY * mNbCasesLargeur + IndexCaseX;
 }

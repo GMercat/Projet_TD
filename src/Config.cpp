@@ -151,6 +151,138 @@ bool CConfiguration::Get(const std::string& aCle, bool& aValeur) const
    }
 }
 
+bool CConfiguration::GetRessourceCaseParNom (const std::string& aNom, std::string& aRessource) const
+{
+   std::map<std::string, std::string>::const_iterator IterDonnees = mDonneesCases.find(aNom);
+
+   if (IterDonnees != mDonneesCases.end())
+   {
+      aRessource = IterDonnees->second;
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
+{
+   std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.find (aNom);
+
+   if (IterDonnees != mDonneesTours.end ())
+   {
+      aRessource  = IterDonnees->second.mRessource;
+      aPortee     = IterDonnees->second.mPortee;
+      aPuissance  = IterDonnees->second.mPuissance;
+      aVitesse    = IterDonnees->second.mVitesse;
+      aCadence    = IterDonnees->second.mCadence;
+
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
+{
+   int IndexTour = 0;
+   std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.begin ();
+   
+   while ((IterDonnees != mDonneesTours.end ()) && (aId != IndexTour))
+   {
+      IndexTour++;
+      IterDonnees++;
+   }
+
+   if ((IterDonnees != mDonneesTours.end ()) && (aId == IndexTour))
+   {
+      aRessource  = IterDonnees->second.mRessource;
+      aPortee     = IterDonnees->second.mPortee;
+      aPuissance  = IterDonnees->second.mPuissance;
+      aVitesse    = IterDonnees->second.mVitesse;
+      aCadence    = IterDonnees->second.mCadence;
+
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+bool CConfiguration::GetCaracsEnnemiParNom (const std::string& aNom, std::string& aRessource, int& aVitesse, int& aVie) const
+{
+   std::map<std::string, TCaracsEnnemi>::const_iterator IterDonnees = mDonneesEnnemis.find (aNom);
+
+   if (IterDonnees != mDonneesEnnemis.end ())
+   {
+      aRessource  = IterDonnees->second.mRessource;
+      aVitesse    = IterDonnees->second.mVitesse;
+      aVie        = IterDonnees->second.mVie;
+
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+                     
+bool CConfiguration::GetRessourcesCases (std::vector<std::string>& aRessources) const
+{
+   bool bResultat = false;
+   
+   std::map<std::string, std::string>::const_iterator IterRessource;
+   for (IterRessource = mDonneesCases.begin (); IterRessource != mDonneesCases.end (); IterRessource++)
+   {
+      aRessources.push_back((*IterRessource).second);
+      bResultat = true;
+   }
+   return bResultat;
+}
+
+bool CConfiguration::GetRessourcesTours (std::vector<std::string>& aRessources) const
+{
+   bool bResultat = false;
+   
+   std::map<std::string, TCaracsTour>::const_iterator IterCaracs;
+   for (IterCaracs = mDonneesTours.begin (); IterCaracs != mDonneesTours.end (); IterCaracs++)
+   {
+      aRessources.push_back((*IterCaracs).second.mRessource);
+      bResultat = true;
+   }
+   return bResultat;
+}
+
+bool CConfiguration::GetCaracsTours (std::list<TCaracsTour>& aCaracsTours) const
+{
+   bool bResultat = false;
+
+   std::map<std::string, TCaracsTour>::const_iterator IterCarac;
+   for (IterCarac = mDonneesTours.begin (); IterCarac != mDonneesTours.end (); IterCarac++)
+   {
+      aCaracsTours.push_back ((*IterCarac).second);
+      bResultat = true;
+   }
+   return bResultat;
+}
+
+bool CConfiguration::GetCaracsEnnemis (std::list<TCaracsEnnemi>& aCaracsEnnemis) const
+{
+   bool bResultat = false;
+
+   std::map<std::string, TCaracsEnnemi>::const_iterator IterCarac;
+   for (IterCarac = mDonneesEnnemis.begin (); IterCarac != mDonneesEnnemis.end (); IterCarac++)
+   {
+      aCaracsEnnemis.push_back ((*IterCarac).second);
+      bResultat = true;
+   }
+   return bResultat;
+}
+
 bool CConfiguration::LectureLigne (std::string& aLigne, std::string& aCle, std::string& aValeur)
 {
    bool bResultatLecture = false;
@@ -186,7 +318,7 @@ void CConfiguration::Trim (const std::string& aStringEntree, std::string& aStrin
 
    if (First != std::string::npos)
    {
-      Last = aStringEntree.find_last_not_of(" \t");
+      Last = aStringEntree.find_last_not_of(" \t\r\n");
 
       aStringSortie = aStringEntree.substr(First, Last - First + 1);
    }
@@ -199,18 +331,26 @@ void CConfiguration::Trim (const std::string& aStringEntree, std::string& aStrin
 
 void CConfiguration::EnregistrementDonnee (std::ifstream& aFichier, std::string& aStrType)
 {
+   std::string StrCase ("Case");
+   std::string StrTour ("Tour");
+   
    // Suivant le type de données
-   if (aStrType == "Case")
+   if (0 == aStrType.compare (StrCase))
    {
       EnregistrementTypeCase (aFichier);
    }
-   else if (aStrType == "Tour")
+   else if (0 == aStrType.compare (StrTour))
    {
       EnregistrementTypeTour (aFichier);
    }
    else
    {
-      std::cout << "Type de données à charger inconnu" << std::endl;
+      std::cout << "Type de données à charger inconnu : " << aStrType << std::endl;
+      std::cout << "aStrType.compare (StrCase) = " << aStrType.compare (StrCase) << std::endl;
+      std::cout << "aStrType.compare (StrTour) = " << aStrType.compare (StrTour) << std::endl;
+      std::cout << "StrCase.size ()            = " << StrCase.size () << std::endl;
+      std::cout << "StrTour.size ()            = " << StrTour.size () << std::endl;
+      std::cout << "aStrType.compare (StrTour) = " << aStrType.size () << std::endl;
    }
 }
 

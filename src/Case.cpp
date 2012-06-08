@@ -6,9 +6,7 @@ CCase::CCase (void):
 	mEtat		            (eVide),
 	mCourImage	         (0),
    mNumCase             (-1),
-   mbEstPlusCourtChemin (false),
-   mPorteeTire          (1),
-   mCadenceTire         (0)
+   mbEstPlusCourtChemin (false)
 {
 	mPosition.x = 0;
 	mPosition.y = 0;
@@ -31,37 +29,10 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 	SDL_BlitSurface(apSurfaceCase,NULL,apSurfaceDest,&mPosition);
 }
 
-void CCase::OnAfficheProjectiles(SDL_Surface* apSurfaceDest)
+CTourPtr& CCase::ConstruireTour (int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
 {
-   // Affichage des projectiles lié à la tour
-   std::list<CProjectilePtr>::iterator IterProjectile;
-   for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end (); ++IterProjectile)
-   {
-      (*IterProjectile)->OnAffiche (apSurfaceDest);
-   }
-}
-
-bool CCase::OnAvanceProjectiles (void)
-{
-   bool bProjectileDetruit = false;
-      
-   std::list<CProjectilePtr>::iterator IterProjectile    = mListeProjectilesTires.begin ();
-   std::list<CProjectilePtr>::iterator IterProjectileEnd = mListeProjectilesTires.end ();
-   while (IterProjectile != IterProjectileEnd)
-   {
-      bProjectileDetruit = (*IterProjectile)->Avance ();
-
-      if (bProjectileDetruit)
-      {
-         IterProjectile = mListeProjectilesTires.erase (IterProjectile);
-      }
-      else
-      {
-         ++IterProjectile;
-      }
-   }
-   
-   return (false == mListeProjectilesTires.empty ());
+   mTourPtr = CTourPtr (new CTour (aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
+   return mTourPtr;
 }
 
 bool CCase::EstDedans (int aX, int aY)
@@ -88,27 +59,8 @@ const CCase::ETypeCase	CCase::GetEtat (void) const
 
 void CCase::SetEtat (CCase::ETypeCase aeNouvelEtat)
 {
-	switch (aeNouvelEtat)
-	{
-		case eVide:
-		case eMur:
-      case eTour1:
-         mPorteeTire  = 100;
-         mCadenceTire = 1;
-      case eTour2:
-         mPorteeTire  = 150;
-         mCadenceTire = 2;
-      case eTour3:
-      case eTour4:
-      case eTour5:
-      case eTour6:
-			mEtat = aeNouvelEtat;
-			mCourImage = aeNouvelEtat;
-			break;
-
-		default:
-			break;
-	}
+	mEtat = aeNouvelEtat;
+	mCourImage = aeNouvelEtat;
 }
 
 void CCase::SetPosition (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY)
@@ -128,15 +80,20 @@ int CCase::GetNumCase (void)
    return mNumCase;
 }
 
-int CCase::GetPorteeTire  (void)
-{
-   return mPorteeTire;
-}
-
 void CCase::GetCentre (int& aXCentre, int &aYCentre)
 {
    aXCentre = mPosition.x + (mPosition.w / 2);
    aYCentre = mPosition.y + (mPosition.h / 2);
+}
+
+int CCase::GetTypeTour (void)
+{
+   int TypeRetour = -1;
+   if (mTourPtr)
+   {
+      TypeRetour = mTourPtr->GetTypeTour ();
+   }
+   return TypeRetour;
 }
 
 void CCase::SetPlusCourtChemin (bool abEstPlusCourtChemin)
@@ -163,60 +120,3 @@ void CCase::GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY)
 	aIdPlateauY = mIdPlateauY;
 }
 
-bool CCase::AutoriseATirer (void)
-{
-   bool bAutorisation = true;
-
-   int TickCourant = mTimer.GetNbTicks ();
-
-   // Vérifie que le timer est lancé (que la tour a tirée)
-   if (TickCourant != 0)
-   {
-      // Vérifie la possibilité de tirer
-      if ((TickCourant) < (mCadenceTire * 1000))
-      {
-         bAutorisation = false;
-      }
-   }
-
-   return bAutorisation;
-}
-
-void CCase::Tire (CEnnemiPtr& aEnnemiCiblePtr)
-{
-   int PuissanceProjectile = 1;
-   int VitesseProjectile   = 1;
-
-   // La puissance et la vitesse du projectile dépend du type de la tour
-   switch (mEtat)
-   {
-      case eTour1:
-         PuissanceProjectile = 2;
-         VitesseProjectile   = 10;
-         break;
-      
-      case eTour2:
-         PuissanceProjectile = 4;
-         VitesseProjectile   = 7;
-         break;
-
-      case eTour3:
-      case eTour4:
-      case eTour5:
-      case eTour6:
-      default:
-         break;
-   }
-
-   // Création et ajout du projectile dans la liste des projectiles tirés
-   CProjectilePtr ProjectileTirePtr (new CProjectile( aEnnemiCiblePtr,
-                                                      mPosition.x + (mPosition.w / 2),
-                                                      mPosition.y + (mPosition.h / 2),
-                                                      PuissanceProjectile,
-                                                      VitesseProjectile));
-   ProjectileTirePtr->OnInit ();
-   mListeProjectilesTires.push_back (ProjectileTirePtr);
-
-   // Gestion de la cadence de tire de la tour
-   mTimer.Start ();
-}

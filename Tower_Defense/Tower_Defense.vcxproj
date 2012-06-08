@@ -87,6 +87,7 @@
     <ClInclude Include="..\include\Moteur.h" />
     <ClInclude Include="..\include\Plateau.h" />
     <ClInclude Include="..\include\Timer.h" />
+    <ClInclude Include="..\include\Tour.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ressources\BoutonNew.bmp" />
@@ -121,6 +122,7 @@
     <ClCompile Include="..\src\Moteur.cpp" />
     <ClCompile Include="..\src\Plateau.cpp" />
     <ClCompile Include="..\src\Timer.cpp" />
+    <ClCompile Include="..\src\Tour.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

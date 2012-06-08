@@ -29,9 +29,6 @@ private:
    int **mMatriceGraph;
    int **mCheminsMinimaux;
 
-//   int mMatriceGraph    [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
-//   int mCheminsMinimaux [NB_CASE_LARGEUR * NB_CASE_HAUTEUR][NB_CASE_LARGEUR * NB_CASE_HAUTEUR];
-
    CPlateau& mPlateau;
 };
 

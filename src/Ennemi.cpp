@@ -240,7 +240,7 @@ void CEnnemi::Avance (void)
 
    // Calcul de la nouvelle position en fonction de la vitesse
    // 1 - Calcul de l'avancement de l'ennemi sur les vecteurs
-   double AvancementSurVecteur = mVitesse * LARGEUR_CASE * ((double)BASE_VITESSE / 100.0);
+   double AvancementSurVecteur = mVitesse;
 
    // 2 - Test si on reste sur le meme vecteur ou pas (changement de case courante)
    //     Calcul de la distance restante à parcourir sur le vecteur
@@ -296,7 +296,8 @@ bool CEnnemi::EstArrive (void)
       double DistanceRestante = sqrt ((double)((VecteurCourant.second.first  - mCoordonnee.first)  * (VecteurCourant.second.first  - mCoordonnee.first))
                                     + (double)((VecteurCourant.second.second - mCoordonnee.second) * (VecteurCourant.second.second - mCoordonnee.second)));
 
-      if (DistanceRestante < ((double)LARGEUR_CASE / 4.0))
+      // Est-ce que l'ennemi est arrivé ?
+      if (DistanceRestante < 5.0)
       {
          bEstArrive = true;
       }

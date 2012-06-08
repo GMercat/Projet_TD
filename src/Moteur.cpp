@@ -31,8 +31,8 @@ bool CMoteur::OnInit (void)
    SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
 
    //Ouvrir une fenetre
-   mpScreen = SDL_SetVideoMode (  LARGEUR_CASE * mJeu.GetNbCaseLargeur () + LARGEUR_MENU,
-                                 HAUTEUR_CASE * mJeu.GetNbCaseHauteur (),
+   mpScreen = SDL_SetVideoMode ( mJeu.GetLargeur (),
+                                 mJeu.GetHauteur (),
                                  32,
                                  SDL_DOUBLEBUF | SDL_HWSURFACE);
    if (mpScreen == NULL)
@@ -59,8 +59,9 @@ void CMoteur::OnClic (int aX, int aY)
 	std::cout << "Moteur.OnClic (" << aX << ", " << aY << ")" << std::endl;
 #endif
 	
-   int NumCase = mJeu.OnClic (aX, aY);
+   /*int NumCase = */mJeu.OnClic (aX, aY);
 
+/*
    if (NumCase != -1)
    {
       mIA.MiseAJourMatriceGraphe (NumCase, true);
@@ -79,6 +80,7 @@ void CMoteur::OnClic (int aX, int aY)
          mIA.MiseAJourMatriceGraphe (NumCase, false);
       }
    }
+*/
 }
 
 void CMoteur::OnProgression   (void)

@@ -66,7 +66,7 @@ bool CProjectile::Avance (void)
       mEnnemiCiblePtr->GetCentre (XEnnemi, YEnnemi);
 
       // Calcul de l'avancé du projectile
-      double Avance = mVitesse * LARGEUR_CASE * ((double)BASE_VITESSE / 100.0);
+      double Avance = mVitesse;
    
       // Calcul de la distance restante à parcourir
       double DistanceRestante = sqrt ((double)((XEnnemi - mCoordonnee.first)  * (XEnnemi - mCoordonnee.first))

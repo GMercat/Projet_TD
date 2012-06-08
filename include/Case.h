@@ -2,24 +2,17 @@
 #define _CASE_H_
 
 #include "Defined.h"
-#include "Projectile.h"
+#include "Tour.h"
 #include "Ennemi.h"
-#include "Timer.h"
 
 
 class CCase
 {
 public:
 	enum ETypeCase {
-		eVide = 0,
-		eMur,
-
-      eTour1,
-      eTour2,
-      eTour3,
-      eTour4,
-      eTour5,
-      eTour6,
+		eMur = 0,
+		eVide,
+      eTour,
       eNbType
 	};
 
@@ -30,8 +23,8 @@ public:
 
 	void OnInit                (void);
 	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
-   void OnAfficheProjectiles  (SDL_Surface* apSurfaceDest);
-   bool OnAvanceProjectiles   (void);
+   
+   CTourPtr& ConstruireTour (int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
    
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);
@@ -43,32 +36,25 @@ public:
          void	      SetPosition    (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
          void        SetNumCase     (int aNumCase);
          int         GetNumCase     (void);
-         int         GetPorteeTire  (void);
-         void        GetCentre      (int& aXCentre, int &aYCentre); 
+         void        GetCentre      (int& aXCentre, int &aYCentre);
+         int         GetTypeTour    (void);
 
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
 
-   bool AutoriseATirer  (void);
-   void Tire            (CEnnemiPtr& aEnnemiCiblePtr);
-   
 private:
-	ETypeCase   			      mEtat;
+	ETypeCase   mEtat;
    
-   int                        mNumCase;
-   bool                       mbEstPlusCourtChemin;
+   int         mNumCase;
+   bool        mbEstPlusCourtChemin;
 
-   int							   mIdPlateauX;
-	int							   mIdPlateauY;
+   int	      mIdPlateauX;
+	int	      mIdPlateauY;
 
-   CTimer                     mTimer;           
+   CTourPtr    mTourPtr;
 
-   int                        mPorteeTire;
-   int                        mCadenceTire;           // Cadence de tire en seconde
-   std::list<CProjectilePtr>  mListeProjectilesTires;
-
-	int							   mCourImage; // L'image à afficher
-	SDL_Rect					      mPosition;	// Position de la case
+	int		   mCourImage; // L'image à afficher
+	SDL_Rect		mPosition;	// Position de la case
 };
 
 typedef boost::shared_ptr<CCase> CCasePtr;

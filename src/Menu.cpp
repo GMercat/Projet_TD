@@ -2,156 +2,206 @@
 #include "../include/Jeu.h"
 #include "../include/Case.h"
 
-CMenu::CMenu (CJeu& aJeu):
-   mJeu  (aJeu)
+CMenu::CMenu (CConfiguration& aConfig, CJeu& aJeu):
+   mConfig     (aConfig),
+   mJeu        (aJeu),
+   mImageFond  (NULL)
 {
-   for (int IterImages = 0; IterImages < eNbBouton; IterImages++)
-   {
-      mImages[IterImages] = NULL;
-   }
+   ; // Rien à faire
 }
 
 CMenu::~CMenu (void)
 {
-   for (int IterImage = 0; IterImage < eNbBouton; IterImage++)
+   std::vector<SDL_Surface*>::iterator IterImages;
+
+   // Libération de l'image du fond du menu
+   SDL_FreeSurface (mImageFond);
+
+   // Libération des images boutons du menu
+   for (IterImages = mImagesBoutons.begin (); IterImages != mImagesBoutons.end (); IterImages++)
    {
-      SDL_FreeSurface (mImages[IterImage]);
+      SDL_FreeSurface (*IterImages);
+   }
+
+   // Libération des images tours du menu
+   for (IterImages = mImagesTours.begin (); IterImages != mImagesTours.end (); IterImages++)
+   {
+      SDL_FreeSurface (*IterImages);
    }
 }
 
 bool CMenu::OnInit (void)
 {
-   bool bReturn = false;
+   bool bReturn = true;
 
-   int NbCaseLargeur = mJeu.GetNbCaseLargeur ();
-   int NbCaseHauteur = mJeu.GetNbCaseHauteur ();
-
-   mPositions[eFond].x = NbCaseLargeur * LARGEUR_CASE;
-   mPositions[eFond].y = 0;
-   mPositions[eFond].w = LARGEUR_MENU;
-   mPositions[eFond].h = NbCaseHauteur * HAUTEUR_CASE;
-
-   mPositions[eNew].x = mPositions[eFond].x + 25;
-   mPositions[eNew].y = (NbCaseHauteur * HAUTEUR_CASE )  / 2 + 25;
-   mPositions[eNew].w = LARGEUR_MENU - 25;
-   mPositions[eNew].h = 40;
+   int NbTypeTour;
+   int NbCaseLargeur;
+   int NbCaseHauteur;
+   int LargeurCase;
+   int HauteurCase;
+   int HauteurMenu;
       
-   mPositions[eReprendre].x = mPositions[eFond].x +25;
-   mPositions[eReprendre].y = (NbCaseHauteur * HAUTEUR_CASE )  / 2 + 75;
-   mPositions[eReprendre].w = LARGEUR_MENU - 25;
-   mPositions[eReprendre].h = 40;
-
-   mPositions[eQuit].x = mPositions[eFond].x + 25;
-   mPositions[eQuit].y = (NbCaseHauteur * HAUTEUR_CASE )  / 2 + 125;
-   mPositions[eQuit].w = LARGEUR_MENU - 25;
-   mPositions[eQuit].h = 40;
-
-   mPositions[ePause].x = mPositions[eFond].x + 25;
-   mPositions[ePause].y = 25;
-   mPositions[ePause].w = LARGEUR_MENU - 25;
-   mPositions[ePause].h = 40;
-
-   mPositions[eTour1].x = mPositions[eFond].x + 25;
-   mPositions[eTour1].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 10;
-   mPositions[eTour1].w = LARGEUR_CASE;
-   mPositions[eTour1].h = HAUTEUR_CASE;
-
-   mPositions[eTour2].x = mPositions[eFond].x + 125;
-   mPositions[eTour2].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 10;
-   mPositions[eTour2].w = LARGEUR_CASE;
-   mPositions[eTour2].h = HAUTEUR_CASE;
-
-   mPositions[eTour3].x = mPositions[eFond].x + 25;
-   mPositions[eTour3].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 70;
-   mPositions[eTour3].w = LARGEUR_CASE;
-   mPositions[eTour3].h = HAUTEUR_CASE;
-
-   mPositions[eTour4].x = mPositions[eFond].x + 125;
-   mPositions[eTour4].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 70;
-   mPositions[eTour4].w = LARGEUR_CASE;
-   mPositions[eTour4].h = HAUTEUR_CASE;
-
-   mPositions[eTour5].x = mPositions[eFond].x + 25;
-   mPositions[eTour5].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 130;
-   mPositions[eTour5].w = LARGEUR_CASE;
-   mPositions[eTour5].h = HAUTEUR_CASE;
-
-   mPositions[eTour6].x = mPositions[eFond].x + 125;
-   mPositions[eTour6].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 130;
-   mPositions[eTour6].w = LARGEUR_CASE;
-   mPositions[eTour6].h = HAUTEUR_CASE;
-
-   mPositions[eNewEnnemi].x = mPositions[eFond].x + 25;
-   mPositions[eNewEnnemi].y = (NbCaseHauteur * HAUTEUR_CASE ) / 2 + 190;
-   mPositions[eNewEnnemi].w = LARGEUR_CASE;
-   mPositions[eNewEnnemi].h = HAUTEUR_CASE;
-
-   //Vérification de l'allocation des surfaces
-   for (int IterImage = 0; IterImage < eNbBouton; IterImage++)
+   bReturn &= mConfig.Get ("nombreTypeTour", NbTypeTour);
+   bReturn &= mConfig.Get ("nbCaseLargeur",  NbCaseLargeur);
+   bReturn &= mConfig.Get ("nbCaseHauteur",  NbCaseHauteur);
+   bReturn &= mConfig.Get ("largeurCase",    LargeurCase);
+   bReturn &= mConfig.Get ("hauteurCase",    HauteurCase);
+   bReturn &= mConfig.Get ("hauteurMenu",    HauteurMenu);
+   bReturn &= mConfig.Get ("largeurMenu",    mLargeur);
+   bReturn &= mConfig.Get ("nombreTypeTour", mNbTours);
+   
+   if (bReturn)
    {
-	   if(mImages[IterImage] != NULL)
-	   {
-		   SDL_FreeSurface (mImages[IterImage]), mImages[IterImage] = NULL;
-   	}
+      mPositionsBoutons.resize (eNbBouton);
+      mImagesBoutons.resize (eNbBouton);
 
-      switch (IterImage)
+      // Position du menu
+      mPositionFond.x = NbCaseLargeur * LargeurCase;
+      mPositionFond.y = 0;
+      mPositionFond.w = mLargeur;
+      mPositionFond.h = HauteurMenu;
+
+      // Positions des boutons du menu
+      mPositionsBoutons[eNew].x = mPositionFond.x + 25;
+      mPositionsBoutons[eNew].y = 25;
+      mPositionsBoutons[eNew].w = mLargeur - 25;
+      mPositionsBoutons[eNew].h = 40;
+   
+      mPositionsBoutons[eReprendre].x = mPositionFond.x +25;
+      mPositionsBoutons[eReprendre].y = 75;
+      mPositionsBoutons[eReprendre].w = mLargeur - 25;
+      mPositionsBoutons[eReprendre].h = 40;
+
+      mPositionsBoutons[eQuit].x = mPositionFond.x + 25;
+      mPositionsBoutons[eQuit].y = 125;
+      mPositionsBoutons[eQuit].w = mLargeur - 25;
+      mPositionsBoutons[eQuit].h = 40;
+
+      mPositionsBoutons[ePause].x = mPositionFond.x + 25;
+      mPositionsBoutons[ePause].y = 25;
+      mPositionsBoutons[ePause].w = mLargeur - 25;
+      mPositionsBoutons[ePause].h = 40;
+
+      mPositionsBoutons[eNewEnnemi].x = mPositionFond.x + 25;
+      mPositionsBoutons[eNewEnnemi].y = 175;
+      mPositionsBoutons[eNewEnnemi].w = LargeurCase;
+      mPositionsBoutons[eNewEnnemi].h = HauteurCase;
+
+      int EspacementBtTour = (int)((HauteurMenu / 2) / NbTypeTour);
+      if (HauteurCase < EspacementBtTour)
       {
-         case eFond:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Menu.bmp");
-            break;
-         case eNew:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/BoutonNew.bmp");
-            break;
-         case eReprendre:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/BoutonReprendre.bmp");
-            break;
-         case eQuit:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/BoutonQuit.bmp");
-            break;
-
-         case ePause:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/BoutonPause.bmp");
-            break;
-
-         case eTour1:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour1_50.bmp");
-            break;
-
-         case eTour2:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour2_50.bmp");
-            break;
-
-         case eTour3:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour3_50.bmp");
-            break;
-
-         case eTour4:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour4_50.bmp");
-            break;
-
-         case eTour5:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour5_50.bmp");
-            break;
-
-         case eTour6:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/Tour6_50.bmp");
-            break;
-
-         case eNewEnnemi:
-            mImages[IterImage] = SDL_LoadBMP("../Ressources/NewEnnemi_50.bmp");
-            break;
-
-         default:
-            std::cout << "ERR : Images inconnues" << std::endl;
-            break;
+         mPositionsTours.resize (NbTypeTour);
+         int InterBtTour = EspacementBtTour - HauteurCase;
+         for (int IterTypeTour = 0; IterTypeTour < NbTypeTour; ++IterTypeTour)
+         {            
+            mPositionsTours[IterTypeTour].x = mPositionFond.x + 25;
+            mPositionsTours[IterTypeTour].y = HauteurMenu / 2 + (IterTypeTour * EspacementBtTour) + (InterBtTour / 2);
+            mPositionsTours[IterTypeTour].w = LargeurCase;
+            mPositionsTours[IterTypeTour].h = HauteurCase;
+         }
       }
 
+      // Vérification de l'allocation des surfaces
+      // Fond du menu
+      if (mImageFond != NULL)
+      {
+         SDL_FreeSurface (mImageFond), mImageFond = NULL;
+      }
+      mImageFond = SDL_LoadBMP("../ressources/Menu.bmp");
       //On teste le retour du chargement
-      if (mImages[IterImage] == NULL)
+      if (mImageFond == NULL)
       {
-		   std::cout << "Probleme de chargement de l'image du menu : " << IterImage << std::endl;
-		   bReturn = false;
+		   std::cout << "Probleme de chargement de l'image du fond du menu." << std::endl;
+		   return false;
       }
+
+      // Pour les boutons du menu
+      for (int IterImage = 0; IterImage < eNbBouton; IterImage++)
+      {
+	      if(mImagesBoutons[IterImage] != NULL)
+	      {
+		      SDL_FreeSurface (mImagesBoutons[IterImage]), mImagesBoutons[IterImage] = NULL;
+   	   }
+      }
+
+      // Construction du chemin des ressources
+      std::string CheminRessource;
+      std::string NomResource;
+      
+      // Bouton Nouvelle partie
+      bReturn = mConfig.Get ("ressourceBtNew", NomResource);
+      CheminRessource = "../ressources/";
+      CheminRessource += NomResource;
+      mImagesBoutons[eNew] = SDL_LoadBMP(CheminRessource.c_str ());
+
+      // Bouton Pause
+      CheminRessource.clear ();
+      bReturn = mConfig.Get ("ressourceBtPause", NomResource);
+      CheminRessource = "../ressources/";
+      CheminRessource += NomResource;
+      mImagesBoutons[ePause] = SDL_LoadBMP(CheminRessource.c_str ());
+
+      // Bouton reprendre la partie
+      bReturn = mConfig.Get ("ressourceBtReprendre", NomResource);
+      CheminRessource = "../ressources/";
+      CheminRessource += NomResource;
+      mImagesBoutons[eReprendre] = SDL_LoadBMP(CheminRessource.c_str ());
+
+      // Bouton Quitter la partie
+      bReturn = mConfig.Get ("ressourceBtQuit", NomResource);
+      CheminRessource = "../ressources/";
+      CheminRessource += NomResource;
+      mImagesBoutons[eQuit] = SDL_LoadBMP(CheminRessource.c_str ());
+
+      // Bouton Nouvel Ennemi (DEBUG)
+      bReturn = mConfig.Get ("ressourceBtNewEnnemi", NomResource);
+      CheminRessource = "../ressources/";
+      CheminRessource += NomResource;
+      mImagesBoutons[eNewEnnemi] = SDL_LoadBMP(CheminRessource.c_str ());
+            
+      //On teste le retour du chargement
+      for (int IterImage = 0; IterImage < eNbBouton; IterImage++)
+      {
+	      if (mImagesBoutons[IterImage] == NULL)
+         {
+		      std::cout << "Probleme de chargement de l'image du menu : " << IterImage << std::endl;
+		      return false;
+         }
+      }
+
+      int iImage = 0;
+      
+      bReturn &= mConfig.GetRessourcesTours (mNomImagesTour);
+      mImagesTours.resize (mNomImagesTour.size ());
+      // Pour les boutons tours
+      std::vector<SDL_Surface*>::iterator IterImage;
+      for (IterImage = mImagesTours.begin (); (IterImage != mImagesTours.end ()) && (bReturn); ++IterImage)
+      {
+         if((*IterImage) != NULL)
+	      {
+		      SDL_FreeSurface (*IterImage), (*IterImage) = NULL;
+   	   }
+
+         //On charge toutes les images dans les surfaces associées
+         std::string CheminRessource ("../ressources/");
+         CheminRessource += mNomImagesTour[iImage];
+         
+         std::cout << "Chargement de : " << CheminRessource.c_str () << std::endl;
+         
+         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
+                  
+         //On teste le retour du chargement
+	      if ((*IterImage) == NULL)
+	      {
+            std::cout << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << std::endl;
+		      bReturn = false;
+	      }
+         iImage++;
+      }
+   }
+   else
+   {
+      std::cout << "Problème de configuration du menu" << std::endl;
    }
 
    return bReturn;
@@ -160,19 +210,17 @@ bool CMenu::OnInit (void)
 void CMenu::OnClic (int aX, int aY)
 {
    bool  bBoutonTrouve  = false;
-   int   IdBouton       = 1;
+   int   IdBouton;
+   int   IdTour;
    
    if (mJeu.PartieEnCours ())
    {
-      for (IdBouton = ePause; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
+      for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
-         if (  (mPositions[IdBouton].x < aX) && (aX < (mPositions[IdBouton].x + mPositions[IdBouton].w))
-            && (mPositions[IdBouton].y < aY) && (aY < (mPositions[IdBouton].y + mPositions[IdBouton].h)))
+         if (  (mPositionsBoutons[IdBouton].x < aX) && (aX < (mPositionsBoutons[IdBouton].x + mPositionsBoutons[IdBouton].w))
+            && (mPositionsBoutons[IdBouton].y < aY) && (aY < (mPositionsBoutons[IdBouton].y + mPositionsBoutons[IdBouton].h)))
          {
             bBoutonTrouve = true;
-#ifdef DEGUB
-            std::cout << "Bouton trouve ON : " << IdBouton << std::endl;
-#endif
          }
       }
 
@@ -186,49 +234,42 @@ void CMenu::OnClic (int aX, int aY)
                mJeu.ChangerEtatPartie (false);
                break;
 
-            case eTour1:
-               mJeu.SelectTour (CCase::eTour1);
-               break;
-
-            case eTour2:
-               mJeu.SelectTour (CCase::eTour2);
-               break;
-
-            case eTour3:
-               mJeu.SelectTour (CCase::eTour3);
-               break;
-
-            case eTour4:
-               mJeu.SelectTour (CCase::eTour4);
-               break;
-
-            case eTour5:
-               mJeu.SelectTour (CCase::eTour5);
-               break;
-
-            case eTour6:
-               mJeu.SelectTour (CCase::eTour6);
-               break;
-
             case eNewEnnemi:
                mJeu.AjoutEnnemi ();
                break;
-
+               
             default:
+               std::cout << "Ce bouton n'est pas actif dans ce mode" << std::endl;
                break;
          }
       }
       else
       {
-         std::cout << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << std::endl;
+         for (IdTour = 0; (IdTour < mNbTours) && (false == bBoutonTrouve); ++IdTour)
+         {
+            if (  (mPositionsTours[IdTour].x < aX) && (aX < (mPositionsTours[IdTour].x + mPositionsTours[IdTour].w))
+               && (mPositionsTours[IdTour].y < aY) && (aY < (mPositionsTours[IdTour].y + mPositionsTours[IdTour].h)))
+            {
+               bBoutonTrouve = true;
+            }
+         }
+
+         if (bBoutonTrouve)
+         {
+            mJeu.SelectTour (IdTour - 1);
+         }
+         else
+         {
+            std::cout << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << std::endl;
+         }
       }
    }
    else
    {
       for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
-         if (  (mPositions[IdBouton].x < aX) && (aX < (mPositions[IdBouton].x + mPositions[IdBouton].w))
-            && (mPositions[IdBouton].y < aY) && (aY < (mPositions[IdBouton].y + mPositions[IdBouton].h)))
+         if (  (mPositionsBoutons[IdBouton].x < aX) && (aX < (mPositionsBoutons[IdBouton].x + mPositionsBoutons[IdBouton].w))
+            && (mPositionsBoutons[IdBouton].y < aY) && (aY < (mPositionsBoutons[IdBouton].y + mPositionsBoutons[IdBouton].h)))
          {
             bBoutonTrouve = true;
 #ifdef DEGUB
@@ -258,6 +299,7 @@ void CMenu::OnClic (int aX, int aY)
                break;
 
             default:
+               std::cout << "Ce bouton n'est pas actif dans ce mode" << std::endl;
                break;
          }
       }
@@ -270,23 +312,27 @@ void CMenu::OnClic (int aX, int aY)
 
 void CMenu::OnAffiche (SDL_Surface* apScreen)
 {
-   SDL_BlitSurface(mImages[eFond],NULL,apScreen,&(mPositions[eFond]));
+   SDL_BlitSurface(mImageFond,NULL,apScreen,&(mPositionFond));
 
   if (mJeu.PartieEnCours ())
    {
-      SDL_BlitSurface(mImages[ePause], NULL, apScreen, &(mPositions[ePause]));
-      SDL_BlitSurface(mImages[eTour1], NULL, apScreen, &(mPositions[eTour1]));
-      SDL_BlitSurface(mImages[eTour2], NULL, apScreen, &(mPositions[eTour2]));
-      SDL_BlitSurface(mImages[eTour3], NULL, apScreen, &(mPositions[eTour3]));
-      SDL_BlitSurface(mImages[eTour4], NULL, apScreen, &(mPositions[eTour4]));
-      SDL_BlitSurface(mImages[eTour5], NULL, apScreen, &(mPositions[eTour5]));
-      SDL_BlitSurface(mImages[eTour6], NULL, apScreen, &(mPositions[eTour6]));
-      SDL_BlitSurface(mImages[eNewEnnemi], NULL, apScreen, &(mPositions[eNewEnnemi]));
+      SDL_BlitSurface(mImagesBoutons[ePause], NULL, apScreen, &(mPositionsBoutons[ePause]));
+      SDL_BlitSurface(mImagesBoutons[eNewEnnemi], NULL, apScreen, &(mPositionsBoutons[eNewEnnemi]));
+
+      for (unsigned int IdTour = 0; IdTour < mImagesTours.size (); IdTour++)
+      {
+         SDL_BlitSurface(mImagesTours[IdTour], NULL, apScreen, &(mPositionsTours[IdTour]));
+      }
    }
    else
    {
-      SDL_BlitSurface(mImages[eNew],      NULL,apScreen,&(mPositions[eNew]));
-      SDL_BlitSurface(mImages[eReprendre],NULL,apScreen,&(mPositions[eReprendre]));
-      SDL_BlitSurface(mImages[eQuit],     NULL,apScreen,&(mPositions[eQuit]));
+      SDL_BlitSurface(mImagesBoutons[eNew],      NULL,apScreen,&(mPositionsBoutons[eNew]));
+      SDL_BlitSurface(mImagesBoutons[eReprendre],NULL,apScreen,&(mPositionsBoutons[eReprendre]));
+      SDL_BlitSurface(mImagesBoutons[eQuit],     NULL,apScreen,&(mPositionsBoutons[eQuit]));
    }
+}
+
+int CMenu::GetLargeur (void)
+{
+   return mLargeur;
 }

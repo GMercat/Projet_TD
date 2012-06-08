@@ -27,11 +27,14 @@ struct TCaracsEnnemi
    std::string mRessource;
    int         mVitesse;
    int         mVie;
-};
 
-// Typedefs
-typedef std::map<std::string, TCaracsTour>   TDonneesTours;    // Nom - [Ressource, Portee=75, Puissance=2, Cadence=1]
-typedef std::map<std::string, TCaracsEnnemi> TDonneesEnnemis;  // Nom - [Ressource, Vitesse=2, Vie=50]
+   void operator = (const TCaracsEnnemi& aCaracsEnnemi)
+   {
+      mRessource  = aCaracsEnnemi.mRessource;
+      mVitesse    = aCaracsEnnemi.mVitesse;
+      mVie        = aCaracsEnnemi.mVie;
+   }
+};
 
 class CConfiguration
 {
@@ -56,6 +59,16 @@ public:
    bool Get (const std::string& aCle, double& aValeur) const;
    bool Get (const std::string& aCle, bool&   aValeur) const;
 
+   bool GetRessourceCaseParNom   (const std::string& aNom,  std::string& aRessource) const;
+   bool GetCaracsTourParNom      (const std::string& aNom,  std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
+   bool GetCaracsTourParId       (const int aId,            std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
+   bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aVitesse, int& aVie) const;
+
+   bool GetRessourcesCases (std::vector<std::string>&   aRessources)      const;
+   bool GetRessourcesTours (std::vector<std::string>&   aRessources)      const;
+   bool GetCaracsTours     (std::list<TCaracsTour>&   aCaracsTours)     const;
+   bool GetCaracsEnnemis   (std::list<TCaracsEnnemi>& aCaracsEnnemis)   const;
+
 private:
    // Lecture d'une ligne
    bool LectureLigne (std::string& aLigne, std::string& aCle, std::string& aValeur);
@@ -69,10 +82,10 @@ private:
    void EnregistrementTypeTour   (std::ifstream& aFichier);
 
 private:
-   std::map<std::string, std::string>  mDonnees;
-   std::map<std::string, std::string>  mDonneesCases;
-   std::map<std::string, TCaracsTour>  mDonneesTours;
-   std::map<std::string, TCaracsEnnemi> mDonneesEnnemis;
+   std::map<std::string, std::string>     mDonnees;
+   std::map<std::string, std::string>     mDonneesCases;
+   std::map<std::string, TCaracsTour>     mDonneesTours;
+   std::map<std::string, TCaracsEnnemi>   mDonneesEnnemis;
 };
 
 #endif

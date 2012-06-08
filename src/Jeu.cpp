@@ -4,15 +4,14 @@
 
 CJeu::CJeu (CIA* apIA):
    mpIA              (apIA),
-   mMenu             (*this),
-   mPlateau          (*this),
+   mPlateau          (mConfig, *this),
+   mMenu             (mConfig, *this),
 	mHauteur          (1),
 	mLargeur          (1),
    mbPartieEnCours   (true),
-   mTypeTourSelect   (CCase::eVide)
+   mTypeTourSelect   (-1)
 {
-	mCoordonneesDerniereCaseModifiee.first = -1;
-   mCoordonneesDerniereCaseModifiee.second = -1;
+   ;
 }
 
 CJeu::~CJeu (void)
@@ -22,21 +21,29 @@ CJeu::~CJeu (void)
 
 bool CJeu::OnInit (void)
 {
+   // Lecture du fichier de configuration
+   mConfig.Chargement ("../conf/ConfJeu.txt");
+
 	bool bReturn = mPlateau.OnInit ();
    bReturn |= mMenu.OnInit ();
+
+   mHauteur = mPlateau.GetNbCaseHauteur () * mPlateau.GetHauteurCase ();
+   mLargeur = mPlateau.GetNbCaseLargeur () * mPlateau.GetLargeurCase () + mMenu.GetLargeur ();
 
   	return bReturn;
 }
 
-int CJeu::OnClic (int aX, int aY)
+void CJeu::OnClic (int aX, int aY)
 {
-   int NumCase = -1;
-   bool bCaseTrouve = false;
-   int IterLargeur  = 0;
-   int IterHauteur  = 0;
+   int   NumCaseCliquee = -1;
+   int   IterLargeur    = 0;
+   int   IterHauteur    = 0;
 
    if (mbPartieEnCours)
    {
+      // TODO 
+      NumCaseCliquee = mPlateau.OnClic (aX, aY);
+/*
       // Test si on est sur le plateau
       if((aX < (mPlateau.GetNbCaseLargeur () * LARGEUR_CASE)) && aY < (mPlateau.GetNbCaseHauteur () * HAUTEUR_CASE))
       {
@@ -59,18 +66,32 @@ int CJeu::OnClic (int aX, int aY)
          //On dit qu'on a trouvé la case associé
          bCaseTrouve = true;
       }
+*/
    }
 
-   if (false == bCaseTrouve)
+   if (NumCaseCliquee == -1)
    {
       mMenu.OnClic (aX, aY);
    }
    else
    {
-      NumCase = mPlateau.GetCase(IterLargeur, IterHauteur)->GetNumCase ();
-   }
+      mpIA->MiseAJourMatriceGraphe (NumCaseCliquee, true);
 
-   return NumCase;
+      // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
+      if (PlacementEstAutorise ())
+      {
+         // AjoutTour (NumCase);
+         // Construction de la tour dans la case
+         CTourPtr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
+         mListTour.push_back (NouvelleTour);
+      }
+      else
+      {
+         std::cout << "Placement non autorisé" << std::endl;
+         mPlateau.AnnuleDerniereModif ();
+         mpIA->MiseAJourMatriceGraphe (NumCaseCliquee, false);
+      }
+   }
 }
 
 void CJeu::OnAffiche (SDL_Surface* apScreen)
@@ -89,7 +110,7 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    }
 
    // Affichage des projectiles
-   std::list<CCasePtr>::iterator IterTourTiree = mListTourTiree.begin ();
+   std::list<CTourPtr>::iterator IterTourTiree = mListTourTiree.begin ();
    for (IterTourTiree; IterTourTiree != mListTourTiree.end (); ++IterTourTiree)
    {
       (*IterTourTiree)->OnAfficheProjectiles (apScreen);
@@ -98,7 +119,7 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
 
 void CJeu::OnReset   (void)
 {
-   mTypeTourSelect = CCase::eVide;
+   mTypeTourSelect = -1;
    mPlateau.OnReset ();
 }
 
@@ -113,8 +134,8 @@ void CJeu::OnQuit (void)
 void CJeu::OnProgression   (void)
 {
    // Progression des projectiles
-   std::list<CCasePtr>::iterator IterTourTiree    = mListTourTiree.begin ();
-   std::list<CCasePtr>::iterator IterTourTireeEnd = mListTourTiree.end ();
+   std::list<CTourPtr>::iterator IterTourTiree    = mListTourTiree.begin ();
+   std::list<CTourPtr>::iterator IterTourTireeEnd = mListTourTiree.end ();
    while (IterTourTiree != IterTourTireeEnd)
    {
       if (false == (*IterTourTiree)->OnAvanceProjectiles ())
@@ -154,7 +175,7 @@ void CJeu::OnTire (void)
    int YEnnemi          = 0;
 
    // Gestion des tires des tours
-   std::list<CCasePtr>::iterator    IterTour;
+   std::list<CTourPtr>::iterator    IterTour;
    std::list<CEnnemiPtr>::iterator  IterEnnemi;
 
    // Parcours des tours pour rechercher les ennemis à la porté
@@ -197,11 +218,11 @@ void CJeu::AjoutEnnemi (void)
 
    mListEnnemi.push_back (EnnemiPtr);
 }
-
+/*
 void CJeu::AjoutTour (int aNumCase)
 {
    mListTour.push_back (mPlateau.GetCase(aNumCase));
-}
+}*/
 
 CPlateau& CJeu::GetPlateau (void)
 {
@@ -238,30 +259,24 @@ bool CJeu::PlacementEstAutorise  (void)
    return bEstAutorise;
 }
 
-void CJeu::AnnuleDerniereModif (void)
-{
-   mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetEtat (CCase::eVide);
-   mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetPlusCourtChemin (
-   mPlateau.GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
-}
-
-CCase::ETypeCase CJeu::GetTourSelectionnee  (void)
+int CJeu::GetTourSelectionnee  (void)
 {
    return mTypeTourSelect;
 }
 
-void CJeu::SelectTour (CCase::ETypeCase aTypeTourSelect)
+void CJeu::SelectTour (int aTypeTourSelect)
 {
    mTypeTourSelect = aTypeTourSelect;
 }
 
-int CJeu::GetNbCaseLargeur (void)
+int CJeu::GetHauteur (void)
 {
-   return mPlateau.GetNbCaseLargeur ();
+   return mHauteur;
 }
 
-int CJeu::GetNbCaseHauteur (void)
+int CJeu::GetLargeur (void)
 {
-   return mPlateau.GetNbCaseHauteur ();
+   return mLargeur;
 }
+
 

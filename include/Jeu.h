@@ -16,7 +16,7 @@ public:
 	~CJeu (void);
 
 	bool OnInit		      (void);
-	int  OnClic		      (int aX, int aY);
+	void OnClic		      (int aX, int aY);
 	void OnAffiche	      (SDL_Surface* apScreen);
    void OnReset         (void);
    void OnQuit          (void);
@@ -26,36 +26,33 @@ public:
    CPlateau& GetPlateau (void);
 
    void AjoutEnnemi  (void);
-   void AjoutTour    (int aNumCase);
+   /*void AjoutTour    (int aNumCase);*/
 
    bool PartieEnCours         (void);
    void ChangerEtatPartie     (bool abEtatPartie);
    bool PlacementEstAutorise  (void);
-   void AnnuleDerniereModif   (void);
 
-   CCase::ETypeCase  GetTourSelectionnee  (void);
-   void              SelectTour           (CCase::ETypeCase aTypeTourSelect);
+   int   GetTourSelectionnee  (void);
+   void  SelectTour           (int aTypeTourSelect);
 
-   int GetNbCaseLargeur (void);
-   int GetNbCaseHauteur (void);
+   int GetHauteur (void);
+   int GetLargeur (void);
 
 private:
+   CConfiguration mConfig;
+   CPlateau       mPlateau;
+   CMenu          mMenu;
+   CIA*           mpIA;
+
 	int mHauteur;
 	int mLargeur;
 
-   std::pair<int, int>  mCoordonneesDerniereCaseModifiee;
-
-   bool              mbPartieEnCours;
-   CCase::ETypeCase  mTypeTourSelect;
+   bool  mbPartieEnCours;
+   int   mTypeTourSelect;
    
-   std::list<CCasePtr>     mListTour;
-   std::list<CCasePtr>     mListTourTiree;
+   std::list<CTourPtr>     mListTour;
+   std::list<CTourPtr>     mListTourTiree;
    std::list<CEnnemiPtr>   mListEnnemi;
-
-   CPlateau mPlateau;
-   CMenu    mMenu;
-
-   CIA*     mpIA;
 };
 
 #endif
