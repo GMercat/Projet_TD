@@ -39,8 +39,8 @@ bool CProjectile::OnInit (void)
 	if(SDL_SetColorKey (mpImage, SDL_SRCCOLORKEY, SDL_MapRGB(mpImage->format, 255, 255, 255)) == -1)
 		std::cout << "Erreur avec la transparence" << std::endl;
 
-   mPosition.x = mCoordonnee.first - (mpImage->w / 2);
-   mPosition.y = mCoordonnee.second - (mpImage->h / 2);
+   mPosition.x = mCoordonnee.first;
+   mPosition.y = mCoordonnee.second;
    mPosition.w = mpImage->w;
    mPosition.h = mpImage->h;
 
@@ -87,8 +87,8 @@ bool CProjectile::Avance (void)
          mCoordonnee.first  += (int)((XEnnemi - mCoordonnee.first)  * PourcentageParcouru);
          mCoordonnee.second += (int)((YEnnemi - mCoordonnee.second) * PourcentageParcouru);
       
-         mPosition.x = mCoordonnee.first  - (mPosition.w / 2);
-         mPosition.y = mCoordonnee.second - (mPosition.h / 2);
+         mPosition.x = mCoordonnee.first;
+         mPosition.y = mCoordonnee.second;
       }
    }
    else

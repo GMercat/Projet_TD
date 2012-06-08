@@ -31,7 +31,12 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 
 CTourPtr& CCase::ConstruireTour (int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
 {
-   mTourPtr = CTourPtr (new CTour (aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
+   TCoordonnee CoordCentre;
+   
+   CoordCentre.first = mPosition.x + (mPosition.w / 2);
+   CoordCentre.second = mPosition.y + (mPosition.h / 2);
+
+   mTourPtr = CTourPtr (new CTour (CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
    return mTourPtr;
 }
 

@@ -443,6 +443,7 @@ void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
       Temp >> CaracsTour.mPortee;
    }
 
+   Temp.clear ();
    // Lecture de la puissance des projectiles de la tour
    std::getline (aFichier, Ligne);
    if (false == Ligne.empty ())
@@ -457,6 +458,7 @@ void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
       Temp >> CaracsTour.mPuissance;
    }
 
+   Temp.clear ();
    // Lecture de la vitesse des projectiles de la tour
    std::getline (aFichier, Ligne);
    if (false == Ligne.empty ())
@@ -471,6 +473,7 @@ void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
       Temp >> CaracsTour.mVitesse;
    }
 
+   Temp.clear ();
    // Lecture de la cadence de tire de la tour
    std::getline (aFichier, Ligne);
    if (false == Ligne.empty ())
