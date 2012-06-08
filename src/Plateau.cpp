@@ -288,16 +288,16 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
          }*/
       }
    }
+}
 
-   if (false == mJeu.PartieEnCours ())
-   {
-      SDL_Rect Position;
-      Position.x = 0;
-      Position.y = 0;
-      Position.w = mNbCasesLargeur * mLargeurCase;
-      Position.h = mNbCasesHauteur * mHauteurCase;
-      SDL_BlitSurface(mpImagePause, NULL, apEcran, &Position);
-   }
+void CPlateau::OnAfficheEnPause (SDL_Surface* apEcran)
+{
+   SDL_Rect Position;
+   Position.x = 0;
+   Position.y = 0;
+   Position.w = mNbCasesLargeur * mLargeurCase;
+   Position.h = mNbCasesHauteur * mHauteurCase;
+   SDL_BlitSurface(mpImagePause, NULL, apEcran, &Position);
 }
 
 CTourPtr& CPlateau::ConstruireTour (int aNumCaseCliquee)

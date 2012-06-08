@@ -17,6 +17,7 @@ public:
    void OnReset (void);
    int  OnClic (int aX, int aY);
    void OnAffiche (SDL_Surface* apEcran);
+   void OnAfficheEnPause (SDL_Surface* apEcran);
    
    CTourPtr& ConstruireTour (int aNumCaseCliquee);
    void AnnuleDerniereModif   (void);

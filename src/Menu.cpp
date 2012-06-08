@@ -66,24 +66,24 @@ bool CMenu::OnInit (void)
       mPositionsBoutons[eNew].y = 25;
       mPositionsBoutons[eNew].w = mLargeur - 25;
       mPositionsBoutons[eNew].h = 40;
-   
+
+      mPositionsBoutons[ePause].x = mPositionFond.x + 25;
+      mPositionsBoutons[ePause].y = 75;
+      mPositionsBoutons[ePause].w = mLargeur - 25;
+      mPositionsBoutons[ePause].h = 40;
+
       mPositionsBoutons[eReprendre].x = mPositionFond.x +25;
-      mPositionsBoutons[eReprendre].y = 75;
+      mPositionsBoutons[eReprendre].y = 125;
       mPositionsBoutons[eReprendre].w = mLargeur - 25;
       mPositionsBoutons[eReprendre].h = 40;
 
       mPositionsBoutons[eQuit].x = mPositionFond.x + 25;
-      mPositionsBoutons[eQuit].y = 125;
+      mPositionsBoutons[eQuit].y = 175;
       mPositionsBoutons[eQuit].w = mLargeur - 25;
       mPositionsBoutons[eQuit].h = 40;
 
-      mPositionsBoutons[ePause].x = mPositionFond.x + 25;
-      mPositionsBoutons[ePause].y = 25;
-      mPositionsBoutons[ePause].w = mLargeur - 25;
-      mPositionsBoutons[ePause].h = 40;
-
       mPositionsBoutons[eNewEnnemi].x = mPositionFond.x + 25;
-      mPositionsBoutons[eNewEnnemi].y = 175;
+      mPositionsBoutons[eNewEnnemi].y = 225;
       mPositionsBoutons[eNewEnnemi].w = LargeurCase;
       mPositionsBoutons[eNewEnnemi].h = HauteurCase;
 

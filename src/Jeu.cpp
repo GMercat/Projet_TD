@@ -115,6 +115,11 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    {
       (*IterTourTiree)->OnAfficheProjectiles (apScreen);
    }
+
+   if (false == mbPartieEnCours)
+   {
+      mPlateau.OnAfficheEnPause (apScreen);
+   }
 }
 
 void CJeu::OnReset   (void)
