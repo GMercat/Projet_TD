@@ -34,14 +34,12 @@ bool CMenu::OnInit (void)
 {
    bool bReturn = true;
 
-   int NbTypeTour;
    int NbCaseLargeur;
    int NbCaseHauteur;
    int LargeurCase;
    int HauteurCase;
    int HauteurMenu;
       
-   bReturn &= mConfig.Get ("nombreTypeTour", NbTypeTour);
    bReturn &= mConfig.Get ("nbCaseLargeur",  NbCaseLargeur);
    bReturn &= mConfig.Get ("nbCaseHauteur",  NbCaseHauteur);
    bReturn &= mConfig.Get ("largeurCase",    LargeurCase);
@@ -87,12 +85,12 @@ bool CMenu::OnInit (void)
       mPositionsBoutons[eNewEnnemi].w = LargeurCase;
       mPositionsBoutons[eNewEnnemi].h = HauteurCase;
 
-      int EspacementBtTour = (int)((HauteurMenu / 2) / NbTypeTour);
+      int EspacementBtTour = (int)((HauteurMenu / 2) / mNbTours);
       if (HauteurCase < EspacementBtTour)
       {
-         mPositionsTours.resize (NbTypeTour);
+         mPositionsTours.resize (mNbTours);
          int InterBtTour = EspacementBtTour - HauteurCase;
-         for (int IterTypeTour = 0; IterTypeTour < NbTypeTour; ++IterTypeTour)
+         for (int IterTypeTour = 0; IterTypeTour < mNbTours; ++IterTypeTour)
          {            
             mPositionsTours[IterTypeTour].x = mPositionFond.x + 25;
             mPositionsTours[IterTypeTour].y = HauteurMenu / 2 + (IterTypeTour * EspacementBtTour) + (InterBtTour / 2);
@@ -235,7 +233,7 @@ void CMenu::OnClic (int aX, int aY)
                break;
 
             case eNewEnnemi:
-               mJeu.AjoutEnnemi ();
+               // mJeu.AjoutEnnemi ();
                break;
                
             default:

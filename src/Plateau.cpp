@@ -49,8 +49,6 @@ bool CPlateau::OnInit (void)
    bConfig &= mConfig.Get ("largeurCase", mLargeurCase);
    bConfig &= mConfig.Get ("hauteurCase", mHauteurCase);
 
-   //bConfig &= mConfig.Get ("nombreTypeCase", NbTypeCase);
-   
    bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
    bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
   

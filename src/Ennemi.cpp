@@ -53,7 +53,7 @@ bool CEnnemi::OnInit (void)
 	}
 	
 	//On charge toutes les images dans les surfaces associées
-	mpImage = SDL_LoadBMP ("../Ressources/Ennemi.bmp");
+	mpImage = SDL_LoadBMP ("../ressources/Ennemi.bmp");
 	
    //On teste le retour du chargement
 	if ((mpImage == NULL))
@@ -310,7 +310,7 @@ void CEnnemi::Touche (int aPuissance)
 {
    mVie -= aPuissance;
 
-   std::cout << "Vie restante = " << mVie << std::endl;
+   //std::cout << "Vie restante = " << mVie << std::endl;
 }
 
 bool CEnnemi::EstVivant (void)

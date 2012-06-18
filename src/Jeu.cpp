@@ -1,31 +1,45 @@
 #include "../include/Jeu.h"
 #include "../include/IA.h"
 #include <cmath>
+#include <ctime>
+
+#define NB_ENNEMI_VAGUE       5
+#define TPS_BASE_INTER_ENNEMI 750
 
 CJeu::CJeu (CIA* apIA):
-   mpIA              (apIA),
-   mPlateau          (mConfig, *this),
-   mMenu             (mConfig, *this),
-	mHauteur          (1),
-	mLargeur          (1),
-   mbPartieEnCours   (true),
-   mTypeTourSelect   (-1)
+   mpIA                 (apIA),
+   mPlateau             (mConfig, *this),
+   mMenu                (mConfig, *this),
+	mHauteur             (1),
+	mLargeur             (1),
+	mbPremiereTour       (true),
+   mbPartieEnCours      (true),
+   mTempsInterVague     (1),
+   mDerniereVagueLancee (-1),
+   mNumVagueEnCours     (-1),
+   mNbEnnemisVague      (NB_ENNEMI_VAGUE),
+   mTypeTourSelect      (-1)
 {
    ;
 }
 
 CJeu::~CJeu (void)
 {
- ;
+   ;
 }
 
 bool CJeu::OnInit (void)
 {
+   // initialisation de rand
+//   srand(time(NULL));
+
    // Lecture du fichier de configuration
    mConfig.Chargement ("../conf/ConfJeu.txt");
 
 	bool bReturn = mPlateau.OnInit ();
-   bReturn |= mMenu.OnInit ();
+   bReturn &= mMenu.OnInit ();
+
+   bReturn &= mConfig.Get ("tempsInterVague", mTempsInterVague);
 
    mHauteur = mPlateau.GetNbCaseHauteur () * mPlateau.GetHauteurCase ();
    mLargeur = mPlateau.GetNbCaseLargeur () * mPlateau.GetLargeurCase () + mMenu.GetLargeur ();
@@ -43,30 +57,7 @@ void CJeu::OnClic (int aX, int aY)
    {
       // TODO 
       NumCaseCliquee = mPlateau.OnClic (aX, aY);
-/*
-      // Test si on est sur le plateau
-      if((aX < (mPlateau.GetNbCaseLargeur () * LARGEUR_CASE)) && aY < (mPlateau.GetNbCaseHauteur () * HAUTEUR_CASE))
-      {
-         IterLargeur = (int)(aX / LARGEUR_CASE);
-         IterHauteur = (int)(aY / HAUTEUR_CASE);
 
-#ifdef DEBUG
-         std::cout << "Case (" << IterLargeur << ", " << IterHauteur << ")" << std::endl;
-#endif
-
-         //Si la case est vide
-         if (mPlateau.GetCase(IterLargeur, IterHauteur)->EstVide())
-         {
-            //On met le type à jour
-            mPlateau.GetCase(IterLargeur, IterHauteur)->SetEtat (mTypeTourSelect);
-            mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
-            mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
-         }
-
-         //On dit qu'on a trouvé la case associé
-         bCaseTrouve = true;
-      }
-*/
    }
 
    if (NumCaseCliquee == -1)
@@ -84,6 +75,14 @@ void CJeu::OnClic (int aX, int aY)
          // Construction de la tour dans la case
          CTourPtr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
          mListTour.push_back (NouvelleTour);
+
+         // Première tour posée ?
+         if (mbPremiereTour)
+         {
+            mTimerVague.Start ();
+            
+            mbPremiereTour = false;
+         }
       }
       else
       {
@@ -139,6 +138,14 @@ void CJeu::OnQuit (void)
 void CJeu::OnProgression   (void)
 {
    // Progression des projectiles
+   ProgressionProjectiles ();
+
+   // Progression des ennemis
+   ProgressionEnnemis ();
+}
+
+void CJeu::ProgressionProjectiles (void)
+{
    std::list<CTourPtr>::iterator IterTourTiree    = mListTourTiree.begin ();
    std::list<CTourPtr>::iterator IterTourTireeEnd = mListTourTiree.end ();
    while (IterTourTiree != IterTourTireeEnd)
@@ -152,8 +159,42 @@ void CJeu::OnProgression   (void)
          ++IterTourTiree;
       }
    }
+}
 
-   // Progression des ennemis
+void CJeu::ProgressionEnnemis (void)
+{
+   // Lancement d'une vague d'ennemis
+   if (LancementNouvelleVagueEnnemisPossible ())
+   {
+      mNumVagueEnCours = mDerniereVagueLancee + 1;
+
+      std::cout << "Lancement de la " << mNumVagueEnCours << "ième vague d'ennemis" << std::endl;
+      
+      LancementVagueEnnemis ();
+      
+      // On relance le timer de lancement de vague
+      mTimerVague.Start ();   
+   }
+
+   // Si une vague est en cours de lancement on continue
+   if (mNumVagueEnCours != -1)
+   {
+      // Est ce que l'on doit ajouter un ennemi ?
+      // Tous les ennemis n'ont pas encore été créé ET le temps depuis le dernier est suffisament grand.
+      if ((mNbEnnemisVague >= 0) && (mTimerEnnemi.GetNbTicks () >= mTempsProchainEnnemi))
+      {
+         AjoutEnnemi ();
+         mNbEnnemisVague--;
+         mTempsProchainEnnemi = rand() % TPS_BASE_INTER_ENNEMI;
+         mTimerEnnemi.Start ();
+      }
+      else if (mNbEnnemisVague < 0)
+      {
+         mNbEnnemisVague = NB_ENNEMI_VAGUE;
+         mNumVagueEnCours = -1;
+      }
+   }
+
    std::list<CEnnemiPtr>::iterator IterEnnemi = mListEnnemi.begin ();
    std::list<CEnnemiPtr>::iterator IterEnnemiEnd = mListEnnemi.end ();
    while (IterEnnemi != IterEnnemiEnd)
@@ -171,6 +212,34 @@ void CJeu::OnProgression   (void)
    }
 }
 
+bool CJeu::LancementNouvelleVagueEnnemisPossible (void)
+{
+   bool bLancement = false;
+
+   int TickCourant = mTimerVague.GetNbTicks ();
+   
+   // Vérifie que le timer est lancé (que la tour a tirée)
+   if (TickCourant != 0)
+   {
+      // Vérifie la possibilité de tirer
+      if ((TickCourant) >= (mTempsInterVague * 1000))
+      {
+         bLancement = true;
+      }
+   }
+
+   return bLancement;
+}
+
+void CJeu::LancementVagueEnnemis (void)
+{
+   mTimerEnnemi.Start ();
+   AjoutEnnemi ();
+   mNbEnnemisVague--;
+   mTempsProchainEnnemi = rand() % TPS_BASE_INTER_ENNEMI;
+   mDerniereVagueLancee++;
+}
+
 void CJeu::OnTire (void)
 {
    int DistanceEnnemi   = 0;
@@ -178,6 +247,7 @@ void CJeu::OnTire (void)
    int Ytour            = 0;
    int XEnnemi          = 0;
    int YEnnemi          = 0;
+   bool bTourATiree     = false;
 
    // Gestion des tires des tours
    std::list<CTourPtr>::iterator    IterTour;
@@ -189,7 +259,7 @@ void CJeu::OnTire (void)
       // Si la tour peut tirer
       if ((*IterTour)->AutoriseATirer ())
       {
-         for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); ++IterEnnemi)
+         for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (false == bTourATiree); ++IterEnnemi)
          {
             // TODO Selectionner l'ennemi le plus avancé ?
             // Récupération des positions de l'ennemi et de la tour
@@ -204,6 +274,8 @@ void CJeu::OnTire (void)
             {
                (*IterTour)->Tire (*IterEnnemi);
                mListTourTiree.push_back ((*IterTour));
+
+               bTourATiree = true;
             }
          }
       }
@@ -223,11 +295,6 @@ void CJeu::AjoutEnnemi (void)
 
    mListEnnemi.push_back (EnnemiPtr);
 }
-/*
-void CJeu::AjoutTour (int aNumCase)
-{
-   mListTour.push_back (mPlateau.GetCase(aNumCase));
-}*/
 
 CPlateau& CJeu::GetPlateau (void)
 {

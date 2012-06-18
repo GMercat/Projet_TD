@@ -257,6 +257,19 @@ bool CConfiguration::GetRessourcesTours (std::vector<std::string>& aRessources) 
    return bResultat;
 }
 
+bool CConfiguration::GetRessourcesEnnemis (std::vector<std::string>& aRessources) const
+{
+   bool bResultat = false;
+   
+   std::map<std::string, TCaracsEnnemi>::const_iterator IterCaracs;
+   for (IterCaracs = mDonneesEnnemis.begin (); IterCaracs != mDonneesEnnemis.end (); IterCaracs++)
+   {
+      aRessources.push_back((*IterCaracs).second.mRessource);
+      bResultat = true;
+   }
+   return bResultat;
+}
+
 bool CConfiguration::GetCaracsTours (std::list<TCaracsTour>& aCaracsTours) const
 {
    bool bResultat = false;
@@ -331,8 +344,9 @@ void CConfiguration::Trim (const std::string& aStringEntree, std::string& aStrin
 
 void CConfiguration::EnregistrementDonnee (std::ifstream& aFichier, std::string& aStrType)
 {
-   std::string StrCase ("Case");
-   std::string StrTour ("Tour");
+   std::string StrCase     ("Case");
+   std::string StrTour     ("Tour");
+   std::string StrEnnemi   ("Ennemi");
    
    // Suivant le type de données
    if (0 == aStrType.compare (StrCase))
@@ -343,14 +357,13 @@ void CConfiguration::EnregistrementDonnee (std::ifstream& aFichier, std::string&
    {
       EnregistrementTypeTour (aFichier);
    }
+   else if (0 == aStrType.compare (StrEnnemi))
+   {
+      EnregistrementTypeEnnemi (aFichier);
+   }
    else
    {
       std::cout << "Type de données à charger inconnu : " << aStrType << std::endl;
-      std::cout << "aStrType.compare (StrCase) = " << aStrType.compare (StrCase) << std::endl;
-      std::cout << "aStrType.compare (StrTour) = " << aStrType.compare (StrTour) << std::endl;
-      std::cout << "StrCase.size ()            = " << StrCase.size () << std::endl;
-      std::cout << "StrTour.size ()            = " << StrTour.size () << std::endl;
-      std::cout << "aStrType.compare (StrTour) = " << aStrType.size () << std::endl;
    }
 }
 
@@ -489,4 +502,73 @@ void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
    }
 
    mDonneesTours [Nom] = CaracsTour;
+}
+
+void CConfiguration::EnregistrementTypeEnnemi (std::ifstream& aFichier)
+{
+   bool bResultatLecture = false;
+   std::string Ligne;
+   std::string Cle;
+   std::string Valeur;
+   std::string Nom;
+   std::stringstream Temp;
+   
+   TCaracsEnnemi CaracsEnnemi;
+
+   // Lecture du nom de la tour
+   std::getline (aFichier, Ligne);
+   if (false == Ligne.empty ())
+   {
+      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrer le Nom
+   if (  (true == bResultatLecture)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      Nom = Valeur;
+   }
+
+   // Lecture de la ressource associée
+   std::getline (aFichier, Ligne);
+   if (false == Ligne.empty ())
+   {
+      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrer la Ressource
+   if (  (true == bResultatLecture)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      CaracsEnnemi.mRessource = Valeur;
+   }
+
+   // Lecture de la vitesse de l'ennemi
+   std::getline (aFichier, Ligne);
+   if (false == Ligne.empty ())
+   {
+      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrer la portée
+   if (  (true == bResultatLecture)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      Temp << Valeur;
+      Temp >> CaracsEnnemi.mVitesse;
+   }
+
+   Temp.clear ();
+   // Lecture du nombre de point de vie de l'ennemi
+   std::getline (aFichier, Ligne);
+   if (false == Ligne.empty ())
+   {
+      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrer du nombre de point de vie de l'ennemi
+   if (  (true == bResultatLecture)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      Temp << Valeur;
+      Temp >> CaracsEnnemi.mVie;
+   }
+   
+   mDonneesEnnemis [Nom] = CaracsEnnemi;
 }

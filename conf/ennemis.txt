@@ -1,9 +1,0 @@
-nombre=2
-nom="ennemi1"
-ressource=""
-vitesse=2
-vie=50
-nom="ennemi2"
-ressource=""
-vitesse=4
-vie=25

@@ -64,10 +64,11 @@ public:
    bool GetCaracsTourParId       (const int aId,            std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aVitesse, int& aVie) const;
 
-   bool GetRessourcesCases (std::vector<std::string>&   aRessources)      const;
-   bool GetRessourcesTours (std::vector<std::string>&   aRessources)      const;
-   bool GetCaracsTours     (std::list<TCaracsTour>&   aCaracsTours)     const;
-   bool GetCaracsEnnemis   (std::list<TCaracsEnnemi>& aCaracsEnnemis)   const;
+   bool GetRessourcesCases    (std::vector<std::string>&    aRessources)      const;
+   bool GetRessourcesTours    (std::vector<std::string>&    aRessources)      const;
+   bool GetRessourcesEnnemis  (std::vector<std::string>&    aRessources)      const;
+   bool GetCaracsTours        (std::list<TCaracsTour>&      aCaracsTours)     const;
+   bool GetCaracsEnnemis      (std::list<TCaracsEnnemi>&    aCaracsEnnemis)   const;
 
 private:
    // Lecture d'une ligne
@@ -80,6 +81,7 @@ private:
    void EnregistrementDonnee     (std::ifstream& aFichier, std::string& aStrType);
    void EnregistrementTypeCase   (std::ifstream& aFichier);
    void EnregistrementTypeTour   (std::ifstream& aFichier);
+   void EnregistrementTypeEnnemi (std::ifstream& aFichier);
 
 private:
    std::map<std::string, std::string>     mDonnees;

@@ -26,7 +26,7 @@ bool CProjectile::OnInit (void)
 	}
 	
 	//On charge toutes les images dans les surfaces associées
-	mpImage = SDL_LoadBMP ("../Ressources/Projectile.bmp");
+	mpImage = SDL_LoadBMP ("../ressources/Projectile.bmp");
 	
    //On teste le retour du chargement
 	if ((mpImage == NULL))

@@ -6,6 +6,7 @@
 #include "Plateau.h"
 #include "Menu.h"
 #include "Ennemi.h"
+#include "Timer.h"
 
 class CIA;
 
@@ -25,9 +26,6 @@ public:
 
    CPlateau& GetPlateau (void);
 
-   void AjoutEnnemi  (void);
-   /*void AjoutTour    (int aNumCase);*/
-
    bool PartieEnCours         (void);
    void ChangerEtatPartie     (bool abEtatPartie);
    bool PlacementEstAutorise  (void);
@@ -39,16 +37,33 @@ public:
    int GetLargeur (void);
 
 private:
+   void AjoutEnnemi  (void);
+   void ProgressionProjectiles   (void);
+   void ProgressionEnnemis       (void);
+   
+   bool LancementNouvelleVagueEnnemisPossible   (void);
+   void LancementVagueEnnemis                   (void);
+
+private:
    CConfiguration mConfig;
    CPlateau       mPlateau;
    CMenu          mMenu;
    CIA*           mpIA;
+   CTimer         mTimerVague;
+   CTimer         mTimerEnnemi;
 
 	int mHauteur;
 	int mLargeur;
 
+   bool  mbPremiereTour;
    bool  mbPartieEnCours;
+
+   int   mDerniereVagueLancee;
+   int   mNumVagueEnCours;
+   int   mNbEnnemisVague;
    int   mTypeTourSelect;
+   int   mTempsInterVague;
+   int   mTempsProchainEnnemi;
    
    std::list<CTourPtr>     mListTour;
    std::list<CTourPtr>     mListTourTiree;
