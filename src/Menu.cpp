@@ -233,7 +233,7 @@ void CMenu::OnClic (int aX, int aY)
                break;
 
             case eNewEnnemi:
-               // mJeu.AjoutEnnemi ();
+//               mJeu.AjoutEnnemi ();
                break;
                
             default:

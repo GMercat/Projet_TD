@@ -7,8 +7,8 @@ CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
    mConfig        (aConfig),
    mJeu           (aJeu),
    mNumCaseDepart (-1),
-   mNumCaseArrivee(-1),
-   mpImagePause   (NULL)
+   mNumCaseArrivee(-1)
+//   mpImagePause   (NULL)
 // TODO Non utilisé    mpImagePCC     (NULL)
 {
 	mCoordonneesDerniereCaseModifiee.first = -1;
@@ -17,7 +17,8 @@ CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
 
 CPlateau::~CPlateau (void)
 {
-   std::vector<SDL_Surface*>::iterator IterImage;
+   ;
+/*   std::vector<SDL_Surface*>::iterator IterImage;
    for (IterImage = mImagesCases.begin (); IterImage != mImagesCases.end (); ++IterImage)
    {
       SDL_FreeSurface (*IterImage);
@@ -25,9 +26,9 @@ CPlateau::~CPlateau (void)
    for (IterImage = mImagesTours.begin (); IterImage != mImagesTours.end (); ++IterImage)
    {
       SDL_FreeSurface (*IterImage);
-   }
+   }*/
 
-   SDL_FreeSurface (mpImagePause);
+//   SDL_FreeSurface (mpImagePause);
    // TODO Non utilisé SDL_FreeSurface (mpImagePCC);
 }
 
@@ -35,33 +36,33 @@ bool CPlateau::OnInit (void)
 {
    bool bReturn = true;
 
-   int iImage = 0;
-
    std::string NomRessourceImageStr;
-
-   std::vector<SDL_Surface*>::iterator IterImage;
+   int         IterImage = 0;
 
    bool bConfig = true;
-   bConfig &= mConfig.Get ("nbCaseLargeur", mNbCasesLargeur);
-   bConfig &= mConfig.Get ("nbCaseHauteur", mNbCasesHauteur);
-   bConfig &= mConfig.Get ("numeroCaseDepart", mNumCaseDepart);
+   bConfig &= mConfig.Get ("nbCaseLargeur",     mNbCasesLargeur);
+   bConfig &= mConfig.Get ("nbCaseHauteur",     mNbCasesHauteur);
+   bConfig &= mConfig.Get ("numeroCaseDepart",  mNumCaseDepart);
    bConfig &= mConfig.Get ("numeroCaseArrivee", mNumCaseArrivee);
-   bConfig &= mConfig.Get ("largeurCase", mLargeurCase);
-   bConfig &= mConfig.Get ("hauteurCase", mHauteurCase);
+   bConfig &= mConfig.Get ("largeurCase",       mLargeurCase);
+   bConfig &= mConfig.Get ("hauteurCase",       mHauteurCase);
 
    bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
    bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
   
    if (bConfig)
    {
-      iImage = 0;
-
-      mImagesCases.resize (mNomImagesCase.size ());
 
       // Allocation des surfaces des cases
-      for (IterImage = mImagesCases.begin (); IterImage != mImagesCases.end (); ++IterImage)
+      for (IterImage = 0; IterImage < mNomImagesCase.size (); ++IterImage)
       {
-         (*IterImage) = NULL;
+         CImagePtr ImageCourantePtr (new CImage ());
+         
+         ImageCourantePtr->Load (mNomImagesCase[IterImage]);
+         
+         mImagesCases.push_back (ImageCourantePtr);
+         
+/*         (*IterImage) = NULL;
          
          //On charge toutes les images dans les surfaces associées
          std::string CheminRessource ("../ressources/");
@@ -75,15 +76,19 @@ bool CPlateau::OnInit (void)
             std::cout << "Probleme de chargement de l'image : " << (mNomImagesCase[iImage]).c_str () << "(" << CheminRessource.c_str () << ")" << std::endl;
 		      bReturn = false;
 	      }
-         iImage++;
+         iImage++;*/
       }
 
-      iImage = 0;
       // Allocation des surfaces des tours
-      mImagesTours.resize (mNomImagesTour.size ());
-      for (IterImage = mImagesTours.begin (); IterImage != mImagesTours.end (); ++IterImage)
+      for (IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
       {
-         (*IterImage) = NULL;
+         CImagePtr ImageCourantePtr (new CImage ());
+         
+         ImageCourantePtr->Load (mNomImagesTour[IterImage]);
+         
+         mImagesTours.push_back (ImageCourantePtr);
+      
+/*         (*IterImage) = NULL;
          
          //On charge toutes les images dans les surfaces associées
          std::string CheminRessource ("../ressources/");
@@ -97,7 +102,7 @@ bool CPlateau::OnInit (void)
             std::cout << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << "(" << CheminRessource.c_str () << ")" << std::endl;
 		      bReturn = false;
 	      }
-         iImage++;
+         iImage++;*/
       }
 
       // TODO Non utilisé 
@@ -109,20 +114,24 @@ bool CPlateau::OnInit (void)
       {
          mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
       }*/
-
-
-      if(mpImagePause != NULL)
-      {
-         SDL_FreeSurface(mpImagePause), mpImagePause = NULL;
-      }   
-      mpImagePause = SDL_LoadBMP("../ressources/JeuPause.bmp");
+            
+      std::string NomFichier ("JeuPause.bmp");
+      mImagePausePtr = CImagePtr (new CImage ());
+      mImagePausePtr->Load        (NomFichier);
+      mImagePausePtr->SetAlpha    (128);
+      
+//      if(mpImagePause != NULL)
+//      {
+//         SDL_FreeSurface(mpImagePause), mpImagePause = NULL;
+//      }   
+//      mpImagePause = SDL_LoadBMP("../ressources/JeuPause.bmp");
    
-	   //On teste le retour du chargement
-	   if (mpImagePause == NULL)
-	   {
-		   std::cout << "Probleme de chargement des images" << std::endl;
-		   bReturn = false;
-	   }
+//	   //On teste le retour du chargement
+//	   if (mpImagePause == NULL)
+//	   {
+//		   std::cout << "Probleme de chargement des images" << std::endl;
+//		   bReturn = false;
+//	   }
 
 	   //Mis en place de la transparence
 	   //if(SDL_SetColorKey(o,SDL_SRCCOLORKEY,0)==-1)
@@ -130,7 +139,7 @@ bool CPlateau::OnInit (void)
 	   //if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
 	   //	std::cout << "Erreur avec la transparence de la croix" << std::endl;
 
-      SDL_SetAlpha (mpImagePause, SDL_SRCALPHA, 128);
+//      SDL_SetAlpha (mpImagePause, SDL_SRCALPHA, 128);
 
       SDL_Rect	Rect;
 
@@ -138,11 +147,7 @@ bool CPlateau::OnInit (void)
 	   Rect.h = mHauteurCase;
 
 #ifdef DEBUG
-   std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
-#endif  
-
-
-#ifdef DEBUG
+      std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
       std::cout << "NbCaseLargeur = " << mNbCasesLargeur << std::endl;
       std::cout << "NbCaseHauteur = " << mNbCasesHauteur << std::endl;
       std::cout << "NumCaseDepart = " << mNumCaseDepart << std::endl;
@@ -271,11 +276,13 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
          if (EtatCase == CCase::eTour)
          {
             int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
-            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesTours[TypeCase]);
+            mImagesTours[TypeCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+            //mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesTours[TypeCase]);
          }
          else
          {
-            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesCases[EtatCase]);
+            mImagesCases[EtatCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+            //mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesCases[EtatCase]);
          }
          //mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
          /*}
@@ -295,7 +302,8 @@ void CPlateau::OnAfficheEnPause (SDL_Surface* apEcran)
    Position.y = 0;
    Position.w = mNbCasesLargeur * mLargeurCase;
    Position.h = mNbCasesHauteur * mHauteurCase;
-   SDL_BlitSurface(mpImagePause, NULL, apEcran, &Position);
+      
+   mImagePausePtr->Afficher (apEcran, Position);
 }
 
 CTourPtr& CPlateau::ConstruireTour (int aNumCaseCliquee)

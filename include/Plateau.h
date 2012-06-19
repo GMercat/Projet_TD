@@ -4,6 +4,7 @@
 #include "Defined.h"
 #include "Config.h"
 #include "Case.h"
+#include "Image.h"
 
 class CJeu;
 
@@ -53,12 +54,14 @@ private:
    std::pair<int, int>  mCoordonneesDerniereCaseModifiee;
 
    std::vector <std::string>  mNomImagesCase;
-   std::vector <SDL_Surface*> mImagesCases;
+   //std::vector <SDL_Surface*> mImagesCases;
+   std::vector <CImagePtr>       mImagesCases;
    
    std::vector <std::string>  mNomImagesTour;
-   std::vector <SDL_Surface*> mImagesTours;
+   //std::vector <SDL_Surface*> mImagesTours;
+   std::vector <CImagePtr>       mImagesTours;
       
-   SDL_Surface*   mpImagePause;
+   CImagePtr   mImagePausePtr;
    // TODO Non utilisé SDL_Surface*	mpImagePCC;
 };
 

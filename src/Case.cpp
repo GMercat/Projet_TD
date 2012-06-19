@@ -101,6 +101,11 @@ int CCase::GetTypeTour (void)
    return TypeRetour;
 }
 
+SDL_Rect& CCase::GetPosition (void)
+{
+   return mPosition;
+}
+
 void CCase::SetPlusCourtChemin (bool abEstPlusCourtChemin)
 {
    mbEstPlusCourtChemin = abEstPlusCourtChemin;

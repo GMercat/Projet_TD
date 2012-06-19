@@ -38,6 +38,7 @@ public:
          int         GetNumCase     (void);
          void        GetCentre      (int& aXCentre, int &aYCentre);
          int         GetTypeTour    (void);
+         SDL_Rect&   GetPosition    (void);
 
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
