@@ -54,12 +54,9 @@ private:
    std::pair<int, int>  mCoordonneesDerniereCaseModifiee;
 
    std::vector <std::string>  mNomImagesCase;
-   //std::vector <SDL_Surface*> mImagesCases;
-   std::vector <CImagePtr>       mImagesCases;
-   
+   std::vector <CImagePtr>    mImagesCases;
    std::vector <std::string>  mNomImagesTour;
-   //std::vector <SDL_Surface*> mImagesTours;
-   std::vector <CImagePtr>       mImagesTours;
+   std::vector <CImagePtr>    mImagesTours;
       
    CImagePtr   mImagePausePtr;
    // TODO Non utilisé SDL_Surface*	mpImagePCC;

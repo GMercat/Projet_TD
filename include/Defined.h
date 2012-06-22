@@ -9,8 +9,7 @@
 
 #include "../libs/boost/shared_ptr.hpp"
 
-//#ifdef DEBUG
-//#endif
+// Pour activer ou non les traces DEBUG
 //#define DEBUG
 
 // Le nombre de frame par seconde

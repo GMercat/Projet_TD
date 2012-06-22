@@ -52,12 +52,11 @@ private:
    CTimer         mTimerVague;
    CTimer         mTimerEnnemi;
 
-	int mHauteur;
-	int mLargeur;
-
    bool  mbPremiereTour;
    bool  mbPartieEnCours;
 
+  	int   mHauteur;
+	int   mLargeur;
    int   mDerniereVagueLancee;
    int   mNumVagueEnCours;
    int   mNbEnnemisVague;

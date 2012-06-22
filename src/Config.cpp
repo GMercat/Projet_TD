@@ -16,7 +16,10 @@ CConfiguration::~CConfiguration (void)
 
 void CConfiguration::RaZ()
 {
-   mDonnees.clear();
+   mDonnees.         clear();
+   mDonneesCases.    clear();
+   mDonneesTours.    clear();
+   mDonneesEnnemis.  clear();
 }
 
 bool CConfiguration::Chargement (const std::string& aNomFichier)

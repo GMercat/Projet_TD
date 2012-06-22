@@ -38,12 +38,12 @@ private:
    
    SDL_Surface*   mImageFond;
    SDL_Rect       mPositionFond;
-   std::vector<SDL_Surface*>  mImagesBoutons;
-   std::vector<SDL_Rect>      mPositionsBoutons;
 
+   std::vector <SDL_Surface*> mImagesBoutons;
+   std::vector <SDL_Rect>     mPositionsBoutons;
    std::vector <std::string>  mNomImagesTour;
-   std::vector<SDL_Surface*>  mImagesTours;
-   std::vector<SDL_Rect>      mPositionsTours;
+   std::vector <SDL_Surface*> mImagesTours;
+   std::vector <SDL_Rect>     mPositionsTours;
 };
 
 #endif

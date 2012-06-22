@@ -183,9 +183,11 @@ bool CMenu::OnInit (void)
          //On charge toutes les images dans les surfaces associées
          std::string CheminRessource ("../ressources/");
          CheminRessource += mNomImagesTour[iImage];
-         
+
+#ifdef DEBUG         
          std::cout << "Chargement de : " << CheminRessource.c_str () << std::endl;
-         
+#endif
+
          (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
                   
          //On teste le retour du chargement
@@ -233,7 +235,7 @@ void CMenu::OnClic (int aX, int aY)
                break;
 
             case eNewEnnemi:
-//               mJeu.AjoutEnnemi ();
+// TODO        mJeu.AjoutEnnemi ();
                break;
                
             default:

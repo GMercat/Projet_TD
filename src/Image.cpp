@@ -47,4 +47,3 @@ void CImage::SetAlpha (int aValeurAlpha)
 {
    SDL_SetAlpha (mpSurface, SDL_SRCALPHA, aValeurAlpha);
 }
-

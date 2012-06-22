@@ -129,4 +129,3 @@ void CCase::GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY)
 	aIdPlateauX = mIdPlateauX;
 	aIdPlateauY = mIdPlateauY;
 }
-

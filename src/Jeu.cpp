@@ -31,7 +31,7 @@ CJeu::~CJeu (void)
 bool CJeu::OnInit (void)
 {
    // initialisation de rand
-//   srand(time(NULL));
+   srand(time(NULL));
 
    // Lecture du fichier de configuration
    mConfig.Chargement ("../conf/ConfJeu.txt");
@@ -55,9 +55,7 @@ void CJeu::OnClic (int aX, int aY)
 
    if (mbPartieEnCours)
    {
-      // TODO 
       NumCaseCliquee = mPlateau.OnClic (aX, aY);
-
    }
 
    if (NumCaseCliquee == -1)
@@ -71,7 +69,6 @@ void CJeu::OnClic (int aX, int aY)
       // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
       if (PlacementEstAutorise ())
       {
-         // AjoutTour (NumCase);
          // Construction de la tour dans la case
          CTourPtr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
          mListTour.push_back (NouvelleTour);
@@ -168,7 +165,7 @@ void CJeu::ProgressionEnnemis (void)
    {
       mNumVagueEnCours = mDerniereVagueLancee + 1;
 
-      std::cout << "Lancement de la " << mNumVagueEnCours << "ième vague d'ennemis" << std::endl;
+      std::cout << "Lancement de la " << mNumVagueEnCours << "ieme vague d'ennemis" << std::endl;
       
       LancementVagueEnnemis ();
       
@@ -350,5 +347,3 @@ int CJeu::GetLargeur (void)
 {
    return mLargeur;
 }
-
-

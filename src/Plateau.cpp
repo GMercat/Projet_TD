@@ -8,7 +8,6 @@ CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
    mJeu           (aJeu),
    mNumCaseDepart (-1),
    mNumCaseArrivee(-1)
-//   mpImagePause   (NULL)
 // TODO Non utilisé    mpImagePCC     (NULL)
 {
 	mCoordonneesDerniereCaseModifiee.first = -1;
@@ -18,17 +17,6 @@ CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
 CPlateau::~CPlateau (void)
 {
    ;
-/*   std::vector<SDL_Surface*>::iterator IterImage;
-   for (IterImage = mImagesCases.begin (); IterImage != mImagesCases.end (); ++IterImage)
-   {
-      SDL_FreeSurface (*IterImage);
-   }
-   for (IterImage = mImagesTours.begin (); IterImage != mImagesTours.end (); ++IterImage)
-   {
-      SDL_FreeSurface (*IterImage);
-   }*/
-
-//   SDL_FreeSurface (mpImagePause);
    // TODO Non utilisé SDL_FreeSurface (mpImagePCC);
 }
 
@@ -61,22 +49,6 @@ bool CPlateau::OnInit (void)
          ImageCourantePtr->Load (mNomImagesCase[IterImage]);
          
          mImagesCases.push_back (ImageCourantePtr);
-         
-/*         (*IterImage) = NULL;
-         
-         //On charge toutes les images dans les surfaces associées
-         std::string CheminRessource ("../ressources/");
-         CheminRessource += mNomImagesCase[iImage];
-         
-         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
-                  
-         //On teste le retour du chargement
-	      if ((*IterImage) == NULL)
-	      {
-            std::cout << "Probleme de chargement de l'image : " << (mNomImagesCase[iImage]).c_str () << "(" << CheminRessource.c_str () << ")" << std::endl;
-		      bReturn = false;
-	      }
-         iImage++;*/
       }
 
       // Allocation des surfaces des tours
@@ -87,22 +59,6 @@ bool CPlateau::OnInit (void)
          ImageCourantePtr->Load (mNomImagesTour[IterImage]);
          
          mImagesTours.push_back (ImageCourantePtr);
-      
-/*         (*IterImage) = NULL;
-         
-         //On charge toutes les images dans les surfaces associées
-         std::string CheminRessource ("../ressources/");
-         CheminRessource += mNomImagesTour[iImage];
-         
-         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
-                  
-         //On teste le retour du chargement
-	      if ((*IterImage) == NULL)
-	      {
-            std::cout << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << "(" << CheminRessource.c_str () << ")" << std::endl;
-		      bReturn = false;
-	      }
-         iImage++;*/
       }
 
       // TODO Non utilisé 
@@ -120,26 +76,11 @@ bool CPlateau::OnInit (void)
       mImagePausePtr->Load        (NomFichier);
       mImagePausePtr->SetAlpha    (128);
       
-//      if(mpImagePause != NULL)
-//      {
-//         SDL_FreeSurface(mpImagePause), mpImagePause = NULL;
-//      }   
-//      mpImagePause = SDL_LoadBMP("../ressources/JeuPause.bmp");
-   
-//	   //On teste le retour du chargement
-//	   if (mpImagePause == NULL)
-//	   {
-//		   std::cout << "Probleme de chargement des images" << std::endl;
-//		   bReturn = false;
-//	   }
-
 	   //Mis en place de la transparence
 	   //if(SDL_SetColorKey(o,SDL_SRCCOLORKEY,0)==-1)
 	   //	std::cout << "Erreur avec la transparence du rond" << std::endl;
 	   //if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
 	   //	std::cout << "Erreur avec la transparence de la croix" << std::endl;
-
-//      SDL_SetAlpha (mpImagePause, SDL_SRCALPHA, 128);
 
       SDL_Rect	Rect;
 
@@ -247,9 +188,8 @@ int CPlateau::OnClic (int aX, int aY)
       if (GetCase(NumeroCaseCliquee)->EstVide() && (mJeu.GetTourSelectionnee () != -1))
       {
          //On met le type à jour
-         //TODO Prévision Construction tour
          GetCase(NumeroCaseCliquee)->SetEtat (CCase::eTour);
-         //GetCase(NumeroCaseCliquee)->SetEtat (mJeu.GetTourSelectionnee ());
+
          mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
          mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
       }
@@ -268,29 +208,26 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
    {
       for(IterLargeur = 0; IterLargeur < mNbCasesLargeur; IterLargeur++)
       {
-         /*if (false ==  mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstPlusCourtChemin ())
-         {*/
-         // TODO  Gérer le fait que ça peut être une case ou une tour !
-         //       Les surfaces ne sont pas les mêmes !
-         CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetEtat ();
-         if (EtatCase == CCase::eTour)
-         {
-            int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
-            mImagesTours[TypeCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
-            //mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesTours[TypeCase]);
-         }
-         else
-         {
-            mImagesCases[EtatCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
-            //mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mImagesCases[EtatCase]);
-         }
-         //mPlateau[IterLargeur][IterHauteur]->OnAffiche (apEcran, mImages[mPlateau[IterLargeur][IterHauteur]->GetEtat()] );
-         /*}
-         else
-
+         // TODO Affichage Plus Court Chemin
+         /*if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstPlusCourtChemin ())
          {
              mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mpImagePCC);
-         }*/
+         }
+         else*/
+         {
+            //       Les surfaces ne sont pas les mêmes !
+            // TODO  Gérer le fait que ça peut être une case ou une tour !
+            CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetEtat ();
+            if (EtatCase == CCase::eTour)
+            {
+               int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
+               mImagesTours[TypeCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+            }
+            else
+            {
+               mImagesCases[EtatCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+            }
+         }
       }
    }
 }
@@ -396,7 +333,6 @@ void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
       for(IterLargeur = 0; IterLargeur < mNbCasesLargeur; IterLargeur++)
       {
          mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->SetPlusCourtChemin (false);
-         //mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (false);
       }
    }
    
@@ -406,6 +342,5 @@ void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
       IterHauteur = (*IterPlusCourtChemin) / mNbCasesLargeur;
       IterLargeur = (*IterPlusCourtChemin) % mNbCasesLargeur;
       mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->SetPlusCourtChemin (true);
-      //mPlateau[IterLargeur][IterHauteur]->SetPlusCourtChemin (true);
    }
 }

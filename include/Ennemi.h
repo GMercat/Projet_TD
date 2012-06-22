@@ -17,27 +17,21 @@ public:
    CEnnemi  (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee);
    ~CEnnemi (void);
 
-   EType GetType (void);
-   void  SetType (EType aType);
-
    bool  OnInit    (void);
    void  OnAffiche (SDL_Surface* apScreen);
 
-   void  SetPCCheminCase (std::list<int>& aPPCheminCase);
-   void  GetCentre (int& aXCentre, int& aYCentre);
+   EType GetType           (void);
+   void  SetType           (EType aType);
+   void  SetPCCheminCase   (std::list<int>& aPPCheminCase);
+   void  GetCentre         (int& aXCentre, int& aYCentre);
 
    int   DetermineCaseCourante   (void);
-   //void  CalculPCCheminReel      (std::list<int>& aPCChemin);
 
    void  Avance (void);
-   bool  EstArrive (void);
-
    void  Touche (int aPuissance);
    
    bool  EstVivant (void);
-
-private:
-   //void  CalculPCChemin  (void);
+   bool  EstArrive (void);
    
 private:
    CIA*  mpIA;

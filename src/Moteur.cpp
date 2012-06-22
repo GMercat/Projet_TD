@@ -59,28 +59,7 @@ void CMoteur::OnClic (int aX, int aY)
 	std::cout << "Moteur.OnClic (" << aX << ", " << aY << ")" << std::endl;
 #endif
 	
-   /*int NumCase = */mJeu.OnClic (aX, aY);
-
-/*
-   if (NumCase != -1)
-   {
-      mIA.MiseAJourMatriceGraphe (NumCase, true);
-
-      // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
-      bAutorisePlacementTour = mJeu.PlacementEstAutorise ();
-
-      if (bAutorisePlacementTour)
-      {
-         mJeu.AjoutTour (NumCase);
-      }
-      else
-      {
-         std::cout << "Placement non autorisé" << std::endl;
-         mJeu.AnnuleDerniereModif ();
-         mIA.MiseAJourMatriceGraphe (NumCase, false);
-      }
-   }
-*/
+   mJeu.OnClic (aX, aY);
 }
 
 void CMoteur::OnProgression   (void)
