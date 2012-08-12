@@ -31,8 +31,8 @@ public:
 
 	void GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY);
 	
-   const ETypeCase	GetEtat        (void) const;
-         void	      SetEtat        (ETypeCase aeNouvelEtat);
+   const ETypeCase	GetType        (void) const;
+         void	      SetType        (ETypeCase aeNouvelType);
          void	      SetPosition    (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
          void        SetNumCase     (int aNumCase);
          int         GetNumCase     (void);
@@ -44,7 +44,7 @@ public:
    bool EstPlusCourtChemin (void);
 
 private:
-	ETypeCase   mEtat;
+	ETypeCase   mType;
    
    int         mNumCase;
    bool        mbEstPlusCourtChemin;

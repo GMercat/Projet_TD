@@ -3,17 +3,25 @@
 #include <fstream>
 #include <sstream>
 
+/**
+ * @brief   Constructeur
+ */
 CConfiguration::CConfiguration (void)
 {
    ;
 }
 
+/**
+ * @brief   Destructeur
+ */
 CConfiguration::~CConfiguration (void)
 {
    ;
 }
 
-
+/**
+ * @brief   Remise à zéro de la configuration
+ */
 void CConfiguration::RaZ()
 {
    mDonnees.         clear();
@@ -22,6 +30,13 @@ void CConfiguration::RaZ()
    mDonneesEnnemis.  clear();
 }
 
+/**
+ * @brief   Chargement d'un fichier de configuration
+ *
+ * @param[in] aNomFichier  Nom du fichier (avec chemin) à lire
+ *
+ * @return  True, si le chargement de la configuration s'est bien passé, false sinon.
+ */
 bool CConfiguration::Chargement (const std::string& aNomFichier)
 {
    int Position = 0;
@@ -64,11 +79,26 @@ bool CConfiguration::Chargement (const std::string& aNomFichier)
    return true;
 }
 
+/**
+ * @brief   Test si un élément de configuration correspond à la clé passée en paramètre
+ *
+ * @param[in] aCle   Clé à tester
+ *
+ * @return True si un élément a été trouvé, false sinon.
+ */
 bool CConfiguration::Contient (const std::string& aCle) const
 {
    return mDonnees.find (aCle) != mDonnees.end();
 }
 
+/**
+ * @brief   Obtention d'une chaine de caractères correspondant à une clé
+ *
+ * @param[in]  aCle     Clé de l'élément à chercher
+ * @param[out] aValeur  Valeur trouvée
+ *
+ * @return True si la valeur a été trouvée
+ */
 bool CConfiguration::Get(const std::string& aCle, std::string& aValeur) const
 {
    std::map<std::string, std::string>::const_iterator IterDonnees = mDonnees.find(aCle);
@@ -84,6 +114,14 @@ bool CConfiguration::Get(const std::string& aCle, std::string& aValeur) const
    }
 }
 
+/**
+ * @brief   Obtention d'un entier correspondant à une clé
+ *
+ * @param[in]  aCle     Clé de l'élément à chercher
+ * @param[out] aValeur  Valeur trouvée
+ *
+ * @return True si la valeur a été trouvée
+ */
 bool CConfiguration::Get(const std::string& aCle, int& aValeur) const
 {
    std::string String;
@@ -103,6 +141,14 @@ bool CConfiguration::Get(const std::string& aCle, int& aValeur) const
    }
 }
 
+/**
+ * @brief   Obtention d'un entier correspondant à une clé
+ *
+ * @param[in]  aCle     Clé de l'élément à chercher
+ * @param[out] aValeur  Valeur trouvée
+ *
+ * @return True si la valeur a été trouvée
+ */
 bool CConfiguration::Get(const std::string& aCle, long& aValeur) const
 {
    std::string String;
@@ -121,6 +167,14 @@ bool CConfiguration::Get(const std::string& aCle, long& aValeur) const
    }
 }
 
+/**
+ * @brief   Obtention d'un double correspondant à une clé
+ *
+ * @param[in]  aCle     Clé de l'élément à chercher
+ * @param[out] aValeur  Valeur trouvée
+ *
+ * @return True si la valeur a été trouvée
+ */
 bool CConfiguration::Get(const std::string& aCle, double& aValeur) const
 {
    std::string String;
@@ -139,6 +193,14 @@ bool CConfiguration::Get(const std::string& aCle, double& aValeur) const
    }
 }
 
+/**
+ * @brief   Obtention d'un booléen correspondant à une clé
+ *
+ * @param[in]  aCle     Clé de l'élément à chercher
+ * @param[out] aValeur  Valeur trouvée
+ *
+ * @return True si la valeur a été trouvée
+ */
 bool CConfiguration::Get(const std::string& aCle, bool& aValeur) const
 {
    std::string String;
@@ -154,6 +216,14 @@ bool CConfiguration::Get(const std::string& aCle, bool& aValeur) const
    }
 }
 
+/**
+ * @brief   Recupération du chemin d'une ressource graphique pour une case à partir du nom
+ *
+ * @param[in]  aNom        Nom de la case
+ * @param[out] aRessource  Chemin du fichier
+ *
+ * @retrun  True si la ressource a été trouvée
+ */
 bool CConfiguration::GetRessourceCaseParNom (const std::string& aNom, std::string& aRessource) const
 {
    std::map<std::string, std::string>::const_iterator IterDonnees = mDonneesCases.find(aNom);
@@ -169,6 +239,18 @@ bool CConfiguration::GetRessourceCaseParNom (const std::string& aNom, std::strin
    }
 }
 
+/**
+ * @brief   Recupération des caractéristiques d'une tour à partir du nom
+ *
+ * @param[in]  aNom        Nom de la tour
+ * @param[out] aRessource  Chemin du fichier
+ * @param[out] aPortee     Portée de tire de la tour
+ * @param[out] aPuissance  Puissance de tire de la tour
+ * @param[out] aVitesse    Vitesse des projectiles tirés par la tour
+ * @param[out] aCadence    Cadence de tire de la tour 
+ *
+ * @retrun  True si les caractéristiques ont été trouvées
+ */
 bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
 {
    std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.find (aNom);
@@ -189,6 +271,19 @@ bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& 
    }
 }
 
+
+/**
+ * @brief   Recupération des caractéristiques d'une tour à partir de son index
+ *
+ * @param[in]  aId         Index de la tour
+ * @param[out] aRessource  Chemin du fichier
+ * @param[out] aPortee     Portée de tire de la tour
+ * @param[out] aPuissance  Puissance de tire de la tour
+ * @param[out] aVitesse    Vitesse des projectiles tirés par la tour
+ * @param[out] aCadence    Cadence de tire de la tour 
+ *
+ * @retrun  True si les caractéristiques ont été trouvées
+ */
 bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
 {
    int IndexTour = 0;
@@ -216,6 +311,17 @@ bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessource,
    }
 }
 
+
+/**
+ * @brief   Recupération des caractéristiques d'un ennemi à partir du nom
+ *
+ * @param[in]  aNom        Nom de l'ennemi
+ * @param[out] aRessource  Chemin du fichier
+ * @param[out] aVitesse    Vitesse de déplacement de l'ennemi
+ * @param[out] aVie        Nombre de point de l'ennemi
+ *
+ * @retrun  True si les caractéristiques ont été trouvées
+ */
 bool CConfiguration::GetCaracsEnnemiParNom (const std::string& aNom, std::string& aRessource, int& aVitesse, int& aVie) const
 {
    std::map<std::string, TCaracsEnnemi>::const_iterator IterDonnees = mDonneesEnnemis.find (aNom);

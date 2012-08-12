@@ -4,6 +4,9 @@
 #include "Defined.h"
 #include <map>
 
+/**
+ * @brief   Structure contenant les caractéristiques d'une tour
+ */
 struct TCaracsTour
 {
    std::string mRessource; // Ressource graphique
@@ -21,7 +24,10 @@ struct TCaracsTour
       mCadence    = aCaracsTour.mCadence;
    };
 };
-   
+
+/**
+ * @brief   Structure contenant les caractéristiques d'un ennemi
+ */
 struct TCaracsEnnemi
 {
    std::string mRessource;
