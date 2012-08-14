@@ -15,143 +15,143 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Case.h">
+    <ClInclude Include="..\..\include\Case.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Defined.h">
+    <ClInclude Include="..\..\include\Defined.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Ennemi.h">
+    <ClInclude Include="..\..\include\Ennemi.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\IA.h">
+    <ClInclude Include="..\..\include\IA.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Jeu.h">
+    <ClInclude Include="..\..\include\Jeu.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Menu.h">
+    <ClInclude Include="..\..\include\Menu.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Moteur.h">
+    <ClInclude Include="..\..\include\Moteur.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Plateau.h">
+    <ClInclude Include="..\..\include\Plateau.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Timer.h">
+    <ClInclude Include="..\..\include\Timer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Projectile.h">
+    <ClInclude Include="..\..\include\Projectile.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Config.h">
+    <ClInclude Include="..\..\include\Config.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Tour.h">
+    <ClInclude Include="..\..\include\Tour.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Image.h">
+    <ClInclude Include="..\..\include\Image.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\ressources\BoutonNew.bmp">
+    <None Include="..\..\ressources\BoutonNew.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\BoutonPause.bmp">
+    <None Include="..\..\ressources\BoutonPause.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\BoutonQuit.bmp">
+    <None Include="..\..\ressources\BoutonQuit.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\BoutonReprendre.bmp">
+    <None Include="..\..\ressources\BoutonReprendre.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Ennemi.bmp">
+    <None Include="..\..\ressources\Ennemi.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\JeuPause.bmp">
+    <None Include="..\..\ressources\JeuPause.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Menu.bmp">
+    <None Include="..\..\ressources\Menu.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Mur_25.bmp">
+    <None Include="..\..\ressources\Mur_25.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Mur_50.bmp">
+    <None Include="..\..\ressources\Mur_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\PCC_25.bmp">
+    <None Include="..\..\ressources\PCC_25.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\PCC_50.bmp">
+    <None Include="..\..\ressources\PCC_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Tour1_50.bmp">
+    <None Include="..\..\ressources\Tour1_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Tour2_50.bmp">
+    <None Include="..\..\ressources\Tour2_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Tour3_50.bmp">
+    <None Include="..\..\ressources\Tour3_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Tour4_50.bmp">
+    <None Include="..\..\ressources\Tour4_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Tour5_50.bmp">
+    <None Include="..\..\ressources\Tour5_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Tour6_50.bmp">
+    <None Include="..\..\ressources\Tour6_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Vide_25.bmp">
+    <None Include="..\..\ressources\Vide_25.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
-    <None Include="..\ressources\Vide_50.bmp">
+    <None Include="..\..\ressources\Vide_50.bmp">
       <Filter>Fichiers de ressources</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Case.cpp">
+    <ClCompile Include="..\..\src\Case.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Ennemi.cpp">
+    <ClCompile Include="..\..\src\Ennemi.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\IA.cpp">
+    <ClCompile Include="..\..\src\IA.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Jeu.cpp">
+    <ClCompile Include="..\..\src\Jeu.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Main.cpp">
+    <ClCompile Include="..\..\src\Main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Menu.cpp">
+    <ClCompile Include="..\..\src\Menu.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Moteur.cpp">
+    <ClCompile Include="..\..\src\Moteur.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Plateau.cpp">
+    <ClCompile Include="..\..\src\Plateau.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Timer.cpp">
+    <ClCompile Include="..\..\src\Timer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Projectile.cpp">
+    <ClCompile Include="..\..\src\Projectile.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Config.cpp">
+    <ClCompile Include="..\..\src\Config.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Tour.cpp">
+    <ClCompile Include="..\..\src\Tour.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Image.cpp">
+    <ClCompile Include="..\..\src\Image.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
