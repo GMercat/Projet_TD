@@ -116,7 +116,7 @@ bool CPlateau::OnInit (void)
 			   {
 			      if ((NumCase != mNumCaseDepart) && (NumCase != mNumCaseArrivee))
 			      {
-				      CasePtr->SetEtat (CCase::eMur);
+				      CasePtr->SetType (CCase::eMur);
 				   }
 			   }
             mCases.push_back (CasePtr);
@@ -151,12 +151,12 @@ void CPlateau::OnReset (void)
 			{
             if ((NumCase != mNumCaseDepart) && (NumCase != mNumCaseArrivee))
 			   {
-               mCases[NumCase]->SetEtat (CCase::eMur);
+               mCases[NumCase]->SetType (CCase::eMur);
 				}
 			}
          else
          {
-            mCases[NumCase]->SetEtat (CCase::eVide);
+            mCases[NumCase]->SetType (CCase::eVide);
          }
 		}
 	}
@@ -188,7 +188,7 @@ int CPlateau::OnClic (int aX, int aY)
       if (GetCase(NumeroCaseCliquee)->EstVide() && (mJeu.GetTourSelectionnee () != -1))
       {
          //On met le type à jour
-         GetCase(NumeroCaseCliquee)->SetEtat (CCase::eTour);
+         GetCase(NumeroCaseCliquee)->SetType (CCase::eTour);
 
          mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
          mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
@@ -217,7 +217,7 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
          {
             //       Les surfaces ne sont pas les mêmes !
             // TODO  Gérer le fait que ça peut être une case ou une tour !
-            CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetEtat ();
+            CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
             if (EtatCase == CCase::eTour)
             {
                int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
@@ -259,7 +259,7 @@ void CPlateau::AnnuleDerniereModif (void)
 {
    if (mCoordonneesDerniereCaseModifiee.first != -1 && mCoordonneesDerniereCaseModifiee.second != -1)
    {
-      GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetEtat (CCase::eVide);
+      GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetType (CCase::eVide);
       GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)
          ->SetPlusCourtChemin (GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
    }
