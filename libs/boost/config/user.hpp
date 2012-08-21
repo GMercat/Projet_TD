@@ -13,11 +13,6 @@
 //  configuration policy:
 //
 
-//! @todo SRO portage Linux : désactivé car provoque des problèmes avec GCC à la définition de sp_typeinfo
-#ifdef _WIN32
-#define BOOST_NO_STD_TYPEINFO
-#endif
-
 // define this to locate a compiler config file:
 // #define BOOST_COMPILER_CONFIG <myheader>
 
