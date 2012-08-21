@@ -18,30 +18,34 @@ bool CMoteur::OnInit (void)
 	bool bReturn = false;
    
 	bReturn  = mJeu.OnInit ();
-   mIA.OnInit ();
 
-   //Initialisation de la SDL
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
-		std::cout << "Probleme pour initialiser SDL: " << SDL_GetError() << std::endl;
-		bReturn = false;
-	}
-
-   // Mettre un titre à la fenêtre
-   SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
-
-   //Ouvrir une fenetre
-   mpScreen = SDL_SetVideoMode ( mJeu.GetLargeur (),
-                                 mJeu.GetHauteur (),
-                                 32,
-                                 SDL_DOUBLEBUF | SDL_HWSURFACE);
-   if (mpScreen == NULL)
+   if (bReturn)
    {
-      bReturn = false;
-   }
+      mIA.OnInit ();
 
-   mIA.ConstruireMatriceGraphe ();
-   mJeu.PlacementEstAutorise ();
+      //Initialisation de la SDL
+	   if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	   {
+		   std::cout << "Probleme pour initialiser SDL: " << SDL_GetError() << std::endl;
+		   bReturn = false;
+	   }
+
+      // Mettre un titre à la fenêtre
+      SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
+
+      //Ouvrir une fenetre
+      mpScreen = SDL_SetVideoMode ( mJeu.GetLargeur (),
+                                    mJeu.GetHauteur (),
+                                    32,
+                                    SDL_DOUBLEBUF | SDL_HWSURFACE);
+      if (mpScreen == NULL)
+      {
+         bReturn = false;
+      }
+
+      mIA.ConstruireMatriceGraphe ();
+      mJeu.PlacementEstAutorise ();
+   }
 
 	return bReturn;
 }

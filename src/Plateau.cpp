@@ -68,7 +68,7 @@ bool CPlateau::OnInit (void)
       }
       if ((mLargeurCase == 50) && (mHauteurCase == 50))
       {
-         mpImagePCC  = SDL_LoadBMP("../Ressources/PCC_50.bmp");
+         mpImagePCC  = SDL_LoadBMP("../../Ressources/PCC_50.bmp");
       }*/
             
       std::string NomFichier ("JeuPause.bmp");

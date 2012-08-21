@@ -34,7 +34,7 @@ bool CJeu::OnInit (void)
    srand(time(NULL));
 
    // Lecture du fichier de configuration
-   mConfig.Chargement ("../conf/ConfJeu.txt");
+   mConfig.Chargement ("../../conf/ConfJeu.txt");
 
 	bool bReturn = mPlateau.OnInit ();
    bReturn &= mMenu.OnInit ();

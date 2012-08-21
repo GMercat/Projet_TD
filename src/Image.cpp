@@ -23,7 +23,7 @@ bool CImage::Load (std::string& aNomFichier)
 {
    bool bResultat = true;
    
-   std::string CheminRessource ("../ressources/");
+   std::string CheminRessource ("../../ressources/");
    CheminRessource += aNomFichier;
    
    if(mpSurface != NULL)

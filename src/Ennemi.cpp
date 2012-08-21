@@ -53,7 +53,7 @@ bool CEnnemi::OnInit (void)
 	}
 	
 	//On charge toutes les images dans les surfaces associées
-	mpImage = SDL_LoadBMP ("../ressources/Ennemi.bmp");
+	mpImage = SDL_LoadBMP ("../../ressources/Ennemi.bmp");
 	
    //On teste le retour du chargement
 	if ((mpImage == NULL))

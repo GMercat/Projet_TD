@@ -105,7 +105,7 @@ bool CMenu::OnInit (void)
       {
          SDL_FreeSurface (mImageFond), mImageFond = NULL;
       }
-      mImageFond = SDL_LoadBMP("../ressources/Menu.bmp");
+      mImageFond = SDL_LoadBMP("../../ressources/Menu.bmp");
       //On teste le retour du chargement
       if (mImageFond == NULL)
       {
@@ -128,32 +128,32 @@ bool CMenu::OnInit (void)
       
       // Bouton Nouvelle partie
       bReturn = mConfig.Get ("ressourceBtNew", NomResource);
-      CheminRessource = "../ressources/";
+      CheminRessource = "../../ressources/";
       CheminRessource += NomResource;
       mImagesBoutons[eNew] = SDL_LoadBMP(CheminRessource.c_str ());
 
       // Bouton Pause
       CheminRessource.clear ();
       bReturn = mConfig.Get ("ressourceBtPause", NomResource);
-      CheminRessource = "../ressources/";
+      CheminRessource = "../../ressources/";
       CheminRessource += NomResource;
       mImagesBoutons[ePause] = SDL_LoadBMP(CheminRessource.c_str ());
 
       // Bouton reprendre la partie
       bReturn = mConfig.Get ("ressourceBtReprendre", NomResource);
-      CheminRessource = "../ressources/";
+      CheminRessource = "../../ressources/";
       CheminRessource += NomResource;
       mImagesBoutons[eReprendre] = SDL_LoadBMP(CheminRessource.c_str ());
 
       // Bouton Quitter la partie
       bReturn = mConfig.Get ("ressourceBtQuit", NomResource);
-      CheminRessource = "../ressources/";
+      CheminRessource = "../../ressources/";
       CheminRessource += NomResource;
       mImagesBoutons[eQuit] = SDL_LoadBMP(CheminRessource.c_str ());
 
       // Bouton Nouvel Ennemi (DEBUG)
       bReturn = mConfig.Get ("ressourceBtNewEnnemi", NomResource);
-      CheminRessource = "../ressources/";
+      CheminRessource = "../../ressources/";
       CheminRessource += NomResource;
       mImagesBoutons[eNewEnnemi] = SDL_LoadBMP(CheminRessource.c_str ());
             
@@ -181,7 +181,7 @@ bool CMenu::OnInit (void)
    	   }
 
          //On charge toutes les images dans les surfaces associées
-         std::string CheminRessource ("../ressources/");
+         std::string CheminRessource ("../../ressources/");
          CheminRessource += mNomImagesTour[iImage];
 
 #ifdef DEBUG         
