@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\Config.h" />
     <ClInclude Include="..\..\include\Image.h" />
+    <ClInclude Include="..\..\include\Log.h" />
     <ClInclude Include="..\..\include\Projectile.h" />
     <ClInclude Include="..\..\include\Case.h" />
     <ClInclude Include="..\..\include\Defined.h" />
@@ -116,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\Config.cpp" />
     <ClCompile Include="..\..\src\Image.cpp" />
+    <ClCompile Include="..\..\src\Log.cpp" />
     <ClCompile Include="..\..\src\Projectile.cpp" />
     <ClCompile Include="..\..\src\Case.cpp" />
     <ClCompile Include="..\..\src\Ennemi.cpp" />

@@ -1,5 +1,5 @@
-TowerDefense: ./Obj/Jeu.o ./Obj/Moteur.o ./Obj/IA.o ./Obj/Timer.o ./Obj/Plateau.o ./Obj/Menu.o ./Obj/Case.o ./Obj/Tour.o ./Obj/Ennemi.o ./Obj/Projectile.o ./Obj/Config.o ./Obj/Image.o ./Obj/Main.o
-	g++ ./Obj/Jeu.o ./Obj/Moteur.o ./Obj/IA.o ./Obj/Timer.o ./Obj/Plateau.o ./Obj/Menu.o ./Obj/Case.o ./Obj/Tour.o ./Obj/Ennemi.o ./Obj/Projectile.o ./Obj/Config.o ./Obj/Image.o ./Obj/Main.o -o TowerDefense -lSDL -lSDLmain -lstdc++ -I../../libs
+TowerDefense: ./Obj/Jeu.o ./Obj/Moteur.o ./Obj/IA.o ./Obj/Timer.o ./Obj/Plateau.o ./Obj/Menu.o ./Obj/Case.o ./Obj/Tour.o ./Obj/Ennemi.o ./Obj/Projectile.o ./Obj/Config.o ./Obj/Image.o ./Obj/Log.o ./Obj/Main.o
+	g++ ./Obj/Jeu.o ./Obj/Moteur.o ./Obj/IA.o ./Obj/Timer.o ./Obj/Plateau.o ./Obj/Menu.o ./Obj/Case.o ./Obj/Tour.o ./Obj/Ennemi.o ./Obj/Projectile.o ./Obj/Config.o ./Obj/Image.o ./Obj/Log.o ./Obj/Main.o -o TowerDefense -lSDL -lSDLmain -lstdc++ -I../../libs
    
 ./Obj/Jeu.o: ../../src/Jeu.cpp ../../include/Jeu.h
 	g++ -c ../../src/Jeu.cpp -o ./Obj/Jeu.o -lSDL -lSDLmain -lstdc++ -I../../libs
@@ -37,6 +37,9 @@ TowerDefense: ./Obj/Jeu.o ./Obj/Moteur.o ./Obj/IA.o ./Obj/Timer.o ./Obj/Plateau.
 ./Obj/Image.o: ../../src/Image.cpp ../../include/Image.h
 	g++ -c ../../src/Image.cpp -o ./Obj/Image.o -lSDL -lSDLmain -lstdc++ -I../../libs
 
+./Obj/Log.o: ../../src/Log.cpp ../../include/Log.h
+	g++ -c ../../src/Log.cpp -o ./Obj/Log.o -lSDL -lSDLmain -lstdc++ -I../../libs
+	
 ./Obj/Main.o: ../../src/Main.cpp
 	g++ -c ../../src/Main.cpp -o ./Obj/Main.o -lSDL -lSDLmain -lstdc++ -I../../libs
    
