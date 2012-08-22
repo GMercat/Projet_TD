@@ -2,10 +2,13 @@
 #define _DEFINED_H_
 
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <vector>
 #include <list>
 #include <cstdlib>
 #include <SDL/SDL.h>
+
 
 #include "../libs/boost/shared_ptr.hpp"
 
