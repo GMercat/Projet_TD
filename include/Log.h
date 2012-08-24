@@ -31,6 +31,7 @@ public:
    // Opérateur de flux : méthodes explicites pour quelques types nécessitant un traitement spécifique
    const CLog& operator<< (const char*           aValue) const;
    const CLog& operator<< (const std::string&    aValue) const;
+   const CLog& operator<< (const int             aValue) const;
 
    // Pour terminer un log
    void        operator<< (const TEndLine        aValue) const;
