@@ -38,6 +38,7 @@ public:
    void RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin);
 
 private:
+   CLog              mLog;
    CConfiguration&   mConfig;
    CJeu&             mJeu;
 

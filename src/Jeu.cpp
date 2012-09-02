@@ -7,6 +7,7 @@
 #define TPS_BASE_INTER_ENNEMI 750
 
 CJeu::CJeu (CIA* apIA):
+   mLog                 ("Jeu"),
    mpIA                 (apIA),
    mPlateau             (mConfig, *this),
    mMenu                (mConfig, *this),
@@ -83,7 +84,7 @@ void CJeu::OnClic (int aX, int aY)
       }
       else
       {
-         std::cout << "Placement non autorisé" << std::endl;
+         mLog << Erreur << "Placement non autorisé" << EndLine;
          mPlateau.AnnuleDerniereModif ();
          mpIA->MiseAJourMatriceGraphe (NumCaseCliquee, false);
       }
@@ -165,7 +166,7 @@ void CJeu::ProgressionEnnemis (void)
    {
       mNumVagueEnCours = mDerniereVagueLancee + 1;
 
-      std::cout << "Lancement de la " << mNumVagueEnCours << "ieme vague d'ennemis" << std::endl;
+      mLog << Info << "Lancement de la " << mNumVagueEnCours << "ieme vague d'ennemis" << EndLine;
       
       LancementVagueEnnemis ();
       

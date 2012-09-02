@@ -1,6 +1,7 @@
 #include "../include/Moteur.h"
 
 CMoteur::CMoteur (void):
+   mLog     ("Moteur"),
    mIA      (mJeu.GetPlateau ()),
    mJeu     (&mIA),
    mpScreen (NULL)
@@ -26,7 +27,7 @@ bool CMoteur::OnInit (void)
       //Initialisation de la SDL
 	   if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	   {
-		   std::cout << "Probleme pour initialiser SDL: " << SDL_GetError() << std::endl;
+		   mLog << Erreur << "Probleme pour initialiser SDL: " << SDL_GetError() << EndLine;
 		   bReturn = false;
 	   }
 
@@ -59,9 +60,7 @@ void CMoteur::OnClic (int aX, int aY)
 {
    bool bAutorisePlacementTour = false;
 
-#ifdef DEBUG
-	std::cout << "Moteur.OnClic (" << aX << ", " << aY << ")" << std::endl;
-#endif
+	mLog << Info << "Moteur.OnClic (" << aX << ", " << aY << ")" << EndLine;
 	
    mJeu.OnClic (aX, aY);
 }

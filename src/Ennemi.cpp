@@ -3,6 +3,7 @@
 #include <cmath>
 
 CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
+   mLog              ("Ennemi"),
    mpImage           (NULL),
    mpIA              (apIA),
    mNumCaseArrivee   (aNumCaseArrivee)
@@ -58,13 +59,13 @@ bool CEnnemi::OnInit (void)
    //On teste le retour du chargement
 	if ((mpImage == NULL))
 	{
-		std::cout << "Probleme de chargement de l'image" << std::endl;
+		mLog << Erreur << "Probleme de chargement de l'image" << EndLine;
 		bReturn = false;
 	}
 	
 	//Mis en place de la transparence
 	if(SDL_SetColorKey (mpImage, SDL_SRCCOLORKEY, SDL_MapRGB(mpImage->format, 255, 255, 255)) == -1)
-		std::cout << "Erreur avec la transparence" << std::endl;
+		mLog << Erreur << "Erreur avec la transparence" << EndLine;
 		
    mPosition.w = mpImage->w;
    mPosition.h = mpImage->h;
@@ -145,9 +146,8 @@ void CEnnemi::Avance (void)
    mPosition.x = mCoordonnee.first - (mpImage->w / 2);
    mPosition.y = mCoordonnee.second - (mpImage->h / 2);
 
-#ifdef DEBUG
-   std::cout << "X = " << mCoordonnee.first << ", Y = " << mCoordonnee.second << std::endl;
-#endif
+   mLog << Info << "X = " << mCoordonnee.first << ", Y = " << mCoordonnee.second << EndLine;
+
 }
 
 bool CEnnemi::EstArrive (void)
@@ -177,9 +177,7 @@ void CEnnemi::Touche (int aPuissance)
 {
    mVie -= aPuissance;
 
-#ifdef DEBUG
-   std::cout << "Vie restante = " << mVie << std::endl;
-#endif
+   mLog << Info << "Vie restante = " << mVie << EndLine;
 }
 
 bool CEnnemi::EstVivant (void)

@@ -6,7 +6,8 @@
 /**
  * @brief   Constructeur
  */
-CConfiguration::CConfiguration (void)
+CConfiguration::CConfiguration (void):
+   mLog ("Config")
 {
    ;
 }
@@ -45,7 +46,7 @@ bool CConfiguration::Chargement (const std::string& aNomFichier)
 
    if (false == Fichier.good())
    {
-      std::cout << "Impossible d'ouvrir le fichier " << aNomFichier << std::endl;
+      mLog << Erreur << "Impossible d'ouvrir le fichier " << aNomFichier << EndLine;
       return false;
    }
 
@@ -472,7 +473,7 @@ void CConfiguration::EnregistrementDonnee (std::ifstream& aFichier, std::string&
    }
    else
    {
-      std::cout << "Type de données à charger inconnu : " << aStrType << std::endl;
+      mLog << Erreur << "Type de données à charger inconnu : " << aStrType << EndLine;
    }
 }
 

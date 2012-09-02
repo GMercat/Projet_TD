@@ -30,6 +30,7 @@ public:
    int GetLargeur (void);
 
 private:
+   CLog              mLog;
    CConfiguration&   mConfig;
    CJeu&             mJeu;
 

@@ -2,6 +2,7 @@
 #include "../include/Plateau.h"
 
 CIA::CIA (CPlateau& aPlateau):
+   mLog     ("IA"),
    mPlateau (aPlateau)
 {
    ;
@@ -320,12 +321,12 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
    bReturn = (NbIter != NbIterMax);
 
 #ifdef DEBUG
-   std::cout << "Nombre d'iteration : " << NbIter << std::endl;
+   mLog << Info << "Nombre d'iteration : " << NbIter << EndLine;
 
    std::list <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
    for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
-      std::cout << (*IterPlusCourtChemin) << " " << std::endl;
+      mLog << Info << (*IterPlusCourtChemin) << " " << EndLine;
    }
 #endif
 
@@ -482,8 +483,8 @@ void CIA::AfficherMatrice (void)
    {
       for (int IterColonne= 0; IterColonne < NbCaseLargeur * NbCaseHauteur; IterColonne++)
       {
-         std::cout << mMatriceGraph[IterLigne][IterColonne] << " ";
+         mLog << Info << mMatriceGraph[IterLigne][IterColonne] << " ";
       }
-      std::cout << std::endl;
+      mLog << EndLine;
    }
 }

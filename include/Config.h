@@ -90,6 +90,8 @@ private:
    void EnregistrementTypeEnnemi (std::ifstream& aFichier);
 
 private:
+   CLog  mLog;
+
    std::map<std::string, std::string>     mDonnees;
    std::map<std::string, std::string>     mDonneesCases;
    std::map<std::string, TCaracsTour>     mDonneesTours;

@@ -4,6 +4,7 @@
 
 
 CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
+   mLog           ("Plateau"),
    mConfig        (aConfig),
    mJeu           (aJeu),
    mNumCaseDepart (-1),
@@ -78,9 +79,9 @@ bool CPlateau::OnInit (void)
       
 	   //Mis en place de la transparence
 	   //if(SDL_SetColorKey(o,SDL_SRCCOLORKEY,0)==-1)
-	   //	std::cout << "Erreur avec la transparence du rond" << std::endl;
+	   //	mLog << Erreur << "Erreur avec la transparence du rond" << EndLine;
 	   //if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
-	   //	std::cout << "Erreur avec la transparence de la croix" << std::endl;
+	   //	mLog << Erreur << "Erreur avec la transparence de la croix" << EndLine;
 
       SDL_Rect	Rect;
 
@@ -88,11 +89,11 @@ bool CPlateau::OnInit (void)
 	   Rect.h = mHauteurCase;
 
 #ifdef DEBUG
-      std::cout << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << std::endl;
-      std::cout << "NbCaseLargeur = " << mNbCasesLargeur << std::endl;
-      std::cout << "NbCaseHauteur = " << mNbCasesHauteur << std::endl;
-      std::cout << "NumCaseDepart = " << mNumCaseDepart << std::endl;
-      std::cout << "NumCaseArrivee = " << mNumCaseArrivee << std::endl;
+      mLog << Info << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << EndLine;
+      mLog << Info << "NbCaseLargeur = " << mNbCasesLargeur << EndLine;
+      mLog << Info << "NbCaseHauteur = " << mNbCasesHauteur << EndLine;
+      mLog << Info << "NumCaseDepart = " << mNumCaseDepart << EndLine;
+      mLog << Info << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
 #endif
       
       int NumCase = 0;
@@ -127,7 +128,7 @@ bool CPlateau::OnInit (void)
    {
       bReturn = false;
 
-      std::cout << "Erreur de lecture de la configuration du plateau" << std::endl;
+      mLog << Erreur << "Erreur de lecture de la configuration du plateau" << EndLine;
    }
 
    return bReturn;
@@ -180,9 +181,8 @@ int CPlateau::OnClic (int aX, int aY)
       //On renseigne le numéro de la case que l'on a trouvé
       NumeroCaseCliquee = IterHauteur * mNbCasesLargeur + IterLargeur;
 
-#ifdef DEBUG
-   std::cout << "Case (" << IterLargeur << ", " << IterHauteur << ")" << std::endl;
-#endif
+      mLog << Info << "Case (" << IterLargeur << ", " << IterHauteur << ")" << EndLine;
+
 
       // Si la case est vide ET on a sélectionnée un type de tour dans le menu
       if (GetCase(NumeroCaseCliquee)->EstVide() && (mJeu.GetTourSelectionnee () != -1))

@@ -44,6 +44,7 @@ public:
    bool EstPlusCourtChemin (void);
 
 private:
+   CLog        mLog;
 	ETypeCase   mType;
    
    int         mNumCase;

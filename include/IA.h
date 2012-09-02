@@ -26,6 +26,7 @@ public:
    void AfficherMatrice (void);
 
 private:
+   CLog  mLog;
    int **mMatriceGraph;
    int **mCheminsMinimaux;
 

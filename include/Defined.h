@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <SDL/SDL.h>
 
+#include "Log.h"
 
 #include "../libs/boost/shared_ptr.hpp"
 

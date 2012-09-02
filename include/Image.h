@@ -15,6 +15,7 @@ public:
    void  SetAlpha    (int aValeurAlpha);
    
 private:
+   CLog           mLog;
    SDL_Surface*   mpSurface;
 };
 

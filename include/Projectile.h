@@ -16,6 +16,7 @@ public:
    bool  Avance    (void);
 
 private:
+   CLog  mLog;
    int   mPuissance;
    int   mVitesse;
 

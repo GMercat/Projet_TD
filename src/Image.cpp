@@ -1,6 +1,7 @@
 #include "../include/Image.h"
 
 CImage::CImage (void) :
+   mLog        ("Image"),
    mpSurface (NULL)
 {
    ;
@@ -36,7 +37,7 @@ bool CImage::Load (std::string& aNomFichier)
    //On teste le retour du chargement
    if (mpSurface == NULL)
    {
-	   std::cout << "Probleme de chargement de l'image : " << CheminRessource.c_str () << std::endl;
+	   mLog << Erreur << "Probleme de chargement de l'image : " << CheminRessource.c_str () << EndLine;
 	   bResultat = false;
    }
    

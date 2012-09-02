@@ -3,6 +3,7 @@
 #include "../include/Case.h"
 
 CMenu::CMenu (CConfiguration& aConfig, CJeu& aJeu):
+   mLog        ("Menu"),
    mConfig     (aConfig),
    mJeu        (aJeu),
    mImageFond  (NULL)
@@ -109,7 +110,7 @@ bool CMenu::OnInit (void)
       //On teste le retour du chargement
       if (mImageFond == NULL)
       {
-		   std::cout << "Probleme de chargement de l'image du fond du menu." << std::endl;
+		   mLog << Erreur << "Probleme de chargement de l'image du fond du menu." << EndLine;
 		   return false;
       }
 
@@ -162,7 +163,7 @@ bool CMenu::OnInit (void)
       {
 	      if (mImagesBoutons[IterImage] == NULL)
          {
-		      std::cout << "Probleme de chargement de l'image du menu : " << IterImage << std::endl;
+		      mLog << Erreur << "Probleme de chargement de l'image du menu : " << IterImage << EndLine;
 		      return false;
          }
       }
@@ -184,16 +185,14 @@ bool CMenu::OnInit (void)
          std::string CheminRessource ("../../ressources/");
          CheminRessource += mNomImagesTour[iImage];
 
-#ifdef DEBUG         
-         std::cout << "Chargement de : " << CheminRessource.c_str () << std::endl;
-#endif
+         mLog << Info << "Chargement de : " << CheminRessource.c_str () << EndLine;
 
          (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
                   
          //On teste le retour du chargement
 	      if ((*IterImage) == NULL)
 	      {
-            std::cout << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << std::endl;
+            mLog << Erreur << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << EndLine;
 		      bReturn = false;
 	      }
          iImage++;
@@ -201,7 +200,7 @@ bool CMenu::OnInit (void)
    }
    else
    {
-      std::cout << "Problème de configuration du menu" << std::endl;
+      mLog << Erreur << "Problème de configuration du menu" << EndLine;
    }
 
    return bReturn;
@@ -239,7 +238,7 @@ void CMenu::OnClic (int aX, int aY)
                break;
                
             default:
-               std::cout << "Ce bouton n'est pas actif dans ce mode" << std::endl;
+               mLog << Info << "Ce bouton n'est pas actif dans ce mode" << EndLine;
                break;
          }
       }
@@ -260,7 +259,7 @@ void CMenu::OnClic (int aX, int aY)
          }
          else
          {
-            std::cout << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << std::endl;
+            mLog << Info << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << EndLine;
          }
       }
    }
@@ -272,9 +271,8 @@ void CMenu::OnClic (int aX, int aY)
             && (mPositionsBoutons[IdBouton].y < aY) && (aY < (mPositionsBoutons[IdBouton].y + mPositionsBoutons[IdBouton].h)))
          {
             bBoutonTrouve = true;
-#ifdef DEGUB
-            std::cout << "Bouton trouve OFF : " << IdBouton << std::endl;
-#endif
+
+            mLog << Info << "Bouton trouve OFF : " << IdBouton << EndLine;
          }
       }
 
@@ -299,13 +297,13 @@ void CMenu::OnClic (int aX, int aY)
                break;
 
             default:
-               std::cout << "Ce bouton n'est pas actif dans ce mode" << std::endl;
+               mLog << Info << "Ce bouton n'est pas actif dans ce mode" << EndLine;
                break;
          }
       }
       else
       {
-         std::cout << "[GAME OFF] Aucun bouton correspond à la position : " << aX << ", " << aY << std::endl;
+         mLog << Erreur << "[GAME OFF] Aucun bouton correspond à la position : " << aX << ", " << aY << EndLine;
       }
    }
 }

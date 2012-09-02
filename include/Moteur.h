@@ -22,6 +22,8 @@ public:
 	void handle_input    (SDL_Event* apEvent);      // Recupere la touche pressee et ajuste la vitesse du point
 	
 private:
+   CLog mLog;
+
 	//Le plateau de jeu
 	CJeu mJeu;
    CIA  mIA;

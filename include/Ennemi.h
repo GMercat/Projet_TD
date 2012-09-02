@@ -34,6 +34,7 @@ public:
    bool  EstArrive (void);
    
 private:
+   CLog  mLog;
    CIA*  mpIA;
 
    EType mType;

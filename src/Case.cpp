@@ -4,6 +4,7 @@
  * @brief   Constructeur de la class "CCase"
  */
 CCase::CCase (void):
+   mLog                 ("Case"),
 	mIdPlateauX          (-1),
 	mIdPlateauY          (-1),
 	mType		            (eVide),

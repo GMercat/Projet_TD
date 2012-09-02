@@ -45,6 +45,7 @@ private:
    void LancementVagueEnnemis                   (void);
 
 private:
+   CLog           mLog;
    CConfiguration mConfig;
    CPlateau       mPlateau;
    CMenu          mMenu;

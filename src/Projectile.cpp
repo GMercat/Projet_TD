@@ -2,6 +2,7 @@
 #include <cmath>
 
 CProjectile::CProjectile (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
+   mLog              ("Projectile"),
    mpImage           (NULL),
    mEnnemiCiblePtr   (aEnnemiCiblePtr),
    mPuissance        (aPuissance),
@@ -31,13 +32,13 @@ bool CProjectile::OnInit (void)
    //On teste le retour du chargement
 	if ((mpImage == NULL))
 	{
-		std::cout << "Probleme de chargement de l'image d'un projectile" << std::endl;
+		mLog << Erreur << "Probleme de chargement de l'image d'un projectile" << EndLine;
 		bReturn = false;
 	}
 	
 	//Mis en place de la transparence
 	if(SDL_SetColorKey (mpImage, SDL_SRCCOLORKEY, SDL_MapRGB(mpImage->format, 255, 255, 255)) == -1)
-		std::cout << "Erreur avec la transparence" << std::endl;
+		mLog << Erreur << "Erreur avec la transparence" << EndLine;
 
    mPosition.x = mCoordonnee.first;
    mPosition.y = mCoordonnee.second;

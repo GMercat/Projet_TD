@@ -5,6 +5,8 @@
 
 int main( int argc, char *argv[ ] )
 {
+   CLog  Log ("Main");
+
 	SDL_Event		Event;
 		
 	//Le regulateur
@@ -17,7 +19,7 @@ int main( int argc, char *argv[ ] )
    //Initialiser le jeu
    if(false == Moteur.OnInit ())
    {
-      std::cout << "Problème rencontré à l'initialisation du moteur" << std::endl;
+      Log << Erreur << "Problème rencontré à l'initialisation du moteur" << EndLine;
       Done = 1;
    }
 
