@@ -76,6 +76,16 @@ const CLog& CLog::operator<< (const std::string& aValue) const
 }
 
 /**
+ * @brief   
+ */
+const CLog& CLog::operator<< (const int aValue) const
+{
+   mFluxUtf16 << aValue;
+
+   return (*this);
+}
+
+/**
  * @brief   Pour terminer un log
  */
 void CLog::operator<< (const TEndLine aValue) const
