@@ -4,11 +4,12 @@
 #include "Defined.h"
 #include "Projectile.h"
 #include "Timer.h"
+#include "Config.h"
 
 class CTour
 {
 public:
-   CTour	   (TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
+   CTour	   (CConfiguration& aConfig, TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
 	~CTour	(void);
 
    void Construire ();
@@ -25,6 +26,8 @@ public:
    void Tire            (CEnnemiPtr& aEnnemiCiblePtr);
 
 private:
+   CConfiguration& mConfig;
+
    TCoordonnee mCoordCentre;
    
    int      mTypeTour;

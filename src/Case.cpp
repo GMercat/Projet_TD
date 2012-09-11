@@ -48,6 +48,7 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
 /**
  * @brief   Méthode de contruction d'une tour dans la case
  *
+ * @param[in]  aConfig     Configuration
  * @param[in]  aTypeTour   Type de la tour à construire
  * @param[in]  aPortee     Portée de la tour à construie
  * @param[in]  aPuissance  Puissance de tire de la tour à construire
@@ -56,14 +57,14 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
  *
  * @return Pointeur intelligent sur la tour construite
  */
-CTourPtr& CCase::ConstruireTour (int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
+CTourPtr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
 {
    TCoordonnee CoordCentre;
    
    CoordCentre.first = mPosition.x + (mPosition.w / 2);
    CoordCentre.second = mPosition.y + (mPosition.h / 2);
 
-   mTourPtr = CTourPtr (new CTour (CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
+   mTourPtr = CTourPtr (new CTour (aConfig, CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
    return mTourPtr;
 }
 

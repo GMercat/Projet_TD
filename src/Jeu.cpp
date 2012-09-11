@@ -122,7 +122,11 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
 void CJeu::OnReset   (void)
 {
    mTypeTourSelect = -1;
+   mListEnnemi    .clear ();
+   mListTour      .clear ();
+   mListTourTiree .clear ();
    mPlateau.OnReset ();
+   mpIA->OnInit ();
 }
 
 void CJeu::OnQuit (void)
@@ -181,6 +185,7 @@ void CJeu::ProgressionEnnemis (void)
       // Tous les ennemis n'ont pas encore été créé ET le temps depuis le dernier est suffisament grand.
       if ((mNbEnnemisVague >= 0) && (mTimerEnnemi.GetNbTicks () >= mTempsProchainEnnemi))
       {
+         // TODO : Type d'ennemi en paramètre
          AjoutEnnemi ();
          mNbEnnemisVague--;
          mTempsProchainEnnemi = rand() % TPS_BASE_INTER_ENNEMI;
@@ -232,6 +237,7 @@ bool CJeu::LancementNouvelleVagueEnnemisPossible (void)
 void CJeu::LancementVagueEnnemis (void)
 {
    mTimerEnnemi.Start ();
+   // TODO : Type d'ennemi en paramètre
    AjoutEnnemi ();
    mNbEnnemisVague--;
    mTempsProchainEnnemi = rand() % TPS_BASE_INTER_ENNEMI;
@@ -284,7 +290,7 @@ void CJeu::AjoutEnnemi (void)
 {
    std::list<int> PlusCourtChemin;
 
-   CEnnemiPtr EnnemiPtr (new CEnnemi(mpIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()));
+   CEnnemiPtr EnnemiPtr (new CEnnemi(mConfig, mpIA, CEnnemi::eType1, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()));
    
    EnnemiPtr->OnInit ();
    

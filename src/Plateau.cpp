@@ -26,6 +26,7 @@ bool CPlateau::OnInit (void)
    bool bReturn = true;
 
    std::string NomRessourceImageStr;
+   std::string CheminRessourcesImageStr;
    int         IterImage = 0;
 
    bool bConfig = true;
@@ -35,6 +36,7 @@ bool CPlateau::OnInit (void)
    bConfig &= mConfig.Get ("numeroCaseArrivee", mNumCaseArrivee);
    bConfig &= mConfig.Get ("largeurCase",       mLargeurCase);
    bConfig &= mConfig.Get ("hauteurCase",       mHauteurCase);
+   bConfig &= mConfig.Get ("ressourcesImages",  CheminRessourcesImageStr);
 
    bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
    bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
@@ -45,7 +47,7 @@ bool CPlateau::OnInit (void)
       // Allocation des surfaces des cases
       for (IterImage = 0; IterImage < mNomImagesCase.size (); ++IterImage)
       {
-         CImagePtr ImageCourantePtr (new CImage ());
+         CImagePtr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
          
          ImageCourantePtr->Load (mNomImagesCase[IterImage]);
          
@@ -55,7 +57,7 @@ bool CPlateau::OnInit (void)
       // Allocation des surfaces des tours
       for (IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
       {
-         CImagePtr ImageCourantePtr (new CImage ());
+         CImagePtr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
          
          ImageCourantePtr->Load (mNomImagesTour[IterImage]);
          
@@ -73,7 +75,7 @@ bool CPlateau::OnInit (void)
       }*/
             
       std::string NomFichier ("JeuPause.bmp");
-      mImagePausePtr = CImagePtr (new CImage ());
+      mImagePausePtr = CImagePtr (new CImage (CheminRessourcesImageStr));
       mImagePausePtr->Load        (NomFichier);
       mImagePausePtr->SetAlpha    (128);
       
@@ -88,13 +90,11 @@ bool CPlateau::OnInit (void)
 	   Rect.w = mLargeurCase;
 	   Rect.h = mHauteurCase;
 
-#ifdef DEBUG
-      mLog << Info << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << EndLine;
-      mLog << Info << "NbCaseLargeur = " << mNbCasesLargeur << EndLine;
-      mLog << Info << "NbCaseHauteur = " << mNbCasesHauteur << EndLine;
-      mLog << Info << "NumCaseDepart = " << mNumCaseDepart << EndLine;
-      mLog << Info << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
-#endif
+      mLog << Debug << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << EndLine;
+      mLog << Debug << "NbCaseLargeur = " << mNbCasesLargeur << EndLine;
+      mLog << Debug << "NbCaseHauteur = " << mNbCasesHauteur << EndLine;
+      mLog << Debug << "NumCaseDepart = " << mNumCaseDepart << EndLine;
+      mLog << Debug << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
       
       int NumCase = 0;
 
@@ -216,7 +216,6 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
          else*/
          {
             //       Les surfaces ne sont pas les mêmes !
-            // TODO  Gérer le fait que ça peut être une case ou une tour !
             CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
             if (EtatCase == CCase::eTour)
             {
@@ -252,7 +251,7 @@ CTourPtr& CPlateau::ConstruireTour (int aNumCaseCliquee)
    int Cadence;
 
    mConfig.GetCaracsTourParId (mJeu.GetTourSelectionnee (), Ressource, Portee, Puissance, Vitesse, Cadence);
-   return GetCase (aNumCaseCliquee)->ConstruireTour (mJeu.GetTourSelectionnee (), Portee, Puissance, Vitesse, Cadence);
+   return GetCase (aNumCaseCliquee)->ConstruireTour (mConfig, mJeu.GetTourSelectionnee (), Portee, Puissance, Vitesse, Cadence);
 }
 
 void CPlateau::AnnuleDerniereModif (void)

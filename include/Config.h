@@ -2,6 +2,7 @@
 #define _CONFIG_H_
 
 #include "Defined.h"
+#include "Log.h"
 #include <map>
 
 /**
@@ -69,6 +70,7 @@ public:
    bool GetCaracsTourParNom      (const std::string& aNom,  std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsTourParId       (const int aId,            std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aVitesse, int& aVie) const;
+   bool GetRessourceEnnemiParType(const int aType,          std::string& aRessource) const;
 
    bool GetRessourcesCases    (std::vector<std::string>&    aRessources)      const;
    bool GetRessourcesTours    (std::vector<std::string>&    aRessources)      const;

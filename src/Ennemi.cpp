@@ -2,14 +2,13 @@
 #include "../include/IA.h"
 #include <cmath>
 
-CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
+CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee):
+   mConfig           (aConfig),
    mLog              ("Ennemi"),
-   mpImage           (NULL),
    mpIA              (apIA),
+   mType             (aType),
    mNumCaseArrivee   (aNumCaseArrivee)
 {
-   mType = eType1;
-   
    mpIA->GetCoordonneesCaseParNumero (aNumCaseDepart, mCoordonnee);
    
    switch (mType)
@@ -31,7 +30,6 @@ CEnnemi::CEnnemi (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee):
 
 CEnnemi::~CEnnemi (void)
 {
-   SDL_FreeSurface (mpImage);
 }
 
 CEnnemi::EType CEnnemi::GetType (void)
@@ -47,35 +45,27 @@ void CEnnemi::SetType (EType aType)
 bool CEnnemi::OnInit (void)
 {
    bool bReturn = true;
+
+   std::string CheminRessource;
+   std::string NomFichier;
+
+   bool bLectureConf = mConfig.Get ("ressourcesImages", CheminRessource);
+   bLectureConf     &= mConfig.GetRessourceEnnemiParType ((int)mType,NomFichier);
    
-   if(mpImage != NULL)
-	{
-		SDL_FreeSurface(mpImage), mpImage = NULL;
-	}
-	
-	//On charge toutes les images dans les surfaces associées
-	mpImage = SDL_LoadBMP ("../../ressources/Ennemi.bmp");
-	
-   //On teste le retour du chargement
-	if ((mpImage == NULL))
-	{
-		mLog << Erreur << "Probleme de chargement de l'image" << EndLine;
-		bReturn = false;
-	}
-	
-	//Mis en place de la transparence
-	if(SDL_SetColorKey (mpImage, SDL_SRCCOLORKEY, SDL_MapRGB(mpImage->format, 255, 255, 255)) == -1)
-		mLog << Erreur << "Erreur avec la transparence" << EndLine;
-		
-   mPosition.w = mpImage->w;
-   mPosition.h = mpImage->h;
+   //On charge toutes les images dans les surfaces associées
+   mImagePtr.reset (new CImage (CheminRessource));
+   bReturn = mImagePtr->Load (NomFichier);
+	mImagePtr->SetTransparence ();
+   
+   mPosition.w = mImagePtr->GetLargeur ();
+   mPosition.h = mImagePtr->GetHauteur ();
 
 	return bReturn;
 }
 
 void CEnnemi::OnAffiche (SDL_Surface* apScreen)
 {
-   SDL_BlitSurface (mpImage, NULL, apScreen, &mPosition);
+   mImagePtr->Afficher (apScreen, mPosition);
 }
 
 void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
@@ -143,8 +133,8 @@ void CEnnemi::Avance (void)
    (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
    (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
 
-   mPosition.x = mCoordonnee.first - (mpImage->w / 2);
-   mPosition.y = mCoordonnee.second - (mpImage->h / 2);
+   mPosition.x = mCoordonnee.first - (mImagePtr->GetLargeur () / 2);
+   mPosition.y = mCoordonnee.second - (mImagePtr->GetHauteur () / 2);
 
    mLog << Info << "X = " << mCoordonnee.first << ", Y = " << mCoordonnee.second << EndLine;
 

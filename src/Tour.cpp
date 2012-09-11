@@ -1,6 +1,7 @@
 #include "../include/Tour.h"
 
-CTour::CTour	(TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence):
+CTour::CTour	(CConfiguration& aConfig, TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence):
+   mConfig              (aConfig),
    mTypeTour            (aTypeTour),
    mPorteeTire          (aPortee),
    mPuissanceProjectile (aPuissance),
@@ -92,7 +93,13 @@ void CTour::Tire (CEnnemiPtr& aEnnemiCiblePtr)
                                                       mCoordCentre.second,
                                                       mPuissanceProjectile,
                                                       mVitesseProjectile));
-   ProjectileTirePtr->OnInit ();
+   std::string RessourceImage;
+   std::string RessourceProjectile;
+
+   bool LectureConfigOk  = mConfig.Get ("ressourcesImages",    RessourceImage);
+   LectureConfigOk      &= mConfig.Get ("ressourceProjectile", RessourceProjectile);
+
+   ProjectileTirePtr->OnInit (RessourceImage, RessourceProjectile);
    mListeProjectilesTires.push_back (ProjectileTirePtr);
 
    // Gestion de la cadence de tire de la tour

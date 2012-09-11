@@ -340,7 +340,30 @@ bool CConfiguration::GetCaracsEnnemiParNom (const std::string& aNom, std::string
       return false;
    }
 }
-                     
+
+bool CConfiguration::GetRessourceEnnemiParType (const int aType, std::string& aRessource) const
+{
+   int IndexEnnemi = 0;
+   std::map<std::string, TCaracsEnnemi>::const_iterator IterDonnees = mDonneesEnnemis.begin ();
+   
+   while ((IterDonnees != mDonneesEnnemis.end ()) && (aType != IndexEnnemi))
+   {
+      IndexEnnemi++;
+      IterDonnees++;
+   }
+
+   if ((IterDonnees != mDonneesEnnemis.end ()) && (aType == IndexEnnemi))
+   {
+      aRessource  = IterDonnees->second.mRessource;
+      
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
 bool CConfiguration::GetRessourcesCases (std::vector<std::string>& aRessources) const
 {
    bool bResultat = false;

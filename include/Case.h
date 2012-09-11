@@ -3,6 +3,7 @@
 
 #include "Defined.h"
 #include "Tour.h"
+#include "Config.h"
 #include "Ennemi.h"
 
 
@@ -18,13 +19,13 @@ public:
 
 
 public:
-	CCase	   (void);
+   CCase    (void);
 	~CCase	(void);
 
 	void OnInit                (void);
 	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
    
-   CTourPtr& ConstruireTour (int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
+   CTourPtr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
    
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);
@@ -44,8 +45,8 @@ public:
    bool EstPlusCourtChemin (void);
 
 private:
-   CLog        mLog;
-	ETypeCase   mType;
+   CLog           mLog;
+	ETypeCase      mType;
    
    int         mNumCase;
    bool        mbEstPlusCourtChemin;

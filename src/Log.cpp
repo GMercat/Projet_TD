@@ -2,6 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Définitions utilisées comme argument
+TSeverity         Debug    = LOG_DEBUG;
 TSeverity         Info     = LOG_INFO;
 TSeverity         Erreur   = LOG_ERROR;
 TSeverity         Critique = LOG_CRITICAL;
@@ -129,6 +130,7 @@ int CLog::GetSeverityEscapeColor  (const int aLevel) const
 
    switch (aLevel)
    {
+      case LOG_DEBUG      : code = 39; break;  // Blanc
       case LOG_INFO       : code = 32; break;  // Vert d'intensité normale
       case LOG_ERROR      : code = 31; break;  // Rouge d'intensité normale
       case LOG_CRITICAL   : code = 35; break;  // Magenta d'intensité normale (Rouge intense 91 ne marche pas en telnet natif Windows)

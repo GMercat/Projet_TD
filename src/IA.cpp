@@ -320,15 +320,13 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
 
    bReturn = (NbIter != NbIterMax);
 
-#ifdef DEBUG
-   mLog << Info << "Nombre d'iteration : " << NbIter << EndLine;
+   mLog << Debug << "Nombre d'iteration : " << NbIter << EndLine;
 
    std::list <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
    for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
-      mLog << Info << (*IterPlusCourtChemin) << " " << EndLine;
+      mLog << Debug << (*IterPlusCourtChemin) << " " << EndLine;
    }
-#endif
 
    return bReturn;
 }

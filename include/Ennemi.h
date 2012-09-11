@@ -2,6 +2,8 @@
 #define _ENNEMI_H_
 
 #include "Defined.h"
+#include "Config.h"
+#include "Image.h"
 
 class CIA;
 
@@ -10,11 +12,13 @@ class CEnnemi
 public:
    enum EType {
       eType1,
-      eType2
+      eType2,
+      eType3,
+      eType4
    };
 
 public:
-   CEnnemi  (CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee);
+   CEnnemi  (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee);
    ~CEnnemi (void);
 
    bool  OnInit    (void);
@@ -34,8 +38,9 @@ public:
    bool  EstArrive (void);
    
 private:
-   CLog  mLog;
-   CIA*  mpIA;
+   CConfiguration&   mConfig;
+   CLog              mLog;
+   CIA*              mpIA;
 
    EType mType;
 
@@ -47,7 +52,8 @@ private:
    std::list<int>                mPCCheminCase;
    std::list<TVecteurChemin>     mPCCheminReel;
 
-   SDL_Surface*  mpImage;
+   CImagePtr   mImagePtr;
+   //SDL_Surface*  mpImage;
    SDL_Rect      mPosition;
 };
 

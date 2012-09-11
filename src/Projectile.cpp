@@ -3,7 +3,6 @@
 
 CProjectile::CProjectile (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
    mLog              ("Projectile"),
-   mpImage           (NULL),
    mEnnemiCiblePtr   (aEnnemiCiblePtr),
    mPuissance        (aPuissance),
    mVitesse          (aVitesse)
@@ -14,43 +13,37 @@ CProjectile::CProjectile (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuiss
 
 CProjectile::~CProjectile (void)
 {
-   SDL_FreeSurface (mpImage);
+
 }
 
-bool CProjectile::OnInit (void)
+bool CProjectile::OnInit (std::string& aCheminRessource, std::string& aNomImage)
 {
    bool bReturn = true;
    
-   if(mpImage != NULL)
-	{
-		SDL_FreeSurface(mpImage), mpImage = NULL;
-	}
+   //On charge toutes les images dans les surfaces associées
+   mImagePtr.reset (new CImage (aCheminRessource));
+   bReturn = mImagePtr->Load (aNomImage);
 	
-	//On charge toutes les images dans les surfaces associées
-	mpImage = SDL_LoadBMP ("../../ressources/Projectile.bmp");
-	
-   //On teste le retour du chargement
-	if ((mpImage == NULL))
-	{
-		mLog << Erreur << "Probleme de chargement de l'image d'un projectile" << EndLine;
-		bReturn = false;
-	}
-	
-	//Mis en place de la transparence
-	if(SDL_SetColorKey (mpImage, SDL_SRCCOLORKEY, SDL_MapRGB(mpImage->format, 255, 255, 255)) == -1)
-		mLog << Erreur << "Erreur avec la transparence" << EndLine;
+   if (bReturn)
+   {
+	   //Mis en place de la transparence
+      mImagePtr->SetTransparence ();
 
-   mPosition.x = mCoordonnee.first;
-   mPosition.y = mCoordonnee.second;
-   mPosition.w = mpImage->w;
-   mPosition.h = mpImage->h;
-
+      mPosition.x = mCoordonnee.first;
+      mPosition.y = mCoordonnee.second;
+      mPosition.w = mImagePtr->GetLargeur ();
+      mPosition.h = mImagePtr->GetHauteur ();
+   }
+   else
+   {
+      mLog << Erreur << "Erreur lors du chargement de l'image d'un projectile " << aCheminRessource + aNomImage << EndLine;
+   }
 	return bReturn;
 }
 
 void CProjectile::OnAffiche (SDL_Surface* apScreen)
 {
-   SDL_BlitSurface (mpImage, NULL, apScreen, &mPosition);
+   mImagePtr->Afficher (apScreen, mPosition);
 }
 
 bool CProjectile::Avance (void)

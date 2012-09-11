@@ -8,7 +8,8 @@
 // Enumeration des degrés de sévérités possibles pour un log
 enum TSeverity
 {
-   LOG_INFO = 0,
+   LOG_DEBUG = 0,
+   LOG_INFO,
    LOG_ERROR,
    LOG_CRITICAL,
    LOG_NB_SEVERITY
@@ -57,9 +58,10 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 // Définitions utilisées comme argument pour les logs
 ////////////////////////////////////////////////////////////////////////////////
+extern TSeverity        Debug;
 extern TSeverity        Info;
 extern TSeverity        Erreur;
 extern TSeverity        Critique;
-extern CLog::TEndLine EndLine;
+extern CLog::TEndLine   EndLine;
 
 #endif
