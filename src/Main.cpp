@@ -46,20 +46,23 @@ int main( int argc, char *argv[ ] )
 				case SDL_MOUSEBUTTONUP:
 					Moteur.OnClic(Event.button.x, Event.button.y);
 					break;
+            case SDL_MOUSEMOTION:
+               Moteur.OnMotion (Event.motion.x, Event.motion.y);
+               break;
 				default:
 					break;
 			}
 		}
-
+      
       // Déplacement des ennemis
       Moteur.OnProgression ();
-
+      
       // Tire des tours
       Moteur.OnTire ();
-
+      
       // Affichage de toutes les parties du jeu
-		Moteur.OnAffiche ();
-
+      Moteur.OnAffiche ();
+      
       //Tant que le timer fps n'est pas assez haut
       while( Fps.GetNbTicks () < 1000 / IMAGES_PAR_SECONDE )
       {

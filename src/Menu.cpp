@@ -225,6 +225,8 @@ void CMenu::OnClic (int aX, int aY)
 
       if (bBoutonTrouve)
       {
+         mJeu.SelectTour (-1);
+
          // IdBouton a été incrémenté lors de la dernière itération
          IdBouton--;
          switch (IdBouton)
@@ -259,6 +261,7 @@ void CMenu::OnClic (int aX, int aY)
          }
          else
          {
+            mJeu.SelectTour (-1);
             mLog << Info << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << EndLine;
          }
       }

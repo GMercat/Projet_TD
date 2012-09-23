@@ -10,9 +10,9 @@ CIA::CIA (CPlateau& aPlateau):
 
 CIA::~CIA (void)
 {
-   int NbLigne    = mPlateau.GetNbCaseLargeur () * mPlateau.GetNbCaseHauteur ();
+   int NbLigneColonne = mPlateau.GetNbCaseLargeur () * mPlateau.GetNbCaseHauteur ();
    
-   for(int IterLigne = 0 ; IterLigne < NbLigne ; IterLigne++)
+   for(int IterLigne = 0 ; IterLigne < NbLigneColonne ; IterLigne++)
    {
       delete[] mMatriceGraph[IterLigne];
       delete[] mCheminsMinimaux[IterLigne];
@@ -23,25 +23,23 @@ CIA::~CIA (void)
 
 void CIA::OnInit (void)
 {
-   int IterLigne     = 0;
-   int IterColonne   = 0;
-
-   int NbLigne    = mPlateau.GetNbCaseLargeur () * mPlateau.GetNbCaseHauteur ();
-   int NbColonne  = NbLigne;
-
+   int NbLigneColonne   = mPlateau.GetNbCaseLargeur () * mPlateau.GetNbCaseHauteur ();
+   
    // Allocation dynamique de la matrice du graph et des celle des chemins minimaux
-   mMatriceGraph     = new int* [NbLigne];
-   mCheminsMinimaux  = new int* [NbLigne];
-   for (IterLigne = 0; IterLigne < NbLigne ; IterLigne++)
+   mMatriceGraph        = new int* [NbLigneColonne];
+   mMatriceGraphCalcul  = new int* [NbLigneColonne];
+   mCheminsMinimaux     = new int* [NbLigneColonne];
+   for (int IterLigne = 0; IterLigne < NbLigneColonne ; IterLigne++)
    {
-      mMatriceGraph[IterLigne]      = new int[NbColonne];
-      mCheminsMinimaux[IterLigne]   = new int[NbColonne];
+      mMatriceGraph[IterLigne]         = new int[NbLigneColonne];
+      mMatriceGraphCalcul[IterLigne]   = new int[NbLigneColonne];
+      mCheminsMinimaux[IterLigne]      = new int[NbLigneColonne];
    }
 
    // Mise à zéro de la matrice du graph
-   for (IterLigne= 0; IterLigne < NbLigne; IterLigne++)
+   for (int IterLigne= 0; IterLigne < NbLigneColonne; IterLigne++)
    {
-      for (IterColonne= 0; IterColonne < NbColonne; IterColonne++)
+      for (int IterColonne= 0; IterColonne < NbLigneColonne; IterColonne++)
       {
          if (IterLigne == IterColonne)
          {
@@ -240,24 +238,20 @@ void CIA::MiseAJourMatriceGraphe (int aNumCase, bool abEstOccuped)
 
 void CIA::CalculCheminMinimaux (void)
 {
+   CTimer Timer;
+   Timer.Start ();
+
    int NbCaseLargeur = mPlateau.GetNbCaseLargeur ();
    int NbCaseHauteur = mPlateau.GetNbCaseHauteur ();
    int NbLigneColonne = NbCaseLargeur * NbCaseHauteur;
 
    int IterLigne = 0;
-   int **MatriceGraphCalcul;
-
-   MatriceGraphCalcul = new int* [NbLigneColonne];
-   for (IterLigne = 0; IterLigne < NbLigneColonne ; IterLigne++)
-   {
-      MatriceGraphCalcul[IterLigne] = new int[NbLigneColonne];
-   }
-
+         
    for (IterLigne = 0; IterLigne < NbCaseLargeur * NbCaseHauteur; IterLigne++)
    {
       for (int IterColonne = 0; IterColonne < NbCaseLargeur * NbCaseHauteur; IterColonne++)
       {
-         MatriceGraphCalcul[IterLigne][IterColonne] = mMatriceGraph[IterLigne][IterColonne];
+         mMatriceGraphCalcul[IterLigne][IterColonne] = mMatriceGraph[IterLigne][IterColonne];
          if ((IterLigne != IterColonne) && (mMatriceGraph[IterLigne][IterColonne] != 999))
          {
             mCheminsMinimaux[IterLigne][IterColonne] = IterLigne;
@@ -268,34 +262,34 @@ void CIA::CalculCheminMinimaux (void)
          }
       }
    }
-
+   
    for (int IterInterm = 0; IterInterm < NbCaseLargeur * NbCaseHauteur; IterInterm++)
    {
       for (IterLigne = 0; IterLigne < NbCaseLargeur * NbCaseHauteur; IterLigne++)
       {
-         for (int IterColonne = 0; IterColonne < NbCaseLargeur * NbCaseHauteur; IterColonne++)
+         if (mMatriceGraphCalcul[IterLigne][IterInterm] != 999)
          {
-            int Cheminik = MatriceGraphCalcul[IterLigne][IterInterm];
-            int Cheminkj = MatriceGraphCalcul[IterInterm][IterColonne];
-            if ((Cheminik != 999) && (Cheminkj != 999))
+            for (int IterColonne = 0; IterColonne < NbCaseLargeur * NbCaseHauteur; IterColonne++)
             {
-               int Cheminij = Cheminik + Cheminkj;
-               if (Cheminij < MatriceGraphCalcul[IterLigne][IterColonne])
+               int Cheminik = mMatriceGraphCalcul[IterLigne][IterInterm];
+               int Cheminkj = mMatriceGraphCalcul[IterInterm][IterColonne];
+               if ((Cheminik != 999) && (Cheminkj != 999))
                {
-                  MatriceGraphCalcul[IterLigne][IterColonne] = Cheminij;
-                  mCheminsMinimaux[IterLigne][IterColonne] = mCheminsMinimaux[IterInterm][IterColonne];
+                  int Cheminij = Cheminik + Cheminkj;
+                  if (Cheminij < mMatriceGraphCalcul[IterLigne][IterColonne])
+                  {
+                     mMatriceGraphCalcul[IterLigne][IterColonne] = Cheminij;
+                     mCheminsMinimaux[IterLigne][IterColonne] = mCheminsMinimaux[IterInterm][IterColonne];
+                  }
                }
             }
          }
       }
    }
 
-   for(IterLigne = 0 ; IterLigne < NbLigneColonne ; IterLigne++)
-   {
-      delete[] MatriceGraphCalcul[IterLigne];
-   }
-   delete[] MatriceGraphCalcul;
+   std::cout << "CalculCheminMinimaux=" << Timer.GetNbTicks () << std::endl;
 }
+
 
 bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin)
 {

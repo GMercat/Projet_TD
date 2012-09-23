@@ -58,11 +58,16 @@ void CMoteur::OnQuit (void)
 
 void CMoteur::OnClic (int aX, int aY)
 {
-   bool bAutorisePlacementTour = false;
-
-	mLog << Info << "Moteur.OnClic (" << aX << ", " << aY << ")" << EndLine;
-	
    mJeu.OnClic (aX, aY);
+}
+
+void CMoteur::OnMotion (int aX, int aY)
+{
+   // Si une tour est sélectionnée
+   if (mJeu.GetTourSelectionnee () != -1)
+   {
+      //mLog << Erreur << "OnMotion (" << aX << ", " << aY << ")" << EndLine; 
+   }
 }
 
 void CMoteur::OnProgression   (void)

@@ -16,7 +16,6 @@ public:
 
    void ConstruireMatriceGraphe  (void);
    void MiseAJourMatriceGraphe   (int aNumCase, bool abEstOccuped);
-   void CalculCheminMinimaux     (void);
    bool CalculPlusCourtChemin    (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin);
    void CalculPCCheminReel       (std::list<int>& aPCChemin, TCoordonnee& aCoordonnees, std::list<TVecteurChemin>& aPCCheminReel);
 
@@ -26,11 +25,15 @@ public:
    void AfficherMatrice (void);
 
 private:
-   CLog  mLog;
-   int **mMatriceGraph;
-   int **mCheminsMinimaux;
+   void CalculCheminMinimaux     (void);
 
-   CPlateau& mPlateau;
+private:
+   CLog        mLog;
+   CPlateau&   mPlateau;
+
+   int **mMatriceGraph;
+   int **mMatriceGraphCalcul;
+   int **mCheminsMinimaux;
 };
 
 #endif

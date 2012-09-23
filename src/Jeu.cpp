@@ -66,7 +66,7 @@ void CJeu::OnClic (int aX, int aY)
    else
    {
       mpIA->MiseAJourMatriceGraphe (NumCaseCliquee, true);
-
+      
       // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
       if (PlacementEstAutorise ())
       {
