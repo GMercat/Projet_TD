@@ -20,6 +20,8 @@ public:
    void OnAffiche (SDL_Surface* apEcran);
    void OnAfficheEnPause (SDL_Surface* apEcran);
    
+   bool EstDansPlateau (int aX, int aY);
+
    CTourPtr& ConstruireTour (int aNumCaseCliquee);
    void AnnuleDerniereModif   (void);
 

@@ -242,6 +242,12 @@ void CPlateau::OnAfficheEnPause (SDL_Surface* apEcran)
    mImagePausePtr->Afficher (apEcran, Position);
 }
 
+// Test si on est sur le plateau
+bool CPlateau::EstDansPlateau (int aX, int aY)
+{
+   return (aX < (mNbCasesLargeur * mLargeurCase)) && (aY < (mNbCasesHauteur * mHauteurCase));
+}
+
 CTourPtr& CPlateau::ConstruireTour (int aNumCaseCliquee)
 {
    std::string Ressource; // Non utilisé ici !
