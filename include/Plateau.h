@@ -19,10 +19,11 @@ public:
    int  OnClic (int aX, int aY);
    void OnAffiche (SDL_Surface* apEcran);
    void OnAfficheEnPause (SDL_Surface* apEcran);
-   
+   void OnSurvoleCase (int aX, int aY);
+
    bool EstDansPlateau (int aX, int aY);
 
-   CTourPtr& ConstruireTour (int aNumCaseCliquee);
+   CTour::Ptr& ConstruireTour (int aNumCaseCliquee);
    void AnnuleDerniereModif   (void);
 
    int GetNbCaseLargeur (void);
@@ -30,8 +31,8 @@ public:
    int GetLargeurCase   (void);
    int GetHauteurCase   (void);
 
-   CCasePtr&   GetCase                       (int aNumCase);
-   CCasePtr&   GetCase                       (int aX, int aY); // Index dans le tableau
+   CCase::Ptr& GetCase                       (int aNumCase);
+   CCase::Ptr& GetCase                       (int aX, int aY); // Index dans le tableau
    void        GetCoordonneesCaseParNumero   (int aNumero, TCoordonnee& aCoordonnees);
    int         GetNumCaseParCoordonnees      (TCoordonnee& aCoordonnees); // Coordonnées
    int         GetNumCaseDepart              (void);
@@ -49,7 +50,9 @@ private:
    int mLargeurCase;
    int mHauteurCase;
 
-   std::vector<CCasePtr> mCases;
+   int mDerniereCaseSurvolee;
+
+   std::vector<CCase::Ptr> mCases;
 
    int mNumCaseDepart;
    int mNumCaseArrivee;
@@ -57,11 +60,11 @@ private:
    std::pair<int, int>  mCoordonneesDerniereCaseModifiee;
 
    std::vector <std::string>  mNomImagesCase;
-   std::vector <CImagePtr>    mImagesCases;
+   std::vector <CImage::Ptr>    mImagesCases;
    std::vector <std::string>  mNomImagesTour;
-   std::vector <CImagePtr>    mImagesTours;
+   std::vector <CImage::Ptr>    mImagesTours;
       
-   CImagePtr   mImagePausePtr;
+   CImage::Ptr   mImagePausePtr;
    // TODO Non utilisé SDL_Surface*	mpImagePCC;
 };
 

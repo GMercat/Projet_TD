@@ -17,6 +17,8 @@ public:
       eNbType
 	};
 
+public:
+typedef boost::shared_ptr<CCase> Ptr;
 
 public:
    CCase    (void);
@@ -25,7 +27,7 @@ public:
 	void OnInit                (void);
 	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
    
-   CTourPtr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
+   CTour::Ptr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
    
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);
@@ -44,22 +46,24 @@ public:
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
 
+   void MarqueSurvolee (bool abEstSurvolee);
+   bool EstSurvolee (void);
+
 private:
    CLog           mLog;
 	ETypeCase      mType;
    
    int         mNumCase;
    bool        mbEstPlusCourtChemin;
+   bool        mbEstSurvolee;
 
    int	      mIdPlateauX;
 	int	      mIdPlateauY;
 
-   CTourPtr    mTourPtr;
+   CTour::Ptr  mTourPtr;
 
 	int		   mCourImage; // L'image à afficher
 	SDL_Rect		mPosition;	// Position de la case
 };
-
-typedef boost::shared_ptr<CCase> CCasePtr;
 
 #endif

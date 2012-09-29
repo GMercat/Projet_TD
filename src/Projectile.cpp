@@ -1,7 +1,7 @@
 #include "../include/Projectile.h"
 #include <cmath>
 
-CProjectile::CProjectile (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
+CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
    mLog              ("Projectile"),
    mEnnemiCiblePtr   (aEnnemiCiblePtr),
    mPuissance        (aPuissance),

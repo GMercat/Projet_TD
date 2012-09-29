@@ -26,15 +26,16 @@ int main( int argc, char *argv[ ] )
 	//Boucle generale
 	while(!Done)
 	{
+      bool bMotion = false;
 		//On demarre le timer fps
       Fps.Start();
 
 		//Traiter les evenements
-		while(SDL_PollEvent(&Event))
+		while(SDL_PollEvent(&Event) && (bMotion == false))
 		{
    		Moteur.handle_input(&Event);
 		
-			switch(Event.type)
+         switch(Event.type)
 			{
 				case SDL_QUIT:
 					Done=1;
@@ -48,6 +49,7 @@ int main( int argc, char *argv[ ] )
 					break;
             case SDL_MOUSEMOTION:
                Moteur.OnMotion (Event.motion.x, Event.motion.y);
+               bMotion = true;
                break;
 				default:
 					break;

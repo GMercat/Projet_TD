@@ -9,6 +9,10 @@
 class CTour
 {
 public:
+   typedef boost::shared_ptr<CTour> Ptr;
+   typedef std::list<CTour::Ptr>    Liste;
+
+public:
    CTour	   (CConfiguration& aConfig, TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
 	~CTour	(void);
 
@@ -23,7 +27,7 @@ public:
    int GetPorteeTire (void);
 
    bool AutoriseATirer  (void);
-   void Tire            (CEnnemiPtr& aEnnemiCiblePtr);
+   void Tire            (CEnnemi::Ptr& aEnnemiCiblePtr);
 
 private:
    CConfiguration& mConfig;
@@ -37,9 +41,7 @@ private:
    int      mPuissanceProjectile;
    CTimer   mTimer;       // Gestion de la cadence de tire de la tour
 
-   std::list<CProjectilePtr>  mListeProjectilesTires; // Liste de projectiles tirés par la tour
+   CProjectile::Liste  mListeProjectilesTires; // Liste de projectiles tirés par la tour
 };
-
-typedef boost::shared_ptr<CTour> CTourPtr;
 
 #endif

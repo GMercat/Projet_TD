@@ -71,7 +71,7 @@ void CJeu::OnClic (int aX, int aY)
       if (PlacementEstAutorise ())
       {
          // Construction de la tour dans la case
-         CTourPtr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
+         CTour::Ptr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
          mListTour.push_back (NouvelleTour);
 
          // Première tour posée ?
@@ -100,14 +100,14 @@ void CJeu::OnAffiche (SDL_Surface* apScreen)
    mPlateau.OnAffiche (apScreen);
    
    // Affichage des ennemis
-   std::list<CEnnemiPtr>::iterator IterEnnemi;
+   CEnnemi::Liste::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
    {
       (*IterEnnemi)->OnAffiche (apScreen);
    }
 
    // Affichage des projectiles
-   std::list<CTourPtr>::iterator IterTourTiree = mListTourTiree.begin ();
+   CTour::Liste::iterator IterTourTiree = mListTourTiree.begin ();
    for (IterTourTiree; IterTourTiree != mListTourTiree.end (); ++IterTourTiree)
    {
       (*IterTourTiree)->OnAfficheProjectiles (apScreen);
@@ -148,8 +148,8 @@ void CJeu::OnProgression   (void)
 
 void CJeu::ProgressionProjectiles (void)
 {
-   std::list<CTourPtr>::iterator IterTourTiree    = mListTourTiree.begin ();
-   std::list<CTourPtr>::iterator IterTourTireeEnd = mListTourTiree.end ();
+   CTour::Liste::iterator IterTourTiree    = mListTourTiree.begin ();
+   CTour::Liste::iterator IterTourTireeEnd = mListTourTiree.end ();
    while (IterTourTiree != IterTourTireeEnd)
    {
       if (false == (*IterTourTiree)->OnAvanceProjectiles ())
@@ -198,8 +198,8 @@ void CJeu::ProgressionEnnemis (void)
       }
    }
 
-   std::list<CEnnemiPtr>::iterator IterEnnemi = mListEnnemi.begin ();
-   std::list<CEnnemiPtr>::iterator IterEnnemiEnd = mListEnnemi.end ();
+   CEnnemi::Liste::iterator IterEnnemi = mListEnnemi.begin ();
+   CEnnemi::Liste::iterator IterEnnemiEnd = mListEnnemi.end ();
    while (IterEnnemi != IterEnnemiEnd)
    {
       (*IterEnnemi)->Avance ();
@@ -254,8 +254,8 @@ void CJeu::OnTire (void)
    bool bTourATiree     = false;
 
    // Gestion des tires des tours
-   std::list<CTourPtr>::iterator    IterTour;
-   std::list<CEnnemiPtr>::iterator  IterEnnemi;
+   CTour::Liste::iterator    IterTour;
+   CEnnemi::Liste::iterator  IterEnnemi;
 
    // Parcours des tours pour rechercher les ennemis à la porté
    for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
@@ -290,7 +290,7 @@ void CJeu::AjoutEnnemi (void)
 {
    std::list<int> PlusCourtChemin;
 
-   CEnnemiPtr EnnemiPtr (new CEnnemi(mConfig, mpIA, CEnnemi::eType1, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()));
+   CEnnemi::Ptr EnnemiPtr (new CEnnemi(mConfig, mpIA, CEnnemi::eType1, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()));
    
    EnnemiPtr->OnInit ();
    
@@ -324,7 +324,7 @@ bool CJeu::PlacementEstAutorise  (void)
    
    PlusCourtChemin.clear ();
    // Parcours la liste des ennemis afin de vérifier le placement de la tour
-   std::list <CEnnemiPtr>::iterator IterEnnemi;
+   CEnnemi::Liste::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (bEstAutorise); IterEnnemi++)
    {
       PlusCourtChemin.clear ();

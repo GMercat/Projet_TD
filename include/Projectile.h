@@ -8,7 +8,11 @@
 class CProjectile
 {
 public:
-   CProjectile   (CEnnemiPtr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse);
+   typedef boost::shared_ptr<CProjectile> Ptr;
+   typedef std::list<CProjectile::Ptr>    Liste;
+
+public:
+   CProjectile   (CEnnemi::Ptr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse);
    ~CProjectile  (void);
 
    bool  OnInit      (std::string& aCheminRessource, std::string& aNomImage); 
@@ -23,12 +27,10 @@ private:
 
    TCoordonnee mCoordonnee;
 
-   CEnnemiPtr mEnnemiCiblePtr; // Ennemi visé par le projectile
+   CEnnemi::Ptr mEnnemiCiblePtr; // Ennemi visé par le projectile
    
-   CImagePtr      mImagePtr;
+   CImage::Ptr      mImagePtr;
    SDL_Rect       mPosition;
 };
-
-typedef boost::shared_ptr<CProjectile> CProjectilePtr;
 
 #endif

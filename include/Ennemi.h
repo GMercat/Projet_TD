@@ -18,6 +18,10 @@ public:
    };
 
 public:
+   typedef boost::shared_ptr<CEnnemi>  Ptr;
+   typedef std::list<CEnnemi::Ptr>     Liste;
+
+public:
    CEnnemi  (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee);
    ~CEnnemi (void);
 
@@ -52,11 +56,9 @@ private:
    std::list<int>                mPCCheminCase;
    std::list<TVecteurChemin>     mPCCheminReel;
 
-   CImagePtr   mImagePtr;
+   CImage::Ptr   mImagePtr;
    //SDL_Surface*  mpImage;
    SDL_Rect      mPosition;
 };
-
-typedef boost::shared_ptr<CEnnemi> CEnnemiPtr;
 
 #endif

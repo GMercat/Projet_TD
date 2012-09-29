@@ -4,11 +4,12 @@
 
 
 CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
-   mLog           ("Plateau"),
-   mConfig        (aConfig),
-   mJeu           (aJeu),
-   mNumCaseDepart (-1),
-   mNumCaseArrivee(-1)
+   mLog                    ("Plateau"),
+   mConfig                 (aConfig),
+   mJeu                    (aJeu),
+   mNumCaseDepart          (-1),
+   mNumCaseArrivee         (-1),
+   mDerniereCaseSurvolee   (-1)
 // TODO Non utilisé    mpImagePCC     (NULL)
 {
 	mCoordonneesDerniereCaseModifiee.first = -1;
@@ -47,7 +48,7 @@ bool CPlateau::OnInit (void)
       // Allocation des surfaces des cases
       for (IterImage = 0; IterImage < mNomImagesCase.size (); ++IterImage)
       {
-         CImagePtr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
+         CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
          
          ImageCourantePtr->Load (mNomImagesCase[IterImage]);
          
@@ -57,7 +58,7 @@ bool CPlateau::OnInit (void)
       // Allocation des surfaces des tours
       for (IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
       {
-         CImagePtr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
+         CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
          
          ImageCourantePtr->Load (mNomImagesTour[IterImage]);
          
@@ -75,7 +76,7 @@ bool CPlateau::OnInit (void)
       }*/
             
       std::string NomFichier ("JeuPause.bmp");
-      mImagePausePtr = CImagePtr (new CImage (CheminRessourcesImageStr));
+      mImagePausePtr = CImage::Ptr (new CImage (CheminRessourcesImageStr));
       mImagePausePtr->Load        (NomFichier);
       mImagePausePtr->SetAlpha    (128);
       
@@ -105,7 +106,7 @@ bool CPlateau::OnInit (void)
 	      {
             NumCase = iLargeur + (mNbCasesLargeur * iHauteur);
 
-		      CCasePtr CasePtr (new CCase());
+		      CCase::Ptr CasePtr (new CCase());
 
 			   CasePtr->OnInit ();
 			   Rect.x = iLargeur * mLargeurCase;
@@ -173,7 +174,7 @@ int CPlateau::OnClic (int aX, int aY)
    mCoordonneesDerniereCaseModifiee.second   = -1;
 
    // Test si on est sur le plateau
-   if((aX < (mNbCasesLargeur * mLargeurCase)) && aY < (mNbCasesHauteur * mHauteurCase))
+   if(EstDansPlateau (aX, aY))
    {
       IterLargeur = (int)(aX / mLargeurCase);
       IterHauteur = (int)(aY / mHauteurCase);
@@ -182,7 +183,6 @@ int CPlateau::OnClic (int aX, int aY)
       NumeroCaseCliquee = IterHauteur * mNbCasesLargeur + IterLargeur;
 
       mLog << Info << "Case (" << IterLargeur << ", " << IterHauteur << ")" << EndLine;
-
 
       // Si la case est vide ET on a sélectionnée un type de tour dans le menu
       if (GetCase(NumeroCaseCliquee)->EstVide() && (mJeu.GetTourSelectionnee () != -1))
@@ -224,7 +224,14 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
             }
             else
             {
-               mImagesCases[EtatCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+               if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstSurvolee ())
+               {
+                  // TODO Image survolee
+               }
+               else
+               {
+                  mImagesCases[EtatCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+               }
             }
          }
       }
@@ -242,13 +249,41 @@ void CPlateau::OnAfficheEnPause (SDL_Surface* apEcran)
    mImagePausePtr->Afficher (apEcran, Position);
 }
 
+void CPlateau::OnSurvoleCase (int aX, int aY)
+{
+   int IterLargeur = (int)(aX / mLargeurCase);
+   int IterHauteur = (int)(aY / mHauteurCase);
+      
+   //On renseigne le numéro de la case que l'on a trouvé
+   int NumeroCaseSurvolee = IterHauteur * mNbCasesLargeur + IterLargeur;
+
+   mLog << Erreur << "CaseSurvolée (" << IterLargeur << ", " << IterHauteur << ") = " << NumeroCaseSurvolee << EndLine;
+
+   if (NumeroCaseSurvolee != mDerniereCaseSurvolee)
+   {
+      if (mDerniereCaseSurvolee != -1)
+      {
+         GetCase(mDerniereCaseSurvolee)->MarqueSurvolee (false);
+      }
+
+      // Si la case est vide
+      if (GetCase(NumeroCaseSurvolee)->EstVide())
+      {
+         //On met le type à jour
+         GetCase(NumeroCaseSurvolee)->MarqueSurvolee (true);
+      }
+
+      mDerniereCaseSurvolee = NumeroCaseSurvolee;
+   }
+}
+
 // Test si on est sur le plateau
 bool CPlateau::EstDansPlateau (int aX, int aY)
 {
    return (aX < (mNbCasesLargeur * mLargeurCase)) && (aY < (mNbCasesHauteur * mHauteurCase));
 }
 
-CTourPtr& CPlateau::ConstruireTour (int aNumCaseCliquee)
+CTour::Ptr& CPlateau::ConstruireTour (int aNumCaseCliquee)
 {
    std::string Ressource; // Non utilisé ici !
    int Portee;
@@ -290,14 +325,14 @@ int CPlateau::GetHauteurCase   (void)
    return mHauteurCase;
 }
 
-CCasePtr& CPlateau::GetCase (int aNumCase)
+CCase::Ptr& CPlateau::GetCase (int aNumCase)
 {
    int IterHauteur = aNumCase / mNbCasesLargeur;
    int IterLargeur = aNumCase % mNbCasesLargeur;
    return mCases[IterHauteur * mNbCasesLargeur + IterLargeur];
 }
 
-CCasePtr& CPlateau::GetCase (int aX, int aY)
+CCase::Ptr& CPlateau::GetCase (int aX, int aY)
 {
    return mCases[aY * mNbCasesLargeur + aX];
 }

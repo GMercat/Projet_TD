@@ -63,14 +63,10 @@ void CMoteur::OnClic (int aX, int aY)
 
 void CMoteur::OnMotion (int aX, int aY)
 {
-   // Si on survole le plateau
-   if (mJeu.GetPlateau ().EstDansPlateau (aX, aY))
+   // Si on survole le plateau et si une tour est sélectionnée
+   if (mJeu.GetPlateau ().EstDansPlateau (aX, aY) && (mJeu.GetTourSelectionnee () != -1))
    {
-      // Si une tour est sélectionnée
-      if (mJeu.GetTourSelectionnee () != -1)
-      {
-         //mLog << Erreur << "OnMotion (" << aX << ", " << aY << ")" << EndLine; 
-      }
+      mJeu.GetPlateau ().OnSurvoleCase (aX, aY);
    }
 }
 

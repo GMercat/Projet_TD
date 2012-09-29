@@ -10,7 +10,8 @@ CCase::CCase (void):
 	mType		            (eVide),
 	mCourImage	         (0),
    mNumCase             (-1),
-   mbEstPlusCourtChemin (false)
+   mbEstPlusCourtChemin (false),
+   mbEstSurvolee        (false)
 {
 	mPosition.x = 0;
 	mPosition.y = 0;
@@ -57,14 +58,14 @@ void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
  *
  * @return Pointeur intelligent sur la tour construite
  */
-CTourPtr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
+CTour::Ptr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
 {
    TCoordonnee CoordCentre;
    
    CoordCentre.first = mPosition.x + (mPosition.w / 2);
    CoordCentre.second = mPosition.y + (mPosition.h / 2);
 
-   mTourPtr = CTourPtr (new CTour (aConfig, CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
+   mTourPtr = CTour::Ptr (new CTour (aConfig, CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
    return mTourPtr;
 }
 
@@ -228,4 +229,19 @@ void CCase::GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY)
 {
 	aIdPlateauX = mIdPlateauX;
 	aIdPlateauY = mIdPlateauY;
+}
+
+/**
+ * @brief   Marque la case comme survolée par la souris
+ *
+ * @param[in] abEstSurvolee   Nouvelle valeur
+ */
+void CCase::MarqueSurvolee (bool abEstSurvolee)
+{
+   mbEstSurvolee = abEstSurvolee;
+}
+
+bool CCase::EstSurvolee (void)
+{
+   return mbEstSurvolee;
 }

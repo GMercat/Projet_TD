@@ -26,7 +26,7 @@ void CTour::GetCentre (int& aXCentre, int &aYCentre)
 void CTour::OnAfficheProjectiles(SDL_Surface* apSurfaceDest)
 {
    // Affichage des projectiles lié à la tour
-   std::list<CProjectilePtr>::iterator IterProjectile;
+   CProjectile::Liste::iterator IterProjectile;
    for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end (); ++IterProjectile)
    {
       (*IterProjectile)->OnAffiche (apSurfaceDest);
@@ -37,8 +37,8 @@ bool CTour::OnAvanceProjectiles (void)
 {
    bool bProjectileDetruit = false;
       
-   std::list<CProjectilePtr>::iterator IterProjectile    = mListeProjectilesTires.begin ();
-   std::list<CProjectilePtr>::iterator IterProjectileEnd = mListeProjectilesTires.end ();
+   CProjectile::Liste::iterator IterProjectile    = mListeProjectilesTires.begin ();
+   CProjectile::Liste::iterator IterProjectileEnd = mListeProjectilesTires.end ();
    while (IterProjectile != IterProjectileEnd)
    {
       bProjectileDetruit = (*IterProjectile)->Avance ();
@@ -85,14 +85,14 @@ bool CTour::AutoriseATirer (void)
    return bAutorisation;
 }
 
-void CTour::Tire (CEnnemiPtr& aEnnemiCiblePtr)
+void CTour::Tire (CEnnemi::Ptr& aEnnemiCiblePtr)
 {
    // Création et ajout du projectile dans la liste des projectiles tirés
-   CProjectilePtr ProjectileTirePtr (new CProjectile( aEnnemiCiblePtr,
-                                                      mCoordCentre.first,
-                                                      mCoordCentre.second,
-                                                      mPuissanceProjectile,
-                                                      mVitesseProjectile));
+   CProjectile::Ptr ProjectileTirePtr (new CProjectile(  aEnnemiCiblePtr,
+                                                         mCoordCentre.first,
+                                                         mCoordCentre.second,
+                                                         mPuissanceProjectile,
+                                                         mVitesseProjectile));
    std::string RessourceImage;
    std::string RessourceProjectile;
 

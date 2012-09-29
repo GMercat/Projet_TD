@@ -171,7 +171,7 @@ bool CMenu::OnInit (void)
       int iImage = 0;
       
       bReturn &= mConfig.GetRessourcesTours (mNomImagesTour);
-      mImagesTours.resize (mNomImagesTour.size ());
+      mImagesTours.resize (mNbTours);
       // Pour les boutons tours
       std::vector<SDL_Surface*>::iterator IterImage;
       for (IterImage = mImagesTours.begin (); (IterImage != mImagesTours.end ()) && (bReturn); ++IterImage)

@@ -65,9 +65,9 @@ private:
    int   mTempsInterVague;
    int   mTempsProchainEnnemi;
    
-   std::list<CTourPtr>     mListTour;
-   std::list<CTourPtr>     mListTourTiree;
-   std::list<CEnnemiPtr>   mListEnnemi;
+   CTour::Liste     mListTour;
+   CTour::Liste     mListTourTiree;
+   CEnnemi::Liste   mListEnnemi;
 };
 
 #endif

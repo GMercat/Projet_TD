@@ -6,6 +6,9 @@
 class CImage
 {
 public:
+   typedef boost::shared_ptr<CImage> Ptr;
+
+public:
    CImage (void);
    CImage (std::string& aCheminRessources);
    ~CImage (void);
@@ -35,7 +38,5 @@ inline const int CImage::GetHauteur (void) const
 {
    return mpSurface->h;
 }
-
-typedef boost::shared_ptr<CImage> CImagePtr;
 
 #endif
