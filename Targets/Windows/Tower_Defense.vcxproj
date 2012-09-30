@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\Config.h" />
+    <ClInclude Include="..\..\include\Fenetre.h" />
     <ClInclude Include="..\..\include\Image.h" />
     <ClInclude Include="..\..\include\Log.h" />
     <ClInclude Include="..\..\include\Projectile.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="..\..\include\Menu.h" />
     <ClInclude Include="..\..\include\Moteur.h" />
     <ClInclude Include="..\..\include\Plateau.h" />
+    <ClInclude Include="..\..\include\Surface.h" />
     <ClInclude Include="..\..\include\Timer.h" />
     <ClInclude Include="..\..\include\Tour.h" />
   </ItemGroup>
@@ -116,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Config.cpp" />
+    <ClCompile Include="..\..\src\Fenetre.cpp" />
     <ClCompile Include="..\..\src\Image.cpp" />
     <ClCompile Include="..\..\src\Log.cpp" />
     <ClCompile Include="..\..\src\Projectile.cpp" />
@@ -127,6 +130,7 @@
     <ClCompile Include="..\..\src\Menu.cpp" />
     <ClCompile Include="..\..\src\Moteur.cpp" />
     <ClCompile Include="..\..\src\Plateau.cpp" />
+    <ClCompile Include="..\..\src\Surface.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Tour.cpp" />
   </ItemGroup>

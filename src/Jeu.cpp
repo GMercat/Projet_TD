@@ -91,31 +91,31 @@ void CJeu::OnClic (int aX, int aY)
    }
 }
 
-void CJeu::OnAffiche (SDL_Surface* apScreen)
+void CJeu::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
    // Affichage du menu
-   mMenu.   OnAffiche (apScreen);
+   mMenu.   OnAffiche (aScreenPtr);
 
    // Affichage du plateau
-   mPlateau.OnAffiche (apScreen);
+   mPlateau.OnAffiche (aScreenPtr);
    
    // Affichage des ennemis
    CEnnemi::Liste::iterator IterEnnemi;
    for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
    {
-      (*IterEnnemi)->OnAffiche (apScreen);
+      (*IterEnnemi)->OnAffiche (aScreenPtr);
    }
 
    // Affichage des projectiles
    CTour::Liste::iterator IterTourTiree = mListTourTiree.begin ();
    for (IterTourTiree; IterTourTiree != mListTourTiree.end (); ++IterTourTiree)
    {
-      (*IterTourTiree)->OnAfficheProjectiles (apScreen);
+      (*IterTourTiree)->OnAfficheProjectiles (aScreenPtr);
    }
 
    if (false == mbPartieEnCours)
    {
-      mPlateau.OnAfficheEnPause (apScreen);
+      mPlateau.OnAfficheEnPause (aScreenPtr);
    }
 }
 

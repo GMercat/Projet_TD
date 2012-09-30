@@ -3,6 +3,7 @@
 
 #include "Defined.h"
 
+#include "Fenetre.h"
 #include "Jeu.h"
 #include "IA.h"
 
@@ -29,7 +30,7 @@ private:
 	CJeu mJeu;
    CIA  mIA;
    
-   SDL_Surface*	mpScreen;
+   CFenetre::Ptr	mScreenPtr;
 };
 
 #endif

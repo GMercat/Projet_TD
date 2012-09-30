@@ -3,8 +3,7 @@
 CMoteur::CMoteur (void):
    mLog     ("Moteur"),
    mIA      (mJeu.GetPlateau ()),
-   mJeu     (&mIA),
-   mpScreen (NULL)
+   mJeu     (&mIA)
 {
 	;
 }
@@ -24,26 +23,8 @@ bool CMoteur::OnInit (void)
    {
       mIA.OnInit ();
 
-      //Initialisation de la SDL
-	   if (SDL_Init(SDL_INIT_VIDEO) != 0)
-	   {
-		   mLog << Erreur << "Probleme pour initialiser SDL: " << SDL_GetError() << EndLine;
-		   bReturn = false;
-	   }
-
-      // Mettre un titre à la fenêtre
-      SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
-
-      //Ouvrir une fenetre
-      mpScreen = SDL_SetVideoMode ( mJeu.GetLargeur (),
-                                    mJeu.GetHauteur (),
-                                    32,
-                                    SDL_DOUBLEBUF | SDL_HWSURFACE);
-      if (mpScreen == NULL)
-      {
-         bReturn = false;
-      }
-
+      bReturn = mScreenPtr->Init (mJeu.GetLargeur (), mJeu.GetHauteur ());
+      
       mIA.ConstruireMatriceGraphe ();
       mJeu.PlacementEstAutorise ();
    }
@@ -88,8 +69,8 @@ void CMoteur::OnTire (void)
 
 void CMoteur::OnAffiche (void)
 {
-	mJeu.OnAffiche (mpScreen);
-   SDL_Flip(mpScreen);
+	mJeu.OnAffiche (mScreenPtr->GetSurface ());
+   mScreenPtr->Flip ();
 }
 
 void CMoteur::handle_input(SDL_Event* apEvent)

@@ -3,6 +3,7 @@
 
 #include "Defined.h"
 #include "Config.h"
+#include "Surface.h"
 
 class CJeu;
 
@@ -25,7 +26,7 @@ public:
 
    bool OnInit    (void);
    void OnClic		(int aX, int aY);
-   void OnAffiche (SDL_Surface* apScreen);
+   void OnAffiche (CSurface::Ptr& aScreenPtr);
 
    int GetLargeur (void);
 

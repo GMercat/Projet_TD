@@ -18,7 +18,7 @@ public:
 
 	bool OnInit		      (void);
 	void OnClic		      (int aX, int aY);
-	void OnAffiche	      (SDL_Surface* apScreen);
+	void OnAffiche	      (CSurface::Ptr& aScreenPtr);
    void OnReset         (void);
    void OnQuit          (void);
    void OnProgression   (void);

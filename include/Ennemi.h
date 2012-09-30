@@ -26,7 +26,7 @@ public:
    ~CEnnemi (void);
 
    bool  OnInit    (void);
-   void  OnAffiche (SDL_Surface* apScreen);
+   void  OnAffiche (CSurface::Ptr& aScreenPtr);
 
    EType GetType           (void);
    void  SetType           (EType aType);
@@ -57,8 +57,9 @@ private:
    std::list<TVecteurChemin>     mPCCheminReel;
 
    CImage::Ptr   mImagePtr;
-   //SDL_Surface*  mpImage;
-   SDL_Rect      mPosition;
+   TCoordonnee   mPosition;
+   int           mLargeur;
+   int           mHauteur;
 };
 
 #endif

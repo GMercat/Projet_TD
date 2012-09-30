@@ -16,7 +16,7 @@ public:
    ~CProjectile  (void);
 
    bool  OnInit      (std::string& aCheminRessource, std::string& aNomImage); 
-   void  OnAffiche   (SDL_Surface* apScreen);
+   void  OnAffiche   (CSurface::Ptr& aScreenPtr);
    
    bool  Avance    (void);
 
@@ -29,8 +29,7 @@ private:
 
    CEnnemi::Ptr mEnnemiCiblePtr; // Ennemi visé par le projectile
    
-   CImage::Ptr      mImagePtr;
-   SDL_Rect       mPosition;
+   CImage::Ptr    mImagePtr;
 };
 
 #endif

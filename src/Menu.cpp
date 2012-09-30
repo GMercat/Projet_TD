@@ -311,7 +311,7 @@ void CMenu::OnClic (int aX, int aY)
    }
 }
 
-void CMenu::OnAffiche (SDL_Surface* apScreen)
+void CMenu::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
    SDL_BlitSurface(mImageFond,NULL,apScreen,&(mPositionFond));
 

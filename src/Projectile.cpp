@@ -27,12 +27,7 @@ bool CProjectile::OnInit (std::string& aCheminRessource, std::string& aNomImage)
    if (bReturn)
    {
 	   //Mis en place de la transparence
-      mImagePtr->SetTransparence ();
-
-      mPosition.x = mCoordonnee.first;
-      mPosition.y = mCoordonnee.second;
-      mPosition.w = mImagePtr->GetLargeur ();
-      mPosition.h = mImagePtr->GetHauteur ();
+      mImagePtr->SetTransparence (255, 255, 255);
    }
    else
    {
@@ -41,9 +36,9 @@ bool CProjectile::OnInit (std::string& aCheminRessource, std::string& aNomImage)
 	return bReturn;
 }
 
-void CProjectile::OnAffiche (SDL_Surface* apScreen)
+void CProjectile::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
-   mImagePtr->Afficher (apScreen, mPosition);
+   mImagePtr->Afficher (aScreenPtr, mCoordonnee);
 }
 
 bool CProjectile::Avance (void)
@@ -80,9 +75,6 @@ bool CProjectile::Avance (void)
          // Le projectile avance
          mCoordonnee.first  += (int)((XEnnemi - mCoordonnee.first)  * PourcentageParcouru);
          mCoordonnee.second += (int)((YEnnemi - mCoordonnee.second) * PourcentageParcouru);
-      
-         mPosition.x = mCoordonnee.first;
-         mPosition.y = mCoordonnee.second;
       }
    }
    else

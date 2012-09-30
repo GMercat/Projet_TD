@@ -20,7 +20,7 @@ public:
 
    void GetCentre (int& aXCentre, int &aYCentre);
 
-   void OnAfficheProjectiles  (SDL_Surface* apSurfaceDest);
+   void OnAfficheProjectiles  (CSurface::Ptr& aSurfaceDestPtr);
    bool OnAvanceProjectiles   (void);
 
    int GetTypeTour   (void);

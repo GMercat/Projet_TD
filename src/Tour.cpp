@@ -23,13 +23,13 @@ void CTour::GetCentre (int& aXCentre, int &aYCentre)
    aYCentre = mCoordCentre.second;
 }
 
-void CTour::OnAfficheProjectiles(SDL_Surface* apSurfaceDest)
+void CTour::OnAfficheProjectiles(CSurface::Ptr& aSurfaceDestPtr)
 {
    // Affichage des projectiles lié à la tour
    CProjectile::Liste::iterator IterProjectile;
    for (IterProjectile = mListeProjectilesTires.begin (); IterProjectile != mListeProjectilesTires.end (); ++IterProjectile)
    {
-      (*IterProjectile)->OnAffiche (apSurfaceDest);
+      (*IterProjectile)->OnAffiche (aSurfaceDestPtr);
    }
 }
 

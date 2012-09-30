@@ -25,7 +25,7 @@ public:
 	~CCase	(void);
 
 	void OnInit                (void);
-	void OnAffiche             (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase);
+	void OnAffiche             (CSurface::Ptr& aSurfaceDestPtr, CSurface::Ptr& aSurfaceCasePtr);
    
    CTour::Ptr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
    

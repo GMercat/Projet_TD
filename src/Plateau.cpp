@@ -198,7 +198,7 @@ int CPlateau::OnClic (int aX, int aY)
    return NumeroCaseCliquee;
 }
 
-void CPlateau::OnAffiche (SDL_Surface* apEcran)
+void CPlateau::OnAffiche (CSurface::Ptr& aEcranPtr)
 {
    int IterLargeur = 0;
    int IterHauteur = 0;
@@ -220,7 +220,7 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
             if (EtatCase == CCase::eTour)
             {
                int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
-               mImagesTours[TypeCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+               mImagesTours[TypeCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
             }
             else
             {
@@ -230,7 +230,7 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
                }
                else
                {
-                  mImagesCases[EtatCase]->Afficher (apEcran, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+                  mImagesCases[EtatCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
                }
             }
          }
@@ -238,7 +238,7 @@ void CPlateau::OnAffiche (SDL_Surface* apEcran)
    }
 }
 
-void CPlateau::OnAfficheEnPause (SDL_Surface* apEcran)
+void CPlateau::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
 {
    SDL_Rect Position;
    Position.x = 0;
@@ -246,7 +246,7 @@ void CPlateau::OnAfficheEnPause (SDL_Surface* apEcran)
    Position.w = mNbCasesLargeur * mLargeurCase;
    Position.h = mNbCasesHauteur * mHauteurCase;
       
-   mImagePausePtr->Afficher (apEcran, Position);
+   mImagePausePtr->Afficher (aEcranPtr, Position);
 }
 
 void CPlateau::OnSurvoleCase (int aX, int aY)

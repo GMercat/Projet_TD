@@ -17,8 +17,8 @@ public:
    bool OnInit (void);
    void OnReset (void);
    int  OnClic (int aX, int aY);
-   void OnAffiche (SDL_Surface* apEcran);
-   void OnAfficheEnPause (SDL_Surface* apEcran);
+   void OnAffiche (CSurface::Ptr& aEcranPtr);
+   void OnAfficheEnPause (CSurface::Ptr& aEcranPtr);
    void OnSurvoleCase (int aX, int aY);
 
    bool EstDansPlateau (int aX, int aY);
@@ -65,7 +65,6 @@ private:
    std::vector <CImage::Ptr>    mImagesTours;
       
    CImage::Ptr   mImagePausePtr;
-   // TODO Non utilisé SDL_Surface*	mpImagePCC;
 };
 
 #endif

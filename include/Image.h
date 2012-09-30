@@ -2,8 +2,9 @@
 #define _IMAGE_H_
 
 #include "Defined.h"
+#include "Surface.h"
 
-class CImage
+class CImage : public CSurface
 {
 public:
    typedef boost::shared_ptr<CImage> Ptr;
@@ -11,32 +12,14 @@ public:
 public:
    CImage (void);
    CImage (std::string& aCheminRessources);
-   ~CImage (void);
-
-   inline const int GetLargeur (void) const;
-   inline const int GetHauteur (void) const;
-   
-   void  Afficher (SDL_Surface* apEcran, SDL_Rect& aPosition);
+   virtual ~CImage (void);
+      
+   void  Afficher (CSurface::Ptr& aEcranPtr, SDL_Rect& aPosition);
+   void  Afficher (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonnees);
    bool  Load     (std::string& aNomFichier);
    
-   void  SetAlpha          (int aValeurAlpha);
-   void  SetTransparence   (void);
-   
 private:
-   CLog           mLog;
-   SDL_Surface*   mpSurface;
-
    std::string    mCheminRessources;
 };
-
-inline const int CImage::GetLargeur (void) const
-{
-   return mpSurface->w;
-}
-
-inline const int CImage::GetHauteur (void) const
-{
-   return mpSurface->h;
-}
 
 #endif

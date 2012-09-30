@@ -7,7 +7,9 @@ CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseD
    mLog              ("Ennemi"),
    mpIA              (apIA),
    mType             (aType),
-   mNumCaseArrivee   (aNumCaseArrivee)
+   mNumCaseArrivee   (aNumCaseArrivee),
+   mLargeur          (20), // TODO
+   mHauteur          (20)  // TODO
 {
    mpIA->GetCoordonneesCaseParNumero (aNumCaseDepart, mCoordonnee);
    
@@ -55,17 +57,14 @@ bool CEnnemi::OnInit (void)
    //On charge toutes les images dans les surfaces associées
    mImagePtr.reset (new CImage (CheminRessource));
    bReturn = mImagePtr->Load (NomFichier);
-	mImagePtr->SetTransparence ();
+	mImagePtr->SetTransparence (255, 255, 255);
    
-   mPosition.w = mImagePtr->GetLargeur ();
-   mPosition.h = mImagePtr->GetHauteur ();
-
 	return bReturn;
 }
 
-void CEnnemi::OnAffiche (SDL_Surface* apScreen)
+void CEnnemi::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
-   mImagePtr->Afficher (apScreen, mPosition);
+   mImagePtr->Afficher (aScreenPtr, mPosition);
 }
 
 void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
@@ -133,8 +132,8 @@ void CEnnemi::Avance (void)
    (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
    (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
 
-   mPosition.x = mCoordonnee.first - (mImagePtr->GetLargeur () / 2);
-   mPosition.y = mCoordonnee.second - (mImagePtr->GetHauteur () / 2);
+   mPosition.first   = mCoordonnee.first - (mLargeur / 2);
+   mPosition.second  = mCoordonnee.second - (mHauteur / 2);
 
    mLog << Info << "X = " << mCoordonnee.first << ", Y = " << mCoordonnee.second << EndLine;
 

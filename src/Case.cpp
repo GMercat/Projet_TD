@@ -38,12 +38,12 @@ void CCase::OnInit (void)
 /**
  * @brief   Méthode permettant l'affichage d'une case
  *
- * @param[in]  apSurfaceDest  Surface SDL générale dans laquelle on affiche les case
- * @param[in]  apSurfaceCase  Surface SDL dans laquelle la case est affichée
+ * @param[in]  aSurfaceDestPtr  Surface SDL générale dans laquelle on affiche les case
+ * @param[in]  aSurfaceCasePtr  Surface SDL dans laquelle la case est affichée
  */
-void CCase::OnAffiche (SDL_Surface* apSurfaceDest, SDL_Surface* apSurfaceCase)
+void CCase::OnAffiche (CSurface::Ptr& aSurfaceDestPtr, CSurface::Ptr& aSurfaceCasePtr)
 {   
-	SDL_BlitSurface(apSurfaceCase,NULL,apSurfaceDest,&mPosition);
+   aSurfaceCasePtr->Blit (aSurfaceDestPtr, &mPosition);
 }
 
 /**
