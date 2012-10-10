@@ -19,7 +19,8 @@ public:
    inline CSurface::Ptr& GetSurface (void);
 
 private:
-   CSurface::Ptr mSurfacePtr;
+   CLog           mLog;
+   CSurface::Ptr  mSurfacePtr;
 };
 
 CSurface::Ptr& CFenetre::GetSurface (void)

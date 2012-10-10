@@ -23,6 +23,7 @@ bool CMoteur::OnInit (void)
    {
       mIA.OnInit ();
 
+      mScreenPtr.reset (new CFenetre ());
       bReturn = mScreenPtr->Init (mJeu.GetLargeur (), mJeu.GetHauteur ());
       
       mIA.ConstruireMatriceGraphe ();

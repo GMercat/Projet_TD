@@ -3,7 +3,7 @@
 
 #include "Defined.h"
 #include "Config.h"
-#include "Surface.h"
+#include "Image.h"
 
 class CJeu;
 
@@ -38,13 +38,16 @@ private:
    int mLargeur;
    int mNbTours;
    
-   SDL_Surface*   mImageFond;
+   CImage::Ptr mImageFondPtr;
+   //SDL_Surface*   mImageFond;
    SDL_Rect       mPositionFond;
 
-   std::vector <SDL_Surface*> mImagesBoutons;
+   CImage::Vecteur            mImagesBoutons;
+   //std::vector <SDL_Surface*> mImagesBoutons;
    std::vector <SDL_Rect>     mPositionsBoutons;
    std::vector <std::string>  mNomImagesTour;
-   std::vector <SDL_Surface*> mImagesTours;
+   CImage::Vecteur            mImagesTours;
+   //std::vector <SDL_Surface*> mImagesTours;
    std::vector <SDL_Rect>     mPositionsTours;
 };
 

@@ -1,6 +1,7 @@
 #include "../include/Fenetre.h"
 
-CFenetre::CFenetre (void)
+CFenetre::CFenetre (void):
+   mLog ("Fenetre")
 {
 
 }
@@ -25,13 +26,9 @@ bool CFenetre::Init (int aLargeur, int aHauteur)
    SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
 
    //Ouvrir une fenetre
-   mpSurfaceSDL = SDL_SetVideoMode ( aLargeur , aHauteur , 32, SDL_DOUBLEBUF | SDL_HWSURFACE);
-
-   if (mpSurfaceSDL == NULL)
-   {
-      bReturn = false;
-   }
-
+   mSurfacePtr.reset (new CSurface ());
+   bReturn = mSurfacePtr->SetVideoMode (aLargeur, aHauteur);
+   
    return bReturn;
 }
 

@@ -5,30 +5,14 @@
 CMenu::CMenu (CConfiguration& aConfig, CJeu& aJeu):
    mLog        ("Menu"),
    mConfig     (aConfig),
-   mJeu        (aJeu),
-   mImageFond  (NULL)
+   mJeu        (aJeu)
 {
    ; // Rien à faire
 }
 
 CMenu::~CMenu (void)
 {
-   std::vector<SDL_Surface*>::iterator IterImages;
-
-   // Libération de l'image du fond du menu
-   SDL_FreeSurface (mImageFond);
-
-   // Libération des images boutons du menu
-   for (IterImages = mImagesBoutons.begin (); IterImages != mImagesBoutons.end (); IterImages++)
-   {
-      SDL_FreeSurface (*IterImages);
-   }
-
-   // Libération des images tours du menu
-   for (IterImages = mImagesTours.begin (); IterImages != mImagesTours.end (); IterImages++)
-   {
-      SDL_FreeSurface (*IterImages);
-   }
+   ;
 }
 
 bool CMenu::OnInit (void)
@@ -100,101 +84,57 @@ bool CMenu::OnInit (void)
          }
       }
 
-      // Vérification de l'allocation des surfaces
-      // Fond du menu
-      if (mImageFond != NULL)
-      {
-         SDL_FreeSurface (mImageFond), mImageFond = NULL;
-      }
-      mImageFond = SDL_LoadBMP("../../ressources/Menu.bmp");
-      //On teste le retour du chargement
-      if (mImageFond == NULL)
-      {
-		   mLog << Erreur << "Probleme de chargement de l'image du fond du menu." << EndLine;
-		   return false;
-      }
-
-      // Pour les boutons du menu
-      for (int IterImage = 0; IterImage < eNbBouton; IterImage++)
-      {
-	      if(mImagesBoutons[IterImage] != NULL)
-	      {
-		      SDL_FreeSurface (mImagesBoutons[IterImage]), mImagesBoutons[IterImage] = NULL;
-   	   }
-      }
-
       // Construction du chemin des ressources
-      std::string CheminRessource;
       std::string NomResource;
+      std::string CheminRessource;
+
+      mConfig.Get ("ressourcesImages", CheminRessource);
+
+      // Fond du menu
+      std::string FichierFond ("Menu.bmp");
+      mImageFondPtr.reset (new CImage (CheminRessource));
+      bReturn &= mImageFondPtr->Load (FichierFond);
       
       // Bouton Nouvelle partie
-      bReturn = mConfig.Get ("ressourceBtNew", NomResource);
-      CheminRessource = "../../ressources/";
-      CheminRessource += NomResource;
-      mImagesBoutons[eNew] = SDL_LoadBMP(CheminRessource.c_str ());
-
+      bReturn &= mConfig.Get ("ressourceBtNew", NomResource);
+      mImagesBoutons[eNew].reset (new CImage (CheminRessource));
+      bReturn &= mImagesBoutons[eNew]->Load (NomResource);
+      
       // Bouton Pause
-      CheminRessource.clear ();
-      bReturn = mConfig.Get ("ressourceBtPause", NomResource);
-      CheminRessource = "../../ressources/";
-      CheminRessource += NomResource;
-      mImagesBoutons[ePause] = SDL_LoadBMP(CheminRessource.c_str ());
+      bReturn &= mConfig.Get ("ressourceBtPause", NomResource);
+      mImagesBoutons[ePause].reset (new CImage (CheminRessource));
+      bReturn &= mImagesBoutons[ePause]->Load (NomResource);
 
       // Bouton reprendre la partie
-      bReturn = mConfig.Get ("ressourceBtReprendre", NomResource);
-      CheminRessource = "../../ressources/";
-      CheminRessource += NomResource;
-      mImagesBoutons[eReprendre] = SDL_LoadBMP(CheminRessource.c_str ());
+      bReturn &= mConfig.Get ("ressourceBtReprendre", NomResource);
+      mImagesBoutons[eReprendre].reset (new CImage (CheminRessource));
+      bReturn &= mImagesBoutons[eReprendre]->Load (NomResource);
 
       // Bouton Quitter la partie
-      bReturn = mConfig.Get ("ressourceBtQuit", NomResource);
-      CheminRessource = "../../ressources/";
-      CheminRessource += NomResource;
-      mImagesBoutons[eQuit] = SDL_LoadBMP(CheminRessource.c_str ());
+      bReturn &= mConfig.Get ("ressourceBtQuit", NomResource);
+      mImagesBoutons[eQuit].reset (new CImage (CheminRessource));
+      bReturn &= mImagesBoutons[eQuit]->Load (NomResource);
 
       // Bouton Nouvel Ennemi (DEBUG)
-      bReturn = mConfig.Get ("ressourceBtNewEnnemi", NomResource);
-      CheminRessource = "../../ressources/";
-      CheminRessource += NomResource;
-      mImagesBoutons[eNewEnnemi] = SDL_LoadBMP(CheminRessource.c_str ());
+      bReturn &= mConfig.Get ("ressourceBtNewEnnemi", NomResource);
+      mImagesBoutons[eNewEnnemi].reset (new CImage (CheminRessource));
+      bReturn &= mImagesBoutons[eNewEnnemi]->Load (NomResource);
             
-      //On teste le retour du chargement
-      for (int IterImage = 0; IterImage < eNbBouton; IterImage++)
-      {
-	      if (mImagesBoutons[IterImage] == NULL)
-         {
-		      mLog << Erreur << "Probleme de chargement de l'image du menu : " << IterImage << EndLine;
-		      return false;
-         }
-      }
-
       int iImage = 0;
       
       bReturn &= mConfig.GetRessourcesTours (mNomImagesTour);
       mImagesTours.resize (mNbTours);
+
       // Pour les boutons tours
-      std::vector<SDL_Surface*>::iterator IterImage;
+      CImage::Vecteur::iterator IterImage;
       for (IterImage = mImagesTours.begin (); (IterImage != mImagesTours.end ()) && (bReturn); ++IterImage)
       {
-         if((*IterImage) != NULL)
-	      {
-		      SDL_FreeSurface (*IterImage), (*IterImage) = NULL;
-   	   }
-
          //On charge toutes les images dans les surfaces associées
-         std::string CheminRessource ("../../ressources/");
-         CheminRessource += mNomImagesTour[iImage];
+         mLog << Info << "Chargement de : " << mNomImagesTour[iImage].c_str () << EndLine;
 
-         mLog << Info << "Chargement de : " << CheminRessource.c_str () << EndLine;
-
-         (*IterImage) = SDL_LoadBMP(CheminRessource.c_str ());
-                  
-         //On teste le retour du chargement
-	      if ((*IterImage) == NULL)
-	      {
-            mLog << Erreur << "Probleme de chargement de l'image : " << (mNomImagesTour[iImage]).c_str () << EndLine;
-		      bReturn = false;
-	      }
+         (*IterImage).reset (new CImage (CheminRessource));
+         bReturn = (*IterImage)->Load (mNomImagesTour[iImage]);
+         
          iImage++;
       }
    }
@@ -313,23 +253,23 @@ void CMenu::OnClic (int aX, int aY)
 
 void CMenu::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
-   SDL_BlitSurface(mImageFond,NULL,apScreen,&(mPositionFond));
+   mImageFondPtr->Afficher (aScreenPtr, mPositionFond);
 
   if (mJeu.PartieEnCours ())
    {
-      SDL_BlitSurface(mImagesBoutons[ePause], NULL, apScreen, &(mPositionsBoutons[ePause]));
-      SDL_BlitSurface(mImagesBoutons[eNewEnnemi], NULL, apScreen, &(mPositionsBoutons[eNewEnnemi]));
+      mImagesBoutons[ePause]     ->Afficher (aScreenPtr, mPositionsBoutons[ePause]);
+      mImagesBoutons[eNewEnnemi] ->Afficher (aScreenPtr, mPositionsBoutons[eNewEnnemi]);
 
       for (unsigned int IdTour = 0; IdTour < mImagesTours.size (); IdTour++)
       {
-         SDL_BlitSurface(mImagesTours[IdTour], NULL, apScreen, &(mPositionsTours[IdTour]));
+         mImagesTours[IdTour]->Afficher (aScreenPtr, mPositionsTours[IdTour]);
       }
    }
    else
    {
-      SDL_BlitSurface(mImagesBoutons[eNew],      NULL,apScreen,&(mPositionsBoutons[eNew]));
-      SDL_BlitSurface(mImagesBoutons[eReprendre],NULL,apScreen,&(mPositionsBoutons[eReprendre]));
-      SDL_BlitSurface(mImagesBoutons[eQuit],     NULL,apScreen,&(mPositionsBoutons[eQuit]));
+      mImagesBoutons[eNew]       ->Afficher (aScreenPtr, mPositionsBoutons[eNew]);
+      mImagesBoutons[eReprendre] ->Afficher (aScreenPtr, mPositionsBoutons[eReprendre]);
+      mImagesBoutons[eQuit]      ->Afficher (aScreenPtr, mPositionsBoutons[eQuit]);
    }
 }
 

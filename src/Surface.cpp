@@ -59,3 +59,16 @@ void CSurface::Free (void)
    }
 }
 
+bool CSurface::SetVideoMode (const int aLargeur, const int aHauteur)
+{
+   bool bReturn = true;
+
+   mpSurfaceSDL = SDL_SetVideoMode ( aLargeur , aHauteur , 32, SDL_DOUBLEBUF | SDL_HWSURFACE);
+
+   if (mpSurfaceSDL == NULL)
+   {
+      bReturn = false;
+   }
+
+   return bReturn;
+}

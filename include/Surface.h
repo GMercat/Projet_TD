@@ -18,11 +18,13 @@ public:
    void SetTransparence (int aValeurRouge, int aValeurVert, int aValeurBleu);
    void Flip            (void);
    void Free            (void);
+   bool SetVideoMode    (const int aLargeur, const int aHauteur);
 
 protected:
-   CLog           mLog;
+SDL_Surface*   mpSurfaceSDL;
 
-   SDL_Surface*   mpSurfaceSDL;
+private:
+   CLog           mLog;
 };
 
 #endif
