@@ -16,7 +16,7 @@ public:
       eReprendre,
       eQuit,
 
-      eNewEnnemi,
+//      eNewEnnemi,
       eNbBouton
    };
 

@@ -28,6 +28,8 @@ void CImage::Afficher (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonnees)
    Rect.y = aCoordonnees.second;
    Rect.h = mpSurfaceSDL->h;
    Rect.w = mpSurfaceSDL->w;
+
+   Afficher (aEcranPtr, Rect);
 }
 
 bool CImage::Load (std::string& aNomFichier)

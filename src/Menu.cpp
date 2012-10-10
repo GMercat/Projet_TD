@@ -46,29 +46,29 @@ bool CMenu::OnInit (void)
 
       // Positions des boutons du menu
       mPositionsBoutons[eNew].x = mPositionFond.x + 25;
-      mPositionsBoutons[eNew].y = 25;
+      mPositionsBoutons[eNew].y = 10;
       mPositionsBoutons[eNew].w = mLargeur - 25;
       mPositionsBoutons[eNew].h = 40;
 
       mPositionsBoutons[ePause].x = mPositionFond.x + 25;
-      mPositionsBoutons[ePause].y = 75;
+      mPositionsBoutons[ePause].y = 60;
       mPositionsBoutons[ePause].w = mLargeur - 25;
       mPositionsBoutons[ePause].h = 40;
 
       mPositionsBoutons[eReprendre].x = mPositionFond.x +25;
-      mPositionsBoutons[eReprendre].y = 125;
+      mPositionsBoutons[eReprendre].y = 110;
       mPositionsBoutons[eReprendre].w = mLargeur - 25;
       mPositionsBoutons[eReprendre].h = 40;
 
       mPositionsBoutons[eQuit].x = mPositionFond.x + 25;
-      mPositionsBoutons[eQuit].y = 175;
+      mPositionsBoutons[eQuit].y = 160;
       mPositionsBoutons[eQuit].w = mLargeur - 25;
       mPositionsBoutons[eQuit].h = 40;
 
-      mPositionsBoutons[eNewEnnemi].x = mPositionFond.x + 25;
-      mPositionsBoutons[eNewEnnemi].y = 225;
-      mPositionsBoutons[eNewEnnemi].w = LargeurCase;
-      mPositionsBoutons[eNewEnnemi].h = HauteurCase;
+      //mPositionsBoutons[eNewEnnemi].x = mPositionFond.x + 25;
+      //mPositionsBoutons[eNewEnnemi].y = 225;
+      //mPositionsBoutons[eNewEnnemi].w = LargeurCase;
+      //mPositionsBoutons[eNewEnnemi].h = HauteurCase;
 
       int EspacementBtTour = (int)((HauteurMenu / 2) / mNbTours);
       if (HauteurCase < EspacementBtTour)
@@ -116,9 +116,9 @@ bool CMenu::OnInit (void)
       bReturn &= mImagesBoutons[eQuit]->Load (NomResource);
 
       // Bouton Nouvel Ennemi (DEBUG)
-      bReturn &= mConfig.Get ("ressourceBtNewEnnemi", NomResource);
-      mImagesBoutons[eNewEnnemi].reset (new CImage (CheminRessource));
-      bReturn &= mImagesBoutons[eNewEnnemi]->Load (NomResource);
+      //bReturn &= mConfig.Get ("ressourceBtNewEnnemi", NomResource);
+      //mImagesBoutons[eNewEnnemi].reset (new CImage (CheminRessource));
+      //bReturn &= mImagesBoutons[eNewEnnemi]->Load (NomResource);
             
       int iImage = 0;
       
@@ -175,9 +175,9 @@ void CMenu::OnClic (int aX, int aY)
                mJeu.ChangerEtatPartie (false);
                break;
 
-            case eNewEnnemi:
+//            case eNewEnnemi:
 // TODO        mJeu.AjoutEnnemi ();
-               break;
+//               break;
                
             default:
                mLog << Info << "Ce bouton n'est pas actif dans ce mode" << EndLine;
@@ -258,7 +258,7 @@ void CMenu::OnAffiche (CSurface::Ptr& aScreenPtr)
   if (mJeu.PartieEnCours ())
    {
       mImagesBoutons[ePause]     ->Afficher (aScreenPtr, mPositionsBoutons[ePause]);
-      mImagesBoutons[eNewEnnemi] ->Afficher (aScreenPtr, mPositionsBoutons[eNewEnnemi]);
+      //mImagesBoutons[eNewEnnemi] ->Afficher (aScreenPtr, mPositionsBoutons[eNewEnnemi]);
 
       for (unsigned int IdTour = 0; IdTour < mImagesTours.size (); IdTour++)
       {
