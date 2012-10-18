@@ -1,4 +1,4 @@
-#include "../include/Projectile.h"
+#include "Projectile.h"
 #include <cmath>
 
 CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :

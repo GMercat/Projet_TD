@@ -1,4 +1,4 @@
-#include "../include/Case.h"
+#include "Case.h"
 
 /**
  * @brief   Constructeur de la class "CCase"

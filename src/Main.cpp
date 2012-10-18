@@ -1,7 +1,7 @@
-#include "../include/Defined.h"
+#include "Defined.h"
 
-#include "../include/Moteur.h"
-#include "../include/Timer.h"
+#include "Moteur.h"
+#include "Timer.h"
 
 int main( int argc, char *argv[ ] )
 {

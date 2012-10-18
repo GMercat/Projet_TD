@@ -78,24 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Config.h" />
-    <ClInclude Include="..\..\include\Fenetre.h" />
-    <ClInclude Include="..\..\include\Image.h" />
-    <ClInclude Include="..\..\include\Log.h" />
-    <ClInclude Include="..\..\include\Projectile.h" />
-    <ClInclude Include="..\..\include\Case.h" />
-    <ClInclude Include="..\..\include\Defined.h" />
-    <ClInclude Include="..\..\include\Ennemi.h" />
-    <ClInclude Include="..\..\include\IA.h" />
-    <ClInclude Include="..\..\include\Jeu.h" />
-    <ClInclude Include="..\..\include\Menu.h" />
-    <ClInclude Include="..\..\include\Moteur.h" />
-    <ClInclude Include="..\..\include\Plateau.h" />
-    <ClInclude Include="..\..\include\Surface.h" />
-    <ClInclude Include="..\..\include\Timer.h" />
-    <ClInclude Include="..\..\include\Tour.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\ressources\BoutonNew.bmp" />
     <None Include="..\..\ressources\BoutonPause.bmp" />
     <None Include="..\..\ressources\BoutonQuit.bmp" />
@@ -133,6 +115,26 @@
     <ClCompile Include="..\..\src\Surface.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Tour.cpp" />
+    <ClCompile Include="..\..\src\VagueEnnemis.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\Case.h" />
+    <ClInclude Include="..\..\src\Config.h" />
+    <ClInclude Include="..\..\src\Defined.h" />
+    <ClInclude Include="..\..\src\Ennemi.h" />
+    <ClInclude Include="..\..\src\Fenetre.h" />
+    <ClInclude Include="..\..\src\IA.h" />
+    <ClInclude Include="..\..\src\Image.h" />
+    <ClInclude Include="..\..\src\Jeu.h" />
+    <ClInclude Include="..\..\src\Log.h" />
+    <ClInclude Include="..\..\src\Menu.h" />
+    <ClInclude Include="..\..\src\Moteur.h" />
+    <ClInclude Include="..\..\src\Plateau.h" />
+    <ClInclude Include="..\..\src\Projectile.h" />
+    <ClInclude Include="..\..\src\Surface.h" />
+    <ClInclude Include="..\..\src\Timer.h" />
+    <ClInclude Include="..\..\src\Tour.h" />
+    <ClInclude Include="..\..\src\VagueEnnemis.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

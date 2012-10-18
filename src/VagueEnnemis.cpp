@@ -1,4 +1,4 @@
-#include "../include/VagueEnnemis.h"
+#include "VagueEnnemis.h"
 
 CVagueEnnemis::CVagueEnnemis (void)
 {

@@ -1,5 +1,5 @@
-#include "../include/Jeu.h"
-#include "../include/IA.h"
+#include "Jeu.h"
+#include "IA.h"
 #include <cmath>
 #include <ctime>
 

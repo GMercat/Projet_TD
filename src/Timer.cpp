@@ -1,5 +1,5 @@
-#include "../include/Defined.h"
-#include "../include/Timer.h"
+#include "Defined.h"
+#include "Timer.h"
 
 CTimer::CTimer (void):
    mNbStartTicks  (0),

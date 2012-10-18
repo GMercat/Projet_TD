@@ -1,4 +1,4 @@
-#include "../include/Moteur.h"
+#include "Moteur.h"
 
 CMoteur::CMoteur (void):
    mLog     ("Moteur"),

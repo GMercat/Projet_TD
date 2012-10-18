@@ -1,5 +1,5 @@
-#include "../include/IA.h"
-#include "../include/Plateau.h"
+#include "IA.h"
+#include "Plateau.h"
 
 CIA::CIA (CPlateau& aPlateau):
    mLog     ("IA"),

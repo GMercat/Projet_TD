@@ -1,4 +1,4 @@
-#include "../include/Fenetre.h"
+#include "Fenetre.h"
 
 CFenetre::CFenetre (void):
    mLog ("Fenetre")

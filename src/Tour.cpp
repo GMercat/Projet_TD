@@ -1,4 +1,4 @@
-#include "../include/Tour.h"
+#include "Tour.h"
 
 CTour::CTour	(CConfiguration& aConfig, TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence):
    mConfig              (aConfig),

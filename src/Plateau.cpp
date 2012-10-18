@@ -1,5 +1,5 @@
-#include "../include/Plateau.h"
-#include "../include/Jeu.h"
+#include "Plateau.h"
+#include "Jeu.h"
 
 
 

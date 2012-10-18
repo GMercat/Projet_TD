@@ -1,5 +1,5 @@
-#include "../include/Ennemi.h"
-#include "../include/IA.h"
+#include "Ennemi.h"
+#include "IA.h"
 #include <cmath>
 
 CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee):

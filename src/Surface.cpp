@@ -1,4 +1,4 @@
-#include "../include/Surface.h"
+#include "Surface.h"
 
 CSurface::CSurface (void):
    mLog           ("Surface"),

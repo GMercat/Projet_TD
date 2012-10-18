@@ -1,6 +1,6 @@
-#include "../include/Menu.h"
-#include "../include/Jeu.h"
-#include "../include/Case.h"
+#include "Menu.h"
+#include "Jeu.h"
+#include "Case.h"
 
 CMenu::CMenu (CConfiguration& aConfig, CJeu& aJeu):
    mLog        ("Menu"),
