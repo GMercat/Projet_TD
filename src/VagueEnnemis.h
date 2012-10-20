@@ -3,15 +3,20 @@
 
 #include "Defined.h"
 #include "Config.h"
+#include "Ennemi.h"
 
 class CVagueEnnemis
 {
+public:
+   typedef boost::shared_ptr<CVagueEnnemis>  Ptr;
+   typedef std::list<CVagueEnnemis::Ptr>     Liste;
+
 public:
    CVagueEnnemis (void);
    ~CVagueEnnemis (void);
 
 private:
-
+   CEnnemi::Liste   mListEnnemi;
 };
 
 #endif

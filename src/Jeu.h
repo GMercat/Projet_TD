@@ -5,8 +5,8 @@
 
 #include "Plateau.h"
 #include "Menu.h"
-#include "Ennemi.h"
 #include "Timer.h"
+#include "VagueEnnemis.h"
 
 class CIA;
 
@@ -65,9 +65,9 @@ private:
    int   mTempsInterVague;
    int   mTempsProchainEnnemi;
    
-   CTour::Liste     mListTour;
-   CTour::Liste     mListTourTiree;
-   CEnnemi::Liste   mListEnnemi;
+   CTour::Liste         mListTour;
+   CTour::Liste         mListTourTiree;
+   CVagueEnnemis::Liste mListVagues;
 };
 
 #endif
