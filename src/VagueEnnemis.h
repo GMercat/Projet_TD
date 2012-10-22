@@ -4,6 +4,9 @@
 #include "Defined.h"
 #include "Config.h"
 #include "Ennemi.h"
+#include "Timer.h"
+
+class CIA;
 
 class CVagueEnnemis
 {
@@ -16,7 +19,14 @@ public:
    ~CVagueEnnemis (void);
 
 private:
-   CEnnemi::Liste   mListEnnemi;
+   CConfiguration mConfig;
+   CIA*           mpIA;
+
+   CEnnemi::Liste mListEnnemi;      
+   CTimer         mTimerEnnemi;
+
+   int   mNbEnnemis;
+   int   mTempsProchainEnnemi;
 };
 
 #endif

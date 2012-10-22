@@ -51,19 +51,15 @@ private:
    CMenu          mMenu;
    CIA*           mpIA;
    CTimer         mTimerVague;
-   CTimer         mTimerEnnemi;
 
    bool  mbPremiereTour;
    bool  mbPartieEnCours;
 
   	int   mHauteur;
 	int   mLargeur;
-   int   mDerniereVagueLancee;
    int   mNumVagueEnCours;
-   int   mNbEnnemisVague;
    int   mTypeTourSelect;
    int   mTempsInterVague;
-   int   mTempsProchainEnnemi;
    
    CTour::Liste         mListTour;
    CTour::Liste         mListTourTiree;

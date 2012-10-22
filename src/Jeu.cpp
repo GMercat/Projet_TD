@@ -3,9 +3,6 @@
 #include <cmath>
 #include <ctime>
 
-#define NB_ENNEMI_VAGUE       5
-#define TPS_BASE_INTER_ENNEMI 750
-
 CJeu::CJeu (CIA* apIA):
    mLog                 ("Jeu"),
    mpIA                 (apIA),
@@ -16,9 +13,7 @@ CJeu::CJeu (CIA* apIA):
 	mbPremiereTour       (true),
    mbPartieEnCours      (true),
    mTempsInterVague     (1),
-   mDerniereVagueLancee (-1),
    mNumVagueEnCours     (-1),
-   mNbEnnemisVague      (NB_ENNEMI_VAGUE),
    mTypeTourSelect      (-1)
 {
    ;
@@ -236,12 +231,12 @@ bool CJeu::LancementNouvelleVagueEnnemisPossible (void)
 
 void CJeu::LancementVagueEnnemis (void)
 {
-   mTimerEnnemi.Start ();
+   // Création de la nouvelle vague d'ennemis
    // TODO : Type d'ennemi en paramètre
-   AjoutEnnemi ();
-   mNbEnnemisVague--;
-   mTempsProchainEnnemi = rand() % TPS_BASE_INTER_ENNEMI;
-   mDerniereVagueLancee++;
+   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (/*TypeEnnemi, nbEnnemis*/));
+
+   // On l'ajoute
+   mListVagues.push_back (NouvelleVague);
 }
 
 void CJeu::OnTire (void)
