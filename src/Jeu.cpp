@@ -4,17 +4,16 @@
 #include <ctime>
 
 CJeu::CJeu (CIA* apIA):
-   mLog                 ("Jeu"),
-   mpIA                 (apIA),
-   mPlateau             (mConfig, *this),
-   mMenu                (mConfig, *this),
-	mHauteur             (1),
-	mLargeur             (1),
-	mbPremiereTour       (true),
-   mbPartieEnCours      (true),
-   mTempsInterVague     (1),
-   mNumVagueEnCours     (-1),
-   mTypeTourSelect      (-1)
+   mLog                    ("Jeu"),
+   mpIA                    (apIA),
+   mPlateau                (mConfig, *this),
+   mMenu                   (mConfig, *this),
+	mHauteur                (1),
+	mLargeur                (1),
+	mbPremiereTour          (true),
+   mbPartieEnCours         (true),
+   mTempsInterVague        (1),
+   mTypeTourSelect         (-1)
 {
    ;
 }
@@ -27,7 +26,7 @@ CJeu::~CJeu (void)
 bool CJeu::OnInit (void)
 {
    // initialisation de rand
-   srand(time(NULL));
+   srand((unsigned int)time(NULL));
 
    // Lecture du fichier de configuration
    mConfig.Chargement ("../../conf/ConfJeu.txt");
@@ -95,10 +94,10 @@ void CJeu::OnAffiche (CSurface::Ptr& aScreenPtr)
    mPlateau.OnAffiche (aScreenPtr);
    
    // Affichage des ennemis
-   CEnnemi::Liste::iterator IterEnnemi;
-   for (IterEnnemi = mListEnnemi.begin (); IterEnnemi != mListEnnemi.end (); IterEnnemi++)
+   CVagueEnnemis::Liste::iterator IterVague;
+   for (IterVague = mListVagues.begin (); IterVague != mListVagues.end (); IterVague++)
    {
-      (*IterEnnemi)->OnAffiche (aScreenPtr);
+      (*IterVague)->OnAffiche (aScreenPtr);
    }
 
    // Affichage des projectiles
@@ -117,7 +116,7 @@ void CJeu::OnAffiche (CSurface::Ptr& aScreenPtr)
 void CJeu::OnReset   (void)
 {
    mTypeTourSelect = -1;
-   mListEnnemi    .clear ();
+   mListVagues    .clear ();
    mListTour      .clear ();
    mListTourTiree .clear ();
    mPlateau.OnReset ();
@@ -163,49 +162,26 @@ void CJeu::ProgressionEnnemis (void)
    // Lancement d'une vague d'ennemis
    if (LancementNouvelleVagueEnnemisPossible ())
    {
-      mNumVagueEnCours = mDerniereVagueLancee + 1;
-
-      mLog << Info << "Lancement de la " << mNumVagueEnCours << "ieme vague d'ennemis" << EndLine;
-      
       LancementVagueEnnemis ();
       
       // On relance le timer de lancement de vague
       mTimerVague.Start ();   
    }
 
-   // Si une vague est en cours de lancement on continue
-   if (mNumVagueEnCours != -1)
-   {
-      // Est ce que l'on doit ajouter un ennemi ?
-      // Tous les ennemis n'ont pas encore été créé ET le temps depuis le dernier est suffisament grand.
-      if ((mNbEnnemisVague >= 0) && (mTimerEnnemi.GetNbTicks () >= mTempsProchainEnnemi))
-      {
-         // TODO : Type d'ennemi en paramètre
-         AjoutEnnemi ();
-         mNbEnnemisVague--;
-         mTempsProchainEnnemi = rand() % TPS_BASE_INTER_ENNEMI;
-         mTimerEnnemi.Start ();
-      }
-      else if (mNbEnnemisVague < 0)
-      {
-         mNbEnnemisVague = NB_ENNEMI_VAGUE;
-         mNumVagueEnCours = -1;
-      }
-   }
+   CVagueEnnemis::Liste::iterator   IterVagues     = mListVagues.begin ();
+   CVagueEnnemis::Liste::iterator   IterVaguesEnd  = mListVagues.end ();
 
-   CEnnemi::Liste::iterator IterEnnemi = mListEnnemi.begin ();
-   CEnnemi::Liste::iterator IterEnnemiEnd = mListEnnemi.end ();
-   while (IterEnnemi != IterEnnemiEnd)
+   while (IterVagues != IterVaguesEnd)
    {
-      (*IterEnnemi)->Avance ();
+      (*IterVagues)->ProgressionEnnemis ();
 
-      if ((*IterEnnemi)->EstArrive () || (false == (*IterEnnemi)->EstVivant ()))
+      if ((*IterVagues)->EstVide ())
       {
-         IterEnnemi = mListEnnemi.erase (IterEnnemi);
+         IterVagues = mListVagues.erase (IterVagues);
       }
       else
       {
-         ++IterEnnemi;
+         IterVagues++;
       }
    }
 }
@@ -233,7 +209,7 @@ void CJeu::LancementVagueEnnemis (void)
 {
    // Création de la nouvelle vague d'ennemis
    // TODO : Type d'ennemi en paramètre
-   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (/*TypeEnnemi, nbEnnemis*/));
+   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()/*TypeEnnemi, nbEnnemis*/));
 
    // On l'ajoute
    mListVagues.push_back (NouvelleVague);
@@ -241,16 +217,16 @@ void CJeu::LancementVagueEnnemis (void)
 
 void CJeu::OnTire (void)
 {
-   int DistanceEnnemi   = 0;
-   int XTour            = 0;
-   int Ytour            = 0;
-   int XEnnemi          = 0;
-   int YEnnemi          = 0;
-   bool bTourATiree     = false;
+   int XTour = 0;
+   int Ytour = 0;
+   bool bEnnemiTrouve   = false;
+   TCoordonnee CoordonneeCentreTour;
+
+   CEnnemi::Ptr   EnnemiSelectionnePtr;
 
    // Gestion des tires des tours
-   CTour::Liste::iterator    IterTour;
-   CEnnemi::Liste::iterator  IterEnnemi;
+   CTour::Liste::iterator           IterTour;
+   CVagueEnnemis::Liste::iterator   IterVague;
 
    // Parcours des tours pour rechercher les ennemis à la porté
    for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
@@ -258,41 +234,25 @@ void CJeu::OnTire (void)
       // Si la tour peut tirer
       if ((*IterTour)->AutoriseATirer ())
       {
-         for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (false == bTourATiree); ++IterEnnemi)
+         // Récupération des positions de la tour
+         (*IterTour)->GetCentre (XTour, Ytour);
+         CoordonneeCentreTour.first  = XTour;
+         CoordonneeCentreTour.second = Ytour;
+
+         for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (false == bEnnemiTrouve); ++IterVague)
          {
-            // TODO Selectionner l'ennemi le plus avancé ?
-            // Récupération des positions de l'ennemi et de la tour
-            (*IterTour)->GetCentre (XTour, Ytour);
-            (*IterEnnemi)->GetCentre (XEnnemi, YEnnemi);
-
-            DistanceEnnemi = (int)sqrt ((double)((XTour   - XEnnemi) * (XTour - XEnnemi))
-                                       + (double)((Ytour - YEnnemi) * (Ytour - YEnnemi)));
-
-            // Détermine si l'ennemi est à la porté de la tour
-            if ((*IterTour)->GetPorteeTire () > DistanceEnnemi)
-            {
-               (*IterTour)->Tire (*IterEnnemi);
-               mListTourTiree.push_back ((*IterTour));
-
-               bTourATiree = true;
-            }
+            bEnnemiTrouve = (*IterVague)->SelectionneEnnemi (CoordonneeCentreTour, (*IterTour)->GetPorteeTire (), EnnemiSelectionnePtr);
          }
+
+         if (bEnnemiTrouve && EnnemiSelectionnePtr)
+         {
+            (*IterTour)->Tire (EnnemiSelectionnePtr);
+            mListTourTiree.push_back ((*IterTour));
+         }
+
+         
       }
    }
-}
-
-void CJeu::AjoutEnnemi (void)
-{
-   std::list<int> PlusCourtChemin;
-
-   CEnnemi::Ptr EnnemiPtr (new CEnnemi(mConfig, mpIA, CEnnemi::eType1, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()));
-   
-   EnnemiPtr->OnInit ();
-   
-   mpIA->CalculPlusCourtChemin (EnnemiPtr->DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
-   EnnemiPtr->SetPCCheminCase (PlusCourtChemin);
-
-   mListEnnemi.push_back (EnnemiPtr);
 }
 
 CPlateau& CJeu::GetPlateau (void)
@@ -317,14 +277,11 @@ bool CJeu::PlacementEstAutorise  (void)
    std::list<int> PlusCourtChemin;
    bEstAutorise = mpIA->CalculPlusCourtChemin (mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
    
-   PlusCourtChemin.clear ();
-   // Parcours la liste des ennemis afin de vérifier le placement de la tour
-   CEnnemi::Liste::iterator IterEnnemi;
-   for (IterEnnemi = mListEnnemi.begin (); (IterEnnemi != mListEnnemi.end ()) && (bEstAutorise); IterEnnemi++)
+   // Parcours la liste des vagues d'ennemis afin de vérifier le placement de la tour
+   CVagueEnnemis::Liste::iterator IterVague;
+   for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (bEstAutorise); IterVague++)
    {
-      PlusCourtChemin.clear ();
-      bEstAutorise &= mpIA->CalculPlusCourtChemin ((*IterEnnemi)->DetermineCaseCourante (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
-      (*IterEnnemi)->SetPCCheminCase (PlusCourtChemin);
+      bEstAutorise &= (*IterVague)->PlacementEstAutorise (mPlateau.GetNumCaseArrivee ());
    }
 
    return bEstAutorise;

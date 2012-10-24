@@ -37,7 +37,6 @@ public:
    int GetLargeur (void);
 
 private:
-   void AjoutEnnemi  (void);
    void ProgressionProjectiles   (void);
    void ProgressionEnnemis       (void);
    
@@ -57,7 +56,6 @@ private:
 
   	int   mHauteur;
 	int   mLargeur;
-   int   mNumVagueEnCours;
    int   mTypeTourSelect;
    int   mTempsInterVague;
    

@@ -18,6 +18,7 @@ public:
 
    void Construire ();
 
+   // TODO Retourner une TCoordonnee
    void GetCentre (int& aXCentre, int &aYCentre);
 
    void OnAfficheProjectiles  (CSurface::Ptr& aSurfaceDestPtr);

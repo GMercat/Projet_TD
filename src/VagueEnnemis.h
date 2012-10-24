@@ -15,18 +15,31 @@ public:
    typedef std::list<CVagueEnnemis::Ptr>     Liste;
 
 public:
-   CVagueEnnemis (void);
+   CVagueEnnemis  (int aNumCaseDepart, int aNumCaseArrivee);
    ~CVagueEnnemis (void);
+
+   bool EstVide (void);
+
+   void OnAffiche             (CSurface::Ptr& aScreenPtr);
+   void ProgressionEnnemis    (void);
+   bool PlacementEstAutorise  (int aNumCaseArrivee);
+   bool SelectionneEnnemi     (TCoordonnee& aCoordonneesTour, int aPorteeTour, CEnnemi::Ptr& aEnnemiSelectionnePtr);
+
+private:
+   void AjoutEnnemi        (void);
 
 private:
    CConfiguration mConfig;
    CIA*           mpIA;
 
-   CEnnemi::Liste mListEnnemi;      
+   CEnnemi::Liste mListEnnemis;      
    CTimer         mTimerEnnemi;
 
    int   mNbEnnemis;
    int   mTempsProchainEnnemi;
+
+   int   mNumCaseDepart;
+   int   mNumCaseArrivee;
 };
 
 #endif
