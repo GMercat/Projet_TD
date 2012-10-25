@@ -1,14 +1,14 @@
 #include "Projectile.h"
 #include <cmath>
 
-CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse) :
+CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, TCoordonnee& aCoordonnee, int aPuissance, int aVitesse) :
    mLog              ("Projectile"),
    mEnnemiCiblePtr   (aEnnemiCiblePtr),
+   mCoordonnee       (aCoordonnee),
    mPuissance        (aPuissance),
    mVitesse          (aVitesse)
 {
-   mCoordonnee.first  = aX;
-   mCoordonnee.second = aY;
+   ;
 }
 
 CProjectile::~CProjectile (void)
@@ -48,18 +48,17 @@ bool CProjectile::Avance (void)
    // Si l'ennemi est pas encore détruit
    if (mEnnemiCiblePtr)
    {
-      int      XEnnemi  = 0;
-      int      YEnnemi  = 0;
+      TCoordonnee CoordonneeEnnemi;
 
       // Récupération de la position de l'ennemi
-      mEnnemiCiblePtr->GetCentre (XEnnemi, YEnnemi);
+      mEnnemiCiblePtr->GetCentre (CoordonneeEnnemi);
 
       // Calcul de l'avancé du projectile
       double Avance = mVitesse;
    
       // Calcul de la distance restante à parcourir
-      double DistanceRestante = sqrt ((double)((XEnnemi - mCoordonnee.first)  * (XEnnemi - mCoordonnee.first))
-                                   +  (double)((YEnnemi - mCoordonnee.second) * (YEnnemi - mCoordonnee.second)));
+      double DistanceRestante = sqrt ((double)((CoordonneeEnnemi.mX - mCoordonnee.mX) * (CoordonneeEnnemi.mX - mCoordonnee.mX))
+                                   +  (double)((CoordonneeEnnemi.mX - mCoordonnee.mY) * (CoordonneeEnnemi.mY - mCoordonnee.mY)));
    
       double PourcentageParcouru = Avance / DistanceRestante;
    
@@ -73,8 +72,8 @@ bool CProjectile::Avance (void)
       else
       {
          // Le projectile avance
-         mCoordonnee.first  += (int)((XEnnemi - mCoordonnee.first)  * PourcentageParcouru);
-         mCoordonnee.second += (int)((YEnnemi - mCoordonnee.second) * PourcentageParcouru);
+         mCoordonnee.mX += (int)((CoordonneeEnnemi.mX - mCoordonnee.mX) * PourcentageParcouru);
+         mCoordonnee.mY += (int)((CoordonneeEnnemi.mY - mCoordonnee.mY) * PourcentageParcouru);
       }
    }
    else

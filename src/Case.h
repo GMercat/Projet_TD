@@ -39,7 +39,7 @@ public:
          void	      SetPosition    (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
          void        SetNumCase     (int aNumCase);
          int         GetNumCase     (void);
-         void        GetCentre      (int& aXCentre, int &aYCentre);
+         void        GetCentre      (TCoordonnee& aCoordonneeCentre);
          int         GetTypeTour    (void);
          SDL_Rect&   GetPosition    (void);
 

@@ -338,8 +338,8 @@ void CIA::CalculPCCheminReel (std::list<int>& aPCChemin, TCoordonnee& aCoordonne
    IterPCCheminNext++;
 
    TVecteurChemin VecteurChemin;
-   VecteurChemin.first.first  = aCoordonnees.first;
-   VecteurChemin.first.second = aCoordonnees.second;
+   VecteurChemin.first.mX = aCoordonnees.mX;
+   VecteurChemin.first.mY = aCoordonnees.mY;
 
    aPCCheminReel.clear ();
 
@@ -355,26 +355,26 @@ void CIA::CalculPCCheminReel (std::list<int>& aPCChemin, TCoordonnee& aCoordonne
       // Si la prochaine case est celle de gauche
       if ((*IterPCCheminNext) == ((*IterPCChemin) - 1))
       {
-         VecteurChemin.second.first  = XCase;
-         VecteurChemin.second.second = YCase + HauteurCase / 2;
+         VecteurChemin.second.mX = XCase;
+         VecteurChemin.second.mY = YCase + HauteurCase / 2;
       }
       // Si la prochaine case est celle de droite
       else if ((*IterPCCheminNext) == ((*IterPCChemin) + 1))
       {
-         VecteurChemin.second.first  = XCase + LargeurCase - 1;
-         VecteurChemin.second.second = YCase + HauteurCase / 2;
+         VecteurChemin.second.mX = XCase + LargeurCase - 1;
+         VecteurChemin.second.mY = YCase + HauteurCase / 2;
       }
       // Si la prochaine case est celle du haut
       else if ((*IterPCCheminNext) == ((*IterPCChemin) - NbCaseLargeur))
       {
-         VecteurChemin.second.first  = XCase + LargeurCase / 2;
-         VecteurChemin.second.second = YCase;
+         VecteurChemin.second.mX = XCase + LargeurCase / 2;
+         VecteurChemin.second.mY = YCase;
       }
       // Si la prochaine case est celle du bas
       else if ((*IterPCCheminNext) == ((*IterPCChemin) + NbCaseLargeur))
       {
-         VecteurChemin.second.first  = XCase + LargeurCase / 2;
-         VecteurChemin.second.second = YCase + HauteurCase - 1;
+         VecteurChemin.second.mX = XCase + LargeurCase / 2;
+         VecteurChemin.second.mY = YCase + HauteurCase - 1;
       }
       else
       {
@@ -398,38 +398,38 @@ void CIA::CalculPCCheminReel (std::list<int>& aPCChemin, TCoordonnee& aCoordonne
          // Si la prochaine case est celle de gauche
          if ((*IterPCCheminNext) == ((*IterPCChemin) - 1))
          {
-            VecteurChemin.first.first  = (*IterCheminReel).second.first - 1;
-            VecteurChemin.first.second = (*IterCheminReel).second.second;
+            VecteurChemin.first.mX = (*IterCheminReel).second.mX - 1;
+            VecteurChemin.first.mY = (*IterCheminReel).second.mY;
 
-            VecteurChemin.second.first  = XCase;
-            VecteurChemin.second.second = YCase + HauteurCase / 2;
+            VecteurChemin.second.mX = XCase;
+            VecteurChemin.second.mY = YCase + HauteurCase / 2;
          }
          // Si la prochaine case est celle de droite
          else if ((*IterPCCheminNext) == ((*IterPCChemin) + 1))
          {
-            VecteurChemin.first.first  = (*IterCheminReel).second.first + 1;
-            VecteurChemin.first.second = (*IterCheminReel).second.second;
+            VecteurChemin.first.mX = (*IterCheminReel).second.mX + 1;
+            VecteurChemin.first.mY = (*IterCheminReel).second.mY;
 
-            VecteurChemin.second.first  = XCase + LargeurCase - 1;
-            VecteurChemin.second.second = YCase + HauteurCase / 2;
+            VecteurChemin.second.mX = XCase + LargeurCase - 1;
+            VecteurChemin.second.mY = YCase + HauteurCase / 2;
          }
          // Si la prochaine case est celle du haut
          else if ((*IterPCCheminNext) == ((*IterPCChemin) - NbCaseLargeur))
          {
-            VecteurChemin.first.first  = (*IterCheminReel).second.first;
-            VecteurChemin.first.second = (*IterCheminReel).second.second - 1;
+            VecteurChemin.first.mX = (*IterCheminReel).second.mX;
+            VecteurChemin.first.mY = (*IterCheminReel).second.mY - 1;
 
-            VecteurChemin.second.first  = XCase + LargeurCase / 2;
-            VecteurChemin.second.second = YCase;
+            VecteurChemin.second.mX = XCase + LargeurCase / 2;
+            VecteurChemin.second.mY = YCase;
          }
          // Si la prochaine case est celle du bas
          else if ((*IterPCCheminNext) == ((*IterPCChemin) + NbCaseLargeur))
          {
-            VecteurChemin.first.first  = (*IterCheminReel).second.first;
-            VecteurChemin.first.second = (*IterCheminReel).second.second + 1;
+            VecteurChemin.first.mX = (*IterCheminReel).second.mX;
+            VecteurChemin.first.mY = (*IterCheminReel).second.mY + 1;
 
-            VecteurChemin.second.first  = XCase + LargeurCase / 2;
-            VecteurChemin.second.second = YCase + HauteurCase - 1;
+            VecteurChemin.second.mX = XCase + LargeurCase / 2;
+            VecteurChemin.second.mY = YCase + HauteurCase - 1;
          }
          else
          {
@@ -440,17 +440,17 @@ void CIA::CalculPCCheminReel (std::list<int>& aPCChemin, TCoordonnee& aCoordonne
          IterCheminReel++;
       }
 
-      VecteurChemin.first.first  = (*IterCheminReel).second.first + 1;
-      VecteurChemin.first.second = (*IterCheminReel).second.second;
-      VecteurChemin.second.first  = VecteurChemin.first.first + LargeurCase;
-      VecteurChemin.second.second = VecteurChemin.first.second;
+      VecteurChemin.first.mX = (*IterCheminReel).second.mX + 1;
+      VecteurChemin.first.mY = (*IterCheminReel).second.mY;
+      VecteurChemin.second.mX = VecteurChemin.first.mX + LargeurCase;
+      VecteurChemin.second.mY = VecteurChemin.first.mY;
 
       aPCCheminReel.push_back (VecteurChemin);
    }
    else
    {
-      VecteurChemin.second.first  = XCase + LargeurCase - 1;
-      VecteurChemin.second.second = YCase + HauteurCase / 2;
+      VecteurChemin.second.mX  = XCase + LargeurCase - 1;
+      VecteurChemin.second.mY = YCase + HauteurCase / 2;
 
       aPCCheminReel.push_back (VecteurChemin);
    }

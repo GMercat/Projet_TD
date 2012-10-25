@@ -8,8 +8,8 @@ CTour::CTour	(CConfiguration& aConfig, TCoordonnee& aCoordCentre, int aTypeTour,
    mVitesseProjectile   (aVitesse),
    mCadenceTire         (aCadence)
 {
-   mCoordCentre.first   = aCoordCentre.first;
-   mCoordCentre.second  = aCoordCentre.second;
+   mCoordCentre.mX = aCoordCentre.mX;
+   mCoordCentre.mY = aCoordCentre.mY;
 }
 
 CTour::~CTour (void)
@@ -17,10 +17,9 @@ CTour::~CTour (void)
    ;
 }
 
-void CTour::GetCentre (int& aXCentre, int &aYCentre)
+void CTour::GetCentre (TCoordonnee& aCoordonnee)
 {
-   aXCentre = mCoordCentre.first;
-   aYCentre = mCoordCentre.second;
+   aCoordonnee = mCoordCentre;
 }
 
 void CTour::OnAfficheProjectiles(CSurface::Ptr& aSurfaceDestPtr)
@@ -89,8 +88,7 @@ void CTour::Tire (CEnnemi::Ptr& aEnnemiCiblePtr)
 {
    // Création et ajout du projectile dans la liste des projectiles tirés
    CProjectile::Ptr ProjectileTirePtr (new CProjectile(  aEnnemiCiblePtr,
-                                                         mCoordCentre.first,
-                                                         mCoordCentre.second,
+                                                         mCoordCentre,
                                                          mPuissanceProjectile,
                                                          mVitesseProjectile));
    std::string RessourceImage;

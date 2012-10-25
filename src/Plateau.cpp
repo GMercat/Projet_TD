@@ -342,14 +342,14 @@ void CPlateau::GetCoordonneesCaseParNumero (int aNumero, TCoordonnee& aCoordonne
    int IterHauteur = aNumero / mNbCasesLargeur;
    int IterLargeur = aNumero % mNbCasesLargeur;
    
-   mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetCentre (aCoordonnees.first, aCoordonnees.second);
+   mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetCentre (aCoordonnees);
 
 }
 
 int CPlateau::GetNumCaseParCoordonnees (TCoordonnee& aCoordonnees)
 {
-   int IndexCaseX = aCoordonnees.first  / mLargeurCase;
-   int IndexCaseY = aCoordonnees.second / mHauteurCase;
+   int IndexCaseX = aCoordonnees.mX / mLargeurCase;
+   int IndexCaseY = aCoordonnees.mY / mHauteurCase;
 
    return IndexCaseY * mNbCasesLargeur + IndexCaseX;
 }

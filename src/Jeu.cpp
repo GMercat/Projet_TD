@@ -235,9 +235,7 @@ void CJeu::OnTire (void)
       if ((*IterTour)->AutoriseATirer ())
       {
          // Récupération des positions de la tour
-         (*IterTour)->GetCentre (XTour, Ytour);
-         CoordonneeCentreTour.first  = XTour;
-         CoordonneeCentreTour.second = Ytour;
+         (*IterTour)->GetCentre (CoordonneeCentreTour);
 
          for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (false == bEnnemiTrouve); ++IterVague)
          {

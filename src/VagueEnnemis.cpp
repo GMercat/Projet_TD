@@ -92,8 +92,7 @@ bool CVagueEnnemis::SelectionneEnnemi (TCoordonnee& aCoordonneesTour, int aPorte
    bool bEnnemiTrouve = false;
 
    int DistanceEnnemi = 0;
-   int XEnnemi = 0;
-   int YEnnemi = 0;
+   TCoordonnee CoordonneeEnnemi;
 
    aEnnemiSelectionnePtr.reset ();
 
@@ -102,10 +101,10 @@ bool CVagueEnnemis::SelectionneEnnemi (TCoordonnee& aCoordonneesTour, int aPorte
    {
       // TODO Selectionner l'ennemi le plus avancé ?
       // Récupération des positions de l'ennemi
-      (*IterEnnemi)->GetCentre (XEnnemi, YEnnemi);
+      (*IterEnnemi)->GetCentre (CoordonneeEnnemi);
 
-      DistanceEnnemi = (int)sqrt ( (double)((aCoordonneesTour.first  - XEnnemi) * (aCoordonneesTour.first  - XEnnemi))
-                                 + (double)((aCoordonneesTour.second - YEnnemi) * (aCoordonneesTour.second - YEnnemi)));
+      DistanceEnnemi = (int)sqrt ( (double)((aCoordonneesTour.mX - CoordonneeEnnemi.mX) * (aCoordonneesTour.mX - CoordonneeEnnemi.mX))
+                                 + (double)((aCoordonneesTour.mY - CoordonneeEnnemi.mY) * (aCoordonneesTour.mY - CoordonneeEnnemi.mY)));
 
       // Détermine si l'ennemi est à la porté de la tour
       if (aPorteeTour > DistanceEnnemi)

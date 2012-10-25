@@ -19,7 +19,12 @@
 // Le nombre de frame par seconde
 const int IMAGES_PAR_SECONDE = 50;
 
-typedef std::pair<int, int>                  TCoordonnee;
+struct TCoordonnee
+{
+   int mX;
+   int mY;
+};
+
 typedef std::pair<TCoordonnee, TCoordonnee > TVecteurChemin ;
 
 #endif

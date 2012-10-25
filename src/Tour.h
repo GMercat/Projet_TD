@@ -19,7 +19,7 @@ public:
    void Construire ();
 
    // TODO Retourner une TCoordonnee
-   void GetCentre (int& aXCentre, int &aYCentre);
+   void GetCentre (TCoordonnee& aCoordonnee);
 
    void OnAfficheProjectiles  (CSurface::Ptr& aSurfaceDestPtr);
    bool OnAvanceProjectiles   (void);

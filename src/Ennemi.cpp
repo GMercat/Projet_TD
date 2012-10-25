@@ -72,11 +72,10 @@ void CEnnemi::SetPCCheminCase (std::list<int>& aPPCheminCase)
    mPCCheminCase = aPPCheminCase;
 }
 
-void CEnnemi::GetCentre (int& aXCentre, int& aYCentre)
+void CEnnemi::GetCentre (TCoordonnee& aCoordonneesCentre)
 {
    //TODO BUG quand ennemi mort
-   aXCentre = mCoordonnee.first;
-   aYCentre = mCoordonnee.second;
+   aCoordonneesCentre = mCoordonnee;
 }
 
 int CEnnemi::DetermineCaseCourante (void)
@@ -101,8 +100,8 @@ void CEnnemi::Avance (void)
 
    // 2 - Test si on reste sur le meme vecteur ou pas (changement de case courante)
    //     Calcul de la distance restante à parcourir sur le vecteur
-   DistanceRestante = sqrt ((double)((VecteurCourant.second.first  - mCoordonnee.first)  * (VecteurCourant.second.first  - mCoordonnee.first))
-                                + (double)((VecteurCourant.second.second - mCoordonnee.second) * (VecteurCourant.second.second - mCoordonnee.second)));
+   DistanceRestante = sqrt ( (double)((VecteurCourant.second.mX - mCoordonnee.mX) * (VecteurCourant.second.mX - mCoordonnee.mX))
+                           + (double)((VecteurCourant.second.mY - mCoordonnee.mY) * (VecteurCourant.second.mY - mCoordonnee.mY)));
    
    PourcentageVecteurParcouru = AvancementSurVecteur / DistanceRestante;
    
@@ -115,27 +114,27 @@ void CEnnemi::Avance (void)
       VecteurCourant = mPCCheminReel.front ();
       AvancementSurVecteur -= DistanceRestante;
 
-      mCoordonnee.first    = VecteurCourant.first.first;
-      mCoordonnee.second   = VecteurCourant.first.second;
+      mCoordonnee.mX = VecteurCourant.first.mX;
+      mCoordonnee.mY = VecteurCourant.first.mY;
 
       //     Calcul de la distance restante à parcourir sur le vecteur
-      DistanceRestante = sqrt ((double)((VecteurCourant.second.first  - mCoordonnee.first)  * (VecteurCourant.second.first  - mCoordonnee.first))
-                                + (double)((VecteurCourant.second.second - mCoordonnee.second) * (VecteurCourant.second.second - mCoordonnee.second)));
+      DistanceRestante = sqrt ( (double)((VecteurCourant.second.mX - mCoordonnee.mX) * (VecteurCourant.second.mX - mCoordonnee.mX))
+                              + (double)((VecteurCourant.second.mY - mCoordonnee.mY) * (VecteurCourant.second.mY - mCoordonnee.mY)));
    
 
       PourcentageVecteurParcouru = AvancementSurVecteur / DistanceRestante;
    }
 
    // TODO Arrondi à l'entier supérieur sinon à faible vitesse on avance pas
-   mCoordonnee.first += /*ceil*/ ((VecteurCourant.second.first - mCoordonnee.first) * (PourcentageVecteurParcouru));
-   mCoordonnee.second += /*ceil*/ ((VecteurCourant.second.second - mCoordonnee.second) * (PourcentageVecteurParcouru));
-   (*mPCCheminReel.begin ()).first.first = mCoordonnee.first;
-   (*mPCCheminReel.begin ()).first.second = mCoordonnee.second;
+   mCoordonnee.mX += /*ceil*/ ((VecteurCourant.second.mX - mCoordonnee.mX) * (PourcentageVecteurParcouru));
+   mCoordonnee.mY += /*ceil*/ ((VecteurCourant.second.mY - mCoordonnee.mY) * (PourcentageVecteurParcouru));
+   (*mPCCheminReel.begin ()).first.mX = mCoordonnee.mX;
+   (*mPCCheminReel.begin ()).first.mY = mCoordonnee.mY;
 
-   mPosition.first   = mCoordonnee.first - (mLargeur / 2);
-   mPosition.second  = mCoordonnee.second - (mHauteur / 2);
+   mPosition.mX = mCoordonnee.mX - (mLargeur / 2);
+   mPosition.mY = mCoordonnee.mY - (mHauteur / 2);
 
-   mLog << Info << "X = " << mCoordonnee.first << ", Y = " << mCoordonnee.second << EndLine;
+   mLog << Info << "X = " << mCoordonnee.mX << ", Y = " << mCoordonnee.mY << EndLine;
 }
 
 bool CEnnemi::EstArrive (void)
@@ -148,8 +147,8 @@ bool CEnnemi::EstArrive (void)
       TVecteurChemin VecteurCourant = mPCCheminReel.front ();
 
       //     Calcul de la distance restante à parcourir sur le vecteur
-      double DistanceRestante = sqrt ((double)((VecteurCourant.second.first  - mCoordonnee.first)  * (VecteurCourant.second.first  - mCoordonnee.first))
-                                    + (double)((VecteurCourant.second.second - mCoordonnee.second) * (VecteurCourant.second.second - mCoordonnee.second)));
+      double DistanceRestante = sqrt ((double)((VecteurCourant.second.mX - mCoordonnee.mX) * (VecteurCourant.second.mX - mCoordonnee.mX))
+                                    + (double)((VecteurCourant.second.mY - mCoordonnee.mY) * (VecteurCourant.second.mY - mCoordonnee.mY)));
 
       // Est-ce que l'ennemi est arrivé ?
       if (DistanceRestante < 5.0)

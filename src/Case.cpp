@@ -62,8 +62,8 @@ CTour::Ptr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour, int a
 {
    TCoordonnee CoordCentre;
    
-   CoordCentre.first = mPosition.x + (mPosition.w / 2);
-   CoordCentre.second = mPosition.y + (mPosition.h / 2);
+   CoordCentre.mX = mPosition.x + (mPosition.w / 2);
+   CoordCentre.mY = mPosition.y + (mPosition.h / 2);
 
    mTourPtr = CTour::Ptr (new CTour (aConfig, CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
    return mTourPtr;
@@ -157,13 +157,12 @@ int CCase::GetNumCase (void)
 /**
  * @brief   Coordonnée du centre de la case
  *
- * @param[out] aXCentre Coordonnée X du centre de la case
- * @param[out] aYCentre Coordonnée Y du centre de la case
+ * @param[out] aCoordonneeCentre Coordonnée du centre de la case
  */
-void CCase::GetCentre (int& aXCentre, int &aYCentre)
+void CCase::GetCentre (TCoordonnee& aCoordonneeCentre)
 {
-   aXCentre = mPosition.x + (mPosition.w / 2);
-   aYCentre = mPosition.y + (mPosition.h / 2);
+   aCoordonneeCentre.mX = mPosition.x + (mPosition.w / 2);
+   aCoordonneeCentre.mY = mPosition.y + (mPosition.h / 2);
 }
 
 /**

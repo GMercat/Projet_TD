@@ -31,7 +31,7 @@ public:
    EType GetType           (void);
    void  SetType           (EType aType);
    void  SetPCCheminCase   (std::list<int>& aPPCheminCase);
-   void  GetCentre         (int& aXCentre, int& aYCentre);
+   void  GetCentre         (TCoordonnee& aCoordonneesCentre);
 
    int   DetermineCaseCourante   (void);
 

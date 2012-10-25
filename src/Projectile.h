@@ -12,7 +12,7 @@ public:
    typedef std::list<CProjectile::Ptr>    Liste;
 
 public:
-   CProjectile   (CEnnemi::Ptr aEnnemiCiblePtr, int aX, int aY, int aPuissance, int aVitesse);
+   CProjectile   (CEnnemi::Ptr aEnnemiCiblePtr, TCoordonnee& aCoordonnee, int aPuissance, int aVitesse);
    ~CProjectile  (void);
 
    bool  OnInit      (std::string& aCheminRessource, std::string& aNomImage); 
