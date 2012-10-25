@@ -2,6 +2,7 @@
 #define _SURFACE_H_
 
 #include "Defined.h"
+#include <SDL/SDL_rotozoom.h>
 
 class CSurface
 {
@@ -19,9 +20,11 @@ public:
    void Flip            (void);
    void Free            (void);
    bool SetVideoMode    (const int aLargeur, const int aHauteur);
+   void Rotation		   (double aAngleDegre);
 
 protected:
-SDL_Surface*   mpSurfaceSDL;
+SDL_Surface*   mpSurfaceSDLOrigine;
+SDL_Surface*   mpSurfaceSDLAffichable;
 
 private:
    CLog           mLog;

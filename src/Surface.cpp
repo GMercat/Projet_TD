@@ -1,8 +1,9 @@
 #include "Surface.h"
 
 CSurface::CSurface (void):
-   mLog           ("Surface"),
-   mpSurfaceSDL   (NULL)
+   mLog                    ("Surface"),
+   mpSurfaceSDLOrigine     (NULL),
+   mpSurfaceSDLAffichable  (NULL)
 {
 
 }
@@ -14,22 +15,23 @@ CSurface::~CSurface (void)
 
 void CSurface::Blit (CSurface::Ptr& apEcran, SDL_Rect* aPositionDest)
 {
-   SDL_BlitSurface(mpSurfaceSDL, NULL, apEcran->mpSurfaceSDL, aPositionDest);
+   SDL_BlitSurface(mpSurfaceSDLAffichable, NULL, apEcran->mpSurfaceSDLAffichable, aPositionDest);
 }
 
 void CSurface::SetAlpha (int aValeurAlpha)
 {
-   SDL_SetAlpha (mpSurfaceSDL, SDL_SRCALPHA, aValeurAlpha);
+   SDL_SetAlpha (mpSurfaceSDLAffichable, SDL_SRCALPHA, aValeurAlpha);
 }
 
 bool CSurface::LoadBMP (std::string aNom)
 {
    bool bResultat = true;
 
-   mpSurfaceSDL = SDL_LoadBMP(aNom.c_str ());
+   mpSurfaceSDLOrigine = SDL_LoadBMP(aNom.c_str ());
+   mpSurfaceSDLAffichable = mpSurfaceSDLOrigine;
 
    //On teste le retour du chargement
-   if (mpSurfaceSDL == NULL)
+   if (mpSurfaceSDLAffichable == NULL)
    {
 	   mLog << Erreur << "Probleme de chargement de l'image : " << aNom.c_str () << EndLine;
 	   bResultat = false;
@@ -40,7 +42,7 @@ bool CSurface::LoadBMP (std::string aNom)
 
 void CSurface::SetTransparence (int aValeurRouge, int aValeurVert, int aValeurBleu)
 {
-	if(SDL_SetColorKey (mpSurfaceSDL, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDL->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1)
+	if(SDL_SetColorKey (mpSurfaceSDLAffichable, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDLAffichable->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1)
    {
 		mLog << Erreur << "Erreur avec la transparence" << EndLine;
    }
@@ -48,14 +50,19 @@ void CSurface::SetTransparence (int aValeurRouge, int aValeurVert, int aValeurBl
 
 void CSurface::Flip (void)
 {
-   SDL_Flip(mpSurfaceSDL);
+   SDL_Flip(mpSurfaceSDLAffichable);
 }
 
 void CSurface::Free (void)
 {
-   if (mpSurfaceSDL != NULL)
+   if (mpSurfaceSDLAffichable != NULL)
    {
-      SDL_FreeSurface (mpSurfaceSDL);
+      SDL_FreeSurface (mpSurfaceSDLAffichable);
+   }
+
+   if (mpSurfaceSDLOrigine != NULL)
+   {
+      SDL_FreeSurface (mpSurfaceSDLOrigine);
    }
 }
 
@@ -63,12 +70,17 @@ bool CSurface::SetVideoMode (const int aLargeur, const int aHauteur)
 {
    bool bReturn = true;
 
-   mpSurfaceSDL = SDL_SetVideoMode ( aLargeur , aHauteur , 32, SDL_DOUBLEBUF | SDL_HWSURFACE);
+   mpSurfaceSDLAffichable = SDL_SetVideoMode ( aLargeur , aHauteur , 32, SDL_DOUBLEBUF | SDL_HWSURFACE);
 
-   if (mpSurfaceSDL == NULL)
+   if (mpSurfaceSDLAffichable == NULL)
    {
       bReturn = false;
    }
 
    return bReturn;
+}
+
+void CSurface::Rotation (double aAngleDegre)
+{
+	mpSurfaceSDLAffichable = rotozoomSurface(mpSurfaceSDLOrigine, -aAngleDegre, 1.0, 1);
 }

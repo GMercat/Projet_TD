@@ -24,10 +24,10 @@ void CImage::Afficher (CSurface::Ptr& aEcranPtr, SDL_Rect& aPosition)
 void CImage::Afficher (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonnees)
 {
    SDL_Rect Rect;
-   Rect.x = aCoordonnees.first;
-   Rect.y = aCoordonnees.second;
-   Rect.h = mpSurfaceSDL->h;
-   Rect.w = mpSurfaceSDL->w;
+   Rect.x = aCoordonnees.mX;
+   Rect.y = aCoordonnees.mY;
+   Rect.h = mpSurfaceSDLAffichable->h;
+   Rect.w = mpSurfaceSDLAffichable->w;
 
    Afficher (aEcranPtr, Rect);
 }
