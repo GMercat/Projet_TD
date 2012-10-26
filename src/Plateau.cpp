@@ -86,11 +86,6 @@ bool CPlateau::OnInit (void)
 	   //if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
 	   //	mLog << Erreur << "Erreur avec la transparence de la croix" << EndLine;
 
-      SDL_Rect	Rect;
-
-	   Rect.w = mLargeurCase;
-	   Rect.h = mHauteurCase;
-
       mLog << Debug << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << EndLine;
       mLog << Debug << "NbCaseLargeur = " << mNbCasesLargeur << EndLine;
       mLog << Debug << "NbCaseHauteur = " << mNbCasesHauteur << EndLine;
@@ -107,11 +102,15 @@ bool CPlateau::OnInit (void)
             NumCase = iLargeur + (mNbCasesLargeur * iHauteur);
 
 		      CCase::Ptr CasePtr (new CCase());
+            CRect::Ptr	RectPtr (new CRect ());
 
-			   CasePtr->OnInit ();
-			   Rect.x = iLargeur * mLargeurCase;
-			   Rect.y = iHauteur * mHauteurCase;
-			   CasePtr->SetPosition  (&Rect, iLargeur, iHauteur);
+            CasePtr->OnInit ();
+
+	         RectPtr->SetW (mLargeurCase);
+	         RectPtr->SetH (mHauteurCase);
+			   RectPtr->SetX (iLargeur * mLargeurCase);
+			   RectPtr->SetY (iHauteur * mHauteurCase);
+			   CasePtr->SetPosition  (RectPtr, iLargeur, iHauteur);
             CasePtr->SetNumCase   (NumCase);
 
 			   if ((iLargeur == 0) || (iLargeur == (mNbCasesLargeur - 1)) || (iHauteur == 0) || (iHauteur == (mNbCasesHauteur -1)))
@@ -240,13 +239,13 @@ void CPlateau::OnAffiche (CSurface::Ptr& aEcranPtr)
 
 void CPlateau::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
 {
-   SDL_Rect Position;
-   Position.x = 0;
-   Position.y = 0;
-   Position.w = mNbCasesLargeur * mLargeurCase;
-   Position.h = mNbCasesHauteur * mHauteurCase;
+   CRect::Ptr PositionPtr (new CRect ());
+   PositionPtr->SetX (0);
+   PositionPtr->SetY (0);
+   PositionPtr->SetW (mNbCasesLargeur * mLargeurCase);
+   PositionPtr->SetH (mNbCasesHauteur * mHauteurCase);
       
-   mImagePausePtr->Afficher (aEcranPtr, Position);
+   mImagePausePtr->Afficher (aEcranPtr, PositionPtr);
 }
 
 void CPlateau::OnSurvoleCase (int aX, int aY)

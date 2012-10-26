@@ -209,7 +209,7 @@ void CJeu::LancementVagueEnnemis (void)
 {
    // Création de la nouvelle vague d'ennemis
    // TODO : Type d'ennemi en paramètre
-   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()/*TypeEnnemi, nbEnnemis*/));
+   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (mConfig, mpIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()/*TypeEnnemi, nbEnnemis*/));
 
    // On l'ajoute
    mListVagues.push_back (NouvelleVague);

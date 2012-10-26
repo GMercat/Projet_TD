@@ -105,7 +105,7 @@ void CLog::operator<< (const TEndLine aValue) const
  */
 void CLog::EcrireLog (void) const
 {
-   if (mLevel >= LOG_ERROR) // TODO a définir le niveau des log
+   if (mLevel >= LOG_INFO) // TODO a définir le niveau des log
    {
       std::cout << (char) 27 << "[" << GetSeverityEscapeColor (mLevel) << "m"
                 << std::setfill(' ') << std::setw(10) << std::left << mPrefix.c_str ()

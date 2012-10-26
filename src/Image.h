@@ -3,6 +3,7 @@
 
 #include "Defined.h"
 #include "Surface.h"
+#include "Rect.h"
 
 class CImage : public CSurface
 {
@@ -15,7 +16,7 @@ public:
    CImage (std::string& aCheminRessources);
    virtual ~CImage (void);
       
-   void  Afficher (CSurface::Ptr& aEcranPtr, SDL_Rect& aPosition);
+   void  Afficher (CSurface::Ptr& aEcranPtr, CRect::Ptr& aPositionPtr);
    void  Afficher (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonnees);
    bool  Load     (std::string& aNomFichier);
    

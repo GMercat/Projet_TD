@@ -13,7 +13,7 @@ CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, TCoordonnee& aCoordonnee
 
 CProjectile::~CProjectile (void)
 {
-
+   ;
 }
 
 bool CProjectile::OnInit (std::string& aCheminRessource, std::string& aNomImage)

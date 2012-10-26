@@ -26,7 +26,7 @@ bool CFenetre::Init (int aLargeur, int aHauteur)
    SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
 
    //Ouvrir une fenetre
-   mSurfacePtr.reset (new CSurface ());
+   mSurfacePtr.reset (new CSurface (true));
    bReturn = mSurfacePtr->SetVideoMode (aLargeur, aHauteur);
    
    return bReturn;

@@ -112,6 +112,7 @@
     <ClCompile Include="..\..\src\Menu.cpp" />
     <ClCompile Include="..\..\src\Moteur.cpp" />
     <ClCompile Include="..\..\src\Plateau.cpp" />
+    <ClCompile Include="..\..\src\Rect.cpp" />
     <ClCompile Include="..\..\src\Surface.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Tour.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="..\..\src\Moteur.h" />
     <ClInclude Include="..\..\src\Plateau.h" />
     <ClInclude Include="..\..\src\Projectile.h" />
+    <ClInclude Include="..\..\src\Rect.h" />
     <ClInclude Include="..\..\src\Surface.h" />
     <ClInclude Include="..\..\src\Timer.h" />
     <ClInclude Include="..\..\src\Tour.h" />

@@ -11,11 +11,10 @@ CCase::CCase (void):
 	mCourImage	         (0),
    mNumCase             (-1),
    mbEstPlusCourtChemin (false),
-   mbEstSurvolee        (false)
+   mbEstSurvolee        (false),
+   mPositionPtr         (new CRect)
 {
-	mPosition.x = 0;
-	mPosition.y = 0;
-	mPosition.w = 0;
+;
 }
 
 /**
@@ -43,7 +42,7 @@ void CCase::OnInit (void)
  */
 void CCase::OnAffiche (CSurface::Ptr& aSurfaceDestPtr, CSurface::Ptr& aSurfaceCasePtr)
 {   
-   aSurfaceCasePtr->Blit (aSurfaceDestPtr, &mPosition);
+   aSurfaceCasePtr->Blit (aSurfaceDestPtr, mPositionPtr);
 }
 
 /**
@@ -62,8 +61,8 @@ CTour::Ptr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour, int a
 {
    TCoordonnee CoordCentre;
    
-   CoordCentre.mX = mPosition.x + (mPosition.w / 2);
-   CoordCentre.mY = mPosition.y + (mPosition.h / 2);
+   CoordCentre.mX = mPositionPtr->GetX () + (mPositionPtr->GetW () / 2);
+   CoordCentre.mY = mPositionPtr->GetY () + (mPositionPtr->GetH () / 2);
 
    mTourPtr = CTour::Ptr (new CTour (aConfig, CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
    return mTourPtr;
@@ -81,10 +80,10 @@ bool CCase::EstDedans (int aX, int aY)
 {
 	bool bReturn = true;
 
-	bReturn  = (aX > mPosition.x);
-	bReturn &= (aX < (mPosition.x + mPosition.w));
-	bReturn &= (aY > mPosition.y);
-	bReturn &= (aY < (mPosition.y + mPosition.h));
+	bReturn  = (aX >  mPositionPtr->GetX ());
+	bReturn &= (aX < (mPositionPtr->GetX () + mPositionPtr->GetW ()));
+	bReturn &= (aY >  mPositionPtr->GetY ());
+	bReturn &= (aY < (mPositionPtr->GetY () + mPositionPtr->GetH ()));
 	
 	return bReturn;
 }
@@ -123,15 +122,15 @@ void CCase::SetType (CCase::ETypeCase aeNouvelType)
 /**
  * @brief   Renseigne la position de la case dans la fenêtre de jeu
  *
- * @parma[in]  apRect         Postion de la case
+ * @parma[in]  aRectPtr       Postion de la case
  * @parma[in]  aIdPlateauX    Index X de la case dans le plateau
  * @parma[in]  aIdPlateauy    Index Y de la case dans le plateau
  */
-void CCase::SetPosition (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY)
+void CCase::SetPosition (CRect::Ptr& aRectPtr, int aIdPlateauX, int aIdPlateauY)
 { 
-	mIdPlateauX = aIdPlateauX;
-	mIdPlateauY = aIdPlateauY;
-	mPosition = *apRect;
+	mIdPlateauX  = aIdPlateauX;
+	mIdPlateauY  = aIdPlateauY;
+	mPositionPtr = aRectPtr;
 }
 
 /**
@@ -161,8 +160,8 @@ int CCase::GetNumCase (void)
  */
 void CCase::GetCentre (TCoordonnee& aCoordonneeCentre)
 {
-   aCoordonneeCentre.mX = mPosition.x + (mPosition.w / 2);
-   aCoordonneeCentre.mY = mPosition.y + (mPosition.h / 2);
+   aCoordonneeCentre.mX = mPositionPtr->GetX () + (mPositionPtr->GetW () / 2);
+   aCoordonneeCentre.mY = mPositionPtr->GetY () + (mPositionPtr->GetH () / 2);
 }
 
 /**
@@ -185,9 +184,9 @@ int CCase::GetTypeTour (void)
  *
  * @return  Restangle SDL correspondant à la position de la case
  */
-SDL_Rect& CCase::GetPosition (void)
+CRect::Ptr& CCase::GetPosition (void)
 {
-   return mPosition;
+   return mPositionPtr;
 }
 
 /**

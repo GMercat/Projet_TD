@@ -2,6 +2,7 @@
 #define _SURFACE_H_
 
 #include "Defined.h"
+#include "Rect.h"
 #include <SDL/SDL_rotozoom.h>
 
 class CSurface
@@ -10,11 +11,11 @@ public:
    typedef boost::shared_ptr<CSurface> Ptr;
 
 public:
-   CSurface    (void);
-   virtual ~CSurface   (void);
+   CSurface    (bool bEstFenetre = false);
+   ~CSurface   (void);
 
    void SetAlpha        (int aValeurAlpha);
-   void Blit            (CSurface::Ptr& apEcran, SDL_Rect* aPositionDest);
+   void Blit            (CSurface::Ptr& apEcran, CRect::Ptr& aPositionDestPtr);
    bool LoadBMP         (std::string aNom);
    void SetTransparence (int aValeurRouge, int aValeurVert, int aValeurBleu);
    void Flip            (void);
@@ -23,8 +24,10 @@ public:
    void Rotation		   (double aAngleDegre);
 
 protected:
-SDL_Surface*   mpSurfaceSDLOrigine;
-SDL_Surface*   mpSurfaceSDLAffichable;
+   bool mbEstFenetre;
+   
+   SDL_Surface*   mpSurfaceSDLOrigine;
+   SDL_Surface*   mpSurfaceSDLAffichable;
 
 private:
    CLog           mLog;

@@ -5,7 +5,9 @@
 #define NB_ENNEMI_VAGUE       5
 #define TPS_BASE_INTER_ENNEMI 750
 
-CVagueEnnemis::CVagueEnnemis (int aNumCaseDepart, int aNumCaseArrivee /*TypeEnnemi, nbEnnemis*/):
+CVagueEnnemis::CVagueEnnemis (CConfiguration& aConfig, CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee /*TypeEnnemi, nbEnnemis*/):
+   mConfig              (aConfig),
+   mpIA                 (apIA),
    mNbEnnemis           (NB_ENNEMI_VAGUE),
    mTempsProchainEnnemi (0),
    mNumCaseDepart       (aNumCaseDepart),
@@ -49,6 +51,7 @@ void CVagueEnnemis::ProgressionEnnemis (void)
       }
       else
       {
+         (*IterEnnemi)->Avance ();
          ++IterEnnemi;
       }
    }

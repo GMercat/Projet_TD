@@ -16,20 +16,20 @@ CImage::~CImage (void)
 {
 }
 
-void CImage::Afficher (CSurface::Ptr& aEcranPtr, SDL_Rect& aPosition)
+void CImage::Afficher (CSurface::Ptr& aEcranPtr, CRect::Ptr& aPositionPtr)
 {
-   Blit (aEcranPtr, &aPosition);
+   Blit (aEcranPtr, aPositionPtr);
 }
 
 void CImage::Afficher (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonnees)
 {
-   SDL_Rect Rect;
-   Rect.x = aCoordonnees.mX;
-   Rect.y = aCoordonnees.mY;
-   Rect.h = mpSurfaceSDLAffichable->h;
-   Rect.w = mpSurfaceSDLAffichable->w;
+   CRect::Ptr RectPtr (new CRect ());
+   RectPtr->SetX (aCoordonnees.mX);
+   RectPtr->SetY (aCoordonnees.mY);
+   RectPtr->SetH (mpSurfaceSDLAffichable->h);
+   RectPtr->SetW (mpSurfaceSDLAffichable->w);
 
-   Afficher (aEcranPtr, Rect);
+   Afficher (aEcranPtr, RectPtr);
 }
 
 bool CImage::Load (std::string& aNomFichier)

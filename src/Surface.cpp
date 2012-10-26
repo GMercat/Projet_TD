@@ -1,7 +1,8 @@
 #include "Surface.h"
 
-CSurface::CSurface (void):
+CSurface::CSurface (bool abEstFenetre):
    mLog                    ("Surface"),
+   mbEstFenetre            (abEstFenetre),
    mpSurfaceSDLOrigine     (NULL),
    mpSurfaceSDLAffichable  (NULL)
 {
@@ -10,12 +11,15 @@ CSurface::CSurface (void):
 
 CSurface::~CSurface (void)
 {
-   Free ();
+   if (false == mbEstFenetre)
+   {
+      Free ();
+   }
 }
 
-void CSurface::Blit (CSurface::Ptr& apEcran, SDL_Rect* aPositionDest)
+void CSurface::Blit (CSurface::Ptr& apEcran, CRect::Ptr& aPositionDestPtr)
 {
-   SDL_BlitSurface(mpSurfaceSDLAffichable, NULL, apEcran->mpSurfaceSDLAffichable, aPositionDest);
+   SDL_BlitSurface (mpSurfaceSDLAffichable, NULL, apEcran->mpSurfaceSDLAffichable, aPositionDestPtr->GetSDLRect ());
 }
 
 void CSurface::SetAlpha (int aValeurAlpha)
@@ -28,10 +32,19 @@ bool CSurface::LoadBMP (std::string aNom)
    bool bResultat = true;
 
    mpSurfaceSDLOrigine = SDL_LoadBMP(aNom.c_str ());
-   mpSurfaceSDLAffichable = mpSurfaceSDLOrigine;
+   
+   mpSurfaceSDLAffichable = SDL_CreateRGBSurface(  SDL_HWSURFACE,
+                                                   mpSurfaceSDLOrigine->w,
+                                                   mpSurfaceSDLOrigine->h,
+                                                   mpSurfaceSDLOrigine->format->BitsPerPixel,
+                                                   mpSurfaceSDLOrigine->format->Rmask,
+                                                   mpSurfaceSDLOrigine->format->Gmask,
+                                                   mpSurfaceSDLOrigine->format->Bmask,
+                                                   mpSurfaceSDLOrigine->format->Amask);
 
-   //On teste le retour du chargement
-   if (mpSurfaceSDLAffichable == NULL)
+   SDL_BlitSurface (mpSurfaceSDLOrigine, NULL, mpSurfaceSDLAffichable, NULL);
+
+   if(mpSurfaceSDLOrigine == NULL || mpSurfaceSDLAffichable == NULL)
    {
 	   mLog << Erreur << "Probleme de chargement de l'image : " << aNom.c_str () << EndLine;
 	   bResultat = false;

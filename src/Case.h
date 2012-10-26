@@ -5,7 +5,7 @@
 #include "Tour.h"
 #include "Config.h"
 #include "Ennemi.h"
-
+#include "Rect.h"
 
 class CCase
 {
@@ -36,12 +36,12 @@ public:
 	
    const ETypeCase	GetType        (void) const;
          void	      SetType        (ETypeCase aeNouvelType);
-         void	      SetPosition    (SDL_Rect* apRect, int aIdPlateauX, int aIdPlateauY);
+         void	      SetPosition    (CRect::Ptr& aRectPtr, int aIdPlateauX, int aIdPlateauY);
          void        SetNumCase     (int aNumCase);
          int         GetNumCase     (void);
          void        GetCentre      (TCoordonnee& aCoordonneeCentre);
          int         GetTypeTour    (void);
-         SDL_Rect&   GetPosition    (void);
+         CRect::Ptr& GetPosition    (void);
 
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
@@ -63,7 +63,7 @@ private:
    CTour::Ptr  mTourPtr;
 
 	int		   mCourImage; // L'image à afficher
-	SDL_Rect		mPosition;	// Position de la case
+	CRect::Ptr  mPositionPtr;	// Position de la case
 };
 
 #endif

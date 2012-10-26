@@ -3,11 +3,12 @@
 #include "Case.h"
 
 CMenu::CMenu (CConfiguration& aConfig, CJeu& aJeu):
-   mLog        ("Menu"),
-   mConfig     (aConfig),
-   mJeu        (aJeu)
+   mLog              ("Menu"),
+   mConfig           (aConfig),
+   mJeu              (aJeu),
+   mPositionFondPtr  (new CRect)
 {
-   ; // Rien à faire
+   ;
 }
 
 CMenu::~CMenu (void)
@@ -39,31 +40,35 @@ bool CMenu::OnInit (void)
       mImagesBoutons.resize (eNbBouton);
 
       // Position du menu
-      mPositionFond.x = NbCaseLargeur * LargeurCase;
-      mPositionFond.y = 0;
-      mPositionFond.w = mLargeur;
-      mPositionFond.h = HauteurMenu;
+      mPositionFondPtr->SetX (NbCaseLargeur * LargeurCase);
+      mPositionFondPtr->SetY (0);
+      mPositionFondPtr->SetW (mLargeur);
+      mPositionFondPtr->SetH (HauteurMenu);
 
       // Positions des boutons du menu
-      mPositionsBoutons[eNew].x = mPositionFond.x + 25;
-      mPositionsBoutons[eNew].y = 10;
-      mPositionsBoutons[eNew].w = mLargeur - 25;
-      mPositionsBoutons[eNew].h = 40;
+      mPositionsBoutons[eNew].reset (new CRect);
+      mPositionsBoutons[eNew]->SetX (mPositionFondPtr->GetX () + 25);
+      mPositionsBoutons[eNew]->SetY (10);
+      mPositionsBoutons[eNew]->SetW (mLargeur - 25);
+      mPositionsBoutons[eNew]->SetH (40);
 
-      mPositionsBoutons[ePause].x = mPositionFond.x + 25;
-      mPositionsBoutons[ePause].y = 60;
-      mPositionsBoutons[ePause].w = mLargeur - 25;
-      mPositionsBoutons[ePause].h = 40;
+      mPositionsBoutons[ePause].reset (new CRect);
+      mPositionsBoutons[ePause]->SetX (mPositionFondPtr->GetX () + 25);
+      mPositionsBoutons[ePause]->SetY (60);
+      mPositionsBoutons[ePause]->SetW (mLargeur - 25);
+      mPositionsBoutons[ePause]->SetH (40);
 
-      mPositionsBoutons[eReprendre].x = mPositionFond.x +25;
-      mPositionsBoutons[eReprendre].y = 110;
-      mPositionsBoutons[eReprendre].w = mLargeur - 25;
-      mPositionsBoutons[eReprendre].h = 40;
+      mPositionsBoutons[eReprendre].reset (new CRect);
+      mPositionsBoutons[eReprendre]->SetX (mPositionFondPtr->GetX () +25);
+      mPositionsBoutons[eReprendre]->SetY (110);
+      mPositionsBoutons[eReprendre]->SetW (mLargeur - 25);
+      mPositionsBoutons[eReprendre]->SetH (40);
 
-      mPositionsBoutons[eQuit].x = mPositionFond.x + 25;
-      mPositionsBoutons[eQuit].y = 160;
-      mPositionsBoutons[eQuit].w = mLargeur - 25;
-      mPositionsBoutons[eQuit].h = 40;
+      mPositionsBoutons[eQuit].reset (new CRect);
+      mPositionsBoutons[eQuit]->SetX (mPositionFondPtr->GetX () + 25);
+      mPositionsBoutons[eQuit]->SetY (160);
+      mPositionsBoutons[eQuit]->SetW (mLargeur - 25);
+      mPositionsBoutons[eQuit]->SetH (40);
 
       //mPositionsBoutons[eNewEnnemi].x = mPositionFond.x + 25;
       //mPositionsBoutons[eNewEnnemi].y = 225;
@@ -76,11 +81,13 @@ bool CMenu::OnInit (void)
          mPositionsTours.resize (mNbTours);
          int InterBtTour = EspacementBtTour - HauteurCase;
          for (int IterTypeTour = 0; IterTypeTour < mNbTours; ++IterTypeTour)
-         {            
-            mPositionsTours[IterTypeTour].x = mPositionFond.x + 25;
-            mPositionsTours[IterTypeTour].y = HauteurMenu / 2 + (IterTypeTour * EspacementBtTour) + (InterBtTour / 2);
-            mPositionsTours[IterTypeTour].w = LargeurCase;
-            mPositionsTours[IterTypeTour].h = HauteurCase;
+         {
+            mPositionsTours[IterTypeTour].reset (new CRect);
+
+            mPositionsTours[IterTypeTour]->SetX (mPositionFondPtr->GetX () + 25);
+            mPositionsTours[IterTypeTour]->SetY (HauteurMenu / 2 + (IterTypeTour * EspacementBtTour) + (InterBtTour / 2));
+            mPositionsTours[IterTypeTour]->SetW (LargeurCase);
+            mPositionsTours[IterTypeTour]->SetH (HauteurCase);
          }
       }
 
@@ -156,8 +163,8 @@ void CMenu::OnClic (int aX, int aY)
    {
       for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
-         if (  (mPositionsBoutons[IdBouton].x < aX) && (aX < (mPositionsBoutons[IdBouton].x + mPositionsBoutons[IdBouton].w))
-            && (mPositionsBoutons[IdBouton].y < aY) && (aY < (mPositionsBoutons[IdBouton].y + mPositionsBoutons[IdBouton].h)))
+         if (  (mPositionsBoutons[IdBouton]->GetX () < aX) && (aX < (mPositionsBoutons[IdBouton]->GetX () + mPositionsBoutons[IdBouton]->GetW ()))
+            && (mPositionsBoutons[IdBouton]->GetY () < aY) && (aY < (mPositionsBoutons[IdBouton]->GetY () + mPositionsBoutons[IdBouton]->GetH ())))
          {
             bBoutonTrouve = true;
          }
@@ -188,8 +195,8 @@ void CMenu::OnClic (int aX, int aY)
       {
          for (IdTour = 0; (IdTour < mNbTours) && (false == bBoutonTrouve); ++IdTour)
          {
-            if (  (mPositionsTours[IdTour].x < aX) && (aX < (mPositionsTours[IdTour].x + mPositionsTours[IdTour].w))
-               && (mPositionsTours[IdTour].y < aY) && (aY < (mPositionsTours[IdTour].y + mPositionsTours[IdTour].h)))
+            if (  (mPositionsTours[IdTour]->GetX () < aX) && (aX < (mPositionsTours[IdTour]->GetX () + mPositionsTours[IdTour]->GetW ()))
+               && (mPositionsTours[IdTour]->GetY () < aY) && (aY < (mPositionsTours[IdTour]->GetY () + mPositionsTours[IdTour]->GetH ())))
             {
                bBoutonTrouve = true;
             }
@@ -210,8 +217,8 @@ void CMenu::OnClic (int aX, int aY)
    {
       for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
-         if (  (mPositionsBoutons[IdBouton].x < aX) && (aX < (mPositionsBoutons[IdBouton].x + mPositionsBoutons[IdBouton].w))
-            && (mPositionsBoutons[IdBouton].y < aY) && (aY < (mPositionsBoutons[IdBouton].y + mPositionsBoutons[IdBouton].h)))
+         if (  (mPositionsBoutons[IdBouton]->GetX () < aX) && (aX < (mPositionsBoutons[IdBouton]->GetX () + mPositionsBoutons[IdBouton]->GetW ()))
+            && (mPositionsBoutons[IdBouton]->GetY () < aY) && (aY < (mPositionsBoutons[IdBouton]->GetY () + mPositionsBoutons[IdBouton]->GetH ())))
          {
             bBoutonTrouve = true;
 
@@ -253,7 +260,7 @@ void CMenu::OnClic (int aX, int aY)
 
 void CMenu::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
-   mImageFondPtr->Afficher (aScreenPtr, mPositionFond);
+   mImageFondPtr->Afficher (aScreenPtr, mPositionFondPtr);
 
   if (mJeu.PartieEnCours ())
    {

@@ -15,7 +15,7 @@ public:
    typedef std::list<CVagueEnnemis::Ptr>     Liste;
 
 public:
-   CVagueEnnemis  (int aNumCaseDepart, int aNumCaseArrivee);
+   CVagueEnnemis  (CConfiguration& aConfig, CIA* apIA, int aNumCaseDepart, int aNumCaseArrivee);
    ~CVagueEnnemis (void);
 
    bool EstVide (void);
@@ -29,8 +29,8 @@ private:
    void AjoutEnnemi        (void);
 
 private:
-   CConfiguration mConfig;
-   CIA*           mpIA;
+   CConfiguration&   mConfig;
+   CIA*              mpIA;
 
    CEnnemi::Liste mListEnnemis;      
    CTimer         mTimerEnnemi;

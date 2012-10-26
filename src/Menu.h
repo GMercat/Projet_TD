@@ -39,13 +39,13 @@ private:
    int mNbTours;
    
    CImage::Ptr mImageFondPtr;
-   SDL_Rect       mPositionFond;
+   CRect::Ptr  mPositionFondPtr;
 
    CImage::Vecteur            mImagesBoutons;
-   std::vector <SDL_Rect>     mPositionsBoutons;
+   std::vector <CRect::Ptr>   mPositionsBoutons;
    std::vector <std::string>  mNomImagesTour;
    CImage::Vecteur            mImagesTours;
-   std::vector <SDL_Rect>     mPositionsTours;
+   std::vector <CRect::Ptr>   mPositionsTours;
 };
 
 #endif
