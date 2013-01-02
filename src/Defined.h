@@ -19,10 +19,33 @@
 // Le nombre de frame par seconde
 const int IMAGES_PAR_SECONDE = 50;
 
+// Definition du nombre Pi
+#define PI     3.14159265
+
 struct TCoordonnee
 {
    int mX;
    int mY;
+
+   TCoordonnee ()
+   {
+      mX = 0;
+      mY = 0;
+   };
+
+   TCoordonnee (int aX, int aY)
+   {
+      mX = aX;
+      mY = aY;
+   };
+
+   TCoordonnee& operator = (const TCoordonnee& aCoordonnee)
+   {
+      this->mX = aCoordonnee.mX;
+      this->mY = aCoordonnee.mY;
+
+      return *this;
+   };
 };
 
 typedef std::pair<TCoordonnee, TCoordonnee > TVecteurChemin ;

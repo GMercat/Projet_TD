@@ -64,6 +64,7 @@ bool CEnnemi::OnInit (void)
 
 void CEnnemi::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
+   //mImagePtr->AfficherParCentre (aScreenPtr, mPosition);
    mImagePtr->Afficher (aScreenPtr, mPosition);
 }
 

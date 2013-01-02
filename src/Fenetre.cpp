@@ -1,7 +1,10 @@
 #include "Fenetre.h"
+#include "Rect.h"
 
 CFenetre::CFenetre (void):
-   mLog ("Fenetre")
+   mLog ("Fenetre"),
+   mLargeur (1),
+   mHauteur (1)
 {
 
 }
@@ -15,21 +18,43 @@ bool CFenetre::Init (int aLargeur, int aHauteur)
 {
    bool bReturn = true;
 
+   mLargeur = aLargeur;
+   mHauteur = aHauteur;
+
    //Initialisation de la SDL
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
-		mLog << Erreur << "Probleme pour initialiser SDL: " << SDL_GetError() << EndLine;
-		bReturn = false;
-	}
+   if (SDL_Init(SDL_INIT_VIDEO) != 0)
+   {
+      mLog << Erreur << "Probleme pour initialiser SDL: " << SDL_GetError() << EndLine;
+      bReturn = false;
+   }
 
    // Mettre un titre à la fenêtre
    SDL_WM_SetCaption("TowerDefense by Guit00n 0.2", NULL);
 
    //Ouvrir une fenetre
    mSurfacePtr.reset (new CSurface (true));
-   bReturn = mSurfacePtr->SetVideoMode (aLargeur, aHauteur);
+   bReturn = mSurfacePtr->SetVideoMode (mLargeur, mHauteur);
    
+   std::string NomImage("Fond.bmp");
+   mImagePtr.reset (new CImage ());
+   mImagePtr->Load (NomImage);
+
    return bReturn;
+}
+
+void CFenetre::Affiche (void)
+{
+   CRect::Ptr RectPtr (new CRect ());
+   RectPtr->SetX (0);
+   RectPtr->SetY (0);
+   RectPtr->SetW (mLargeur);
+   RectPtr->SetH (mHauteur);
+   mImagePtr->Afficher (mSurfacePtr, RectPtr);
+}
+
+void CFenetre::Fill (int aValeurRouge, int aValeurVert, int aValeurBleu)
+{
+   mSurfacePtr->Fill (aValeurRouge, aValeurVert, aValeurBleu);
 }
 
 void CFenetre::Flip (void)

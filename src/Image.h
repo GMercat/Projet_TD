@@ -15,13 +15,17 @@ public:
    CImage (void);
    CImage (std::string& aCheminRessources);
    virtual ~CImage (void);
-      
+
+   void  Afficher (CSurface::Ptr& aEcranPtr);
    void  Afficher (CSurface::Ptr& aEcranPtr, CRect::Ptr& aPositionPtr);
    void  Afficher (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonnees);
+   void  AfficherParCentre (CSurface::Ptr& aEcranPtr, TCoordonnee& aCoordonneesCentre);
    bool  Load     (std::string& aNomFichier);
    
 private:
    std::string    mCheminRessources;
+
+   TCoordonnee mCoordonneesCentre;
 };
 
 #endif

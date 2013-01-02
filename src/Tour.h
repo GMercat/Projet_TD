@@ -4,6 +4,7 @@
 #include "Defined.h"
 #include "Projectile.h"
 #include "Timer.h"
+#include "Image.h"
 #include "Config.h"
 
 class CTour
@@ -13,10 +14,10 @@ public:
    typedef std::list<CTour::Ptr>    Liste;
 
 public:
-   CTour	   (CConfiguration& aConfig, TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
+   CTour	   (CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
 	~CTour	(void);
 
-   void Construire ();
+   void Afficher (CSurface::Ptr& aEcranPtr);
 
    // TODO Retourner une TCoordonnee
    void GetCentre (TCoordonnee& aCoordonnee);
@@ -27,6 +28,7 @@ public:
    int GetTypeTour   (void);
    int GetPorteeTire (void);
 
+   void Vise            (const TCoordonnee& aCoordoonneCible);
    bool AutoriseATirer  (void);
    void Tire            (CEnnemi::Ptr& aEnnemiCiblePtr);
 
@@ -34,6 +36,7 @@ private:
    CConfiguration& mConfig;
 
    TCoordonnee mCoordCentre;
+   double      mAngleTire;
    
    int      mTypeTour;
    int      mPorteeTire;  // Portée de tire de la tour
@@ -41,6 +44,9 @@ private:
    int      mVitesseProjectile;
    int      mPuissanceProjectile;
    CTimer   mTimer;       // Gestion de la cadence de tire de la tour
+
+   CImage::Ptr mImageBasePtr;
+   CImage::Ptr mImageTourellePtr;
 
    CProjectile::Liste  mListeProjectilesTires; // Liste de projectiles tirés par la tour
 };

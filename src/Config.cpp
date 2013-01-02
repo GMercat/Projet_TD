@@ -25,10 +25,10 @@ CConfiguration::~CConfiguration (void)
  */
 void CConfiguration::RaZ()
 {
-   mDonnees.         clear();
-   mDonneesCases.    clear();
-   mDonneesTours.    clear();
-   mDonneesEnnemis.  clear();
+   mDonnees			.clear();
+   mDonneesCases	.clear();
+   mDonneesTours	.clear();
+   mDonneesEnnemis	.clear();
 }
 
 /**

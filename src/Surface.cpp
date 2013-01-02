@@ -55,7 +55,8 @@ bool CSurface::LoadBMP (std::string aNom)
 
 void CSurface::SetTransparence (int aValeurRouge, int aValeurVert, int aValeurBleu)
 {
-	if(SDL_SetColorKey (mpSurfaceSDLAffichable, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDLAffichable->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1)
+   if(   (SDL_SetColorKey (mpSurfaceSDLOrigine, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDLOrigine->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1)
+      || (SDL_SetColorKey (mpSurfaceSDLAffichable, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDLAffichable->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1))
    {
 		mLog << Erreur << "Erreur avec la transparence" << EndLine;
    }
@@ -96,4 +97,9 @@ bool CSurface::SetVideoMode (const int aLargeur, const int aHauteur)
 void CSurface::Rotation (double aAngleDegre)
 {
 	mpSurfaceSDLAffichable = rotozoomSurface(mpSurfaceSDLOrigine, -aAngleDegre, 1.0, 1);
+}
+
+void CSurface::Fill (int aValeurRouge, int aValeurVert, int aValeurBleu)
+{
+   SDL_FillRect(mpSurfaceSDLAffichable, NULL, SDL_MapRGB(mpSurfaceSDLAffichable->format, aValeurRouge, aValeurVert, aValeurBleu));
 }
