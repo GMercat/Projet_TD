@@ -3,6 +3,7 @@
 
 #include "Defined.h"
 
+#include "Log.h"
 #include "Jeu.h"
 #include "IA.h"
 
@@ -10,8 +11,8 @@ class CMoteur
 {
 public:
 	// Constructeur/Destructeur
-	CMoteur();
-	~CMoteur();
+	 CMoteur (void);
+	~CMoteur (void);
    	
 	bool OnInit          (void);                    // La fonction d'initialisation
 	void OnQuit          (void);                    // La fonction de quit
