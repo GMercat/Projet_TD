@@ -21,7 +21,7 @@ public:
 	void OnAffiche       (void);                    // La fonction d'affichage   
    void OnProgression   (void);                    // La fonction de progression des ennemis
    void OnTire          (void);                    // La fonction de tire des tours
-	void handle_input    (SDL_Event* apEvent);      // Recupere la touche pressee et ajuste la vitesse du point
+	void OnInputEvent    (SDL_Event* apEvent);      // Recupere la touche pressee et ajuste la vitesse du point
 	
 private:
    CLog mLog;

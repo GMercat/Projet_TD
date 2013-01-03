@@ -74,7 +74,7 @@ void CMoteur::OnAffiche (void)
    mScreenPtr->Flip ();
 }
 
-void CMoteur::handle_input(SDL_Event* apEvent)
+void CMoteur::OnInputEvent (SDL_Event* apEvent)
 {
 	// Capture d'un appuis clavier
 }

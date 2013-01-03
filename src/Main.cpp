@@ -33,7 +33,7 @@ int main( int argc, char *argv[ ] )
 		//Traiter les evenements
 		while(SDL_PollEvent(&Event) && (bMotion == false))
 		{
-   		Moteur.handle_input(&Event);
+   		Moteur.OnInputEvent (&Event);
 		
          switch(Event.type)
 			{
