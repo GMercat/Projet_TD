@@ -35,7 +35,7 @@ bool CFenetre::Init (int aLargeur, int aHauteur)
    mSurfacePtr.reset (new CSurface (true));
    bReturn = mSurfacePtr->SetVideoMode (mLargeur, mHauteur);
    
-   std::string NomImage("Fond.bmp");
+   std::string NomImage("../../ressources/Fond.bmp");
    mImagePtr.reset (new CImage ());
    mImagePtr->Load (NomImage);
 

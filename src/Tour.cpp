@@ -11,9 +11,8 @@ CTour::CTour	(CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTyp
    mCadenceTire         (aCadence)
 {
    // TODO Config nom image
-
-   std::string NomImageBase ("Tour_Base.bmp");
-   std::string NomImageTourelle ("Tour_Tourelle.bmp");
+   std::string NomImageBase ("../../ressources/Tour_Base.bmp");
+   std::string NomImageTourelle ("../../ressources/Tour_Tourelle.bmp");
 
    mImageBasePtr.reset (new CImage ());
    mImageTourellePtr.reset (new CImage ());
