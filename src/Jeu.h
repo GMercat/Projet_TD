@@ -3,6 +3,7 @@
 
 #include "Defined.h"
 
+#include "Fenetre.h"
 #include "Plateau.h"
 #include "Menu.h"
 #include "Timer.h"
@@ -18,7 +19,7 @@ public:
 
 	bool OnInit		      (void);
 	void OnClic		      (int aX, int aY);
-	void OnAffiche	      (CSurface::Ptr& aScreenPtr);
+	void OnAffiche	      (void);
    void OnReset         (void);
    void OnQuit          (void);
    void OnProgression   (void);
@@ -50,6 +51,8 @@ private:
    CMenu          mMenu;
    CIA*           mpIA;
    CTimer         mTimerVague;
+
+   CFenetre::Ptr	mScreenPtr;
 
    bool  mbPremiereTour;
    bool  mbPartieEnCours;

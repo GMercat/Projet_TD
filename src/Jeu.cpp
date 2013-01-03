@@ -31,6 +31,8 @@ bool CJeu::OnInit (void)
    // Lecture du fichier de configuration
    mConfig.Chargement ("../../conf/ConfJeu.txt");
 
+   mScreenPtr.reset (new CFenetre ());
+   
 	bool bReturn = mPlateau.OnInit ();
    bReturn &= mMenu.OnInit ();
 
@@ -38,6 +40,8 @@ bool CJeu::OnInit (void)
 
    mHauteur = mPlateau.GetNbCaseHauteur () * mPlateau.GetHauteurCase ();
    mLargeur = mPlateau.GetNbCaseLargeur () * mPlateau.GetLargeurCase () + mMenu.GetLargeur ();
+
+   bReturn = mScreenPtr->Init (mLargeur, mHauteur);
 
   	return bReturn;
 }
@@ -85,32 +89,34 @@ void CJeu::OnClic (int aX, int aY)
    }
 }
 
-void CJeu::OnAffiche (CSurface::Ptr& aScreenPtr)
+void CJeu::OnAffiche (void)
 {
    // Affichage du menu
-   mMenu.   OnAffiche (aScreenPtr);
+   mMenu.   OnAffiche (mScreenPtr->GetSurface ());
 
    // Affichage du plateau
-   mPlateau.OnAffiche (aScreenPtr);
+   mPlateau.OnAffiche (mScreenPtr->GetSurface ());
    
    // Affichage des ennemis
    CVagueEnnemis::Liste::iterator IterVague;
    for (IterVague = mListVagues.begin (); IterVague != mListVagues.end (); IterVague++)
    {
-      (*IterVague)->OnAffiche (aScreenPtr);
+      (*IterVague)->OnAffiche (mScreenPtr->GetSurface ());
    }
 
    // Affichage des projectiles
    CTour::Liste::iterator IterTourTiree = mListTourTiree.begin ();
    for (IterTourTiree; IterTourTiree != mListTourTiree.end (); ++IterTourTiree)
    {
-      (*IterTourTiree)->OnAfficheProjectiles (aScreenPtr);
+      (*IterTourTiree)->OnAfficheProjectiles (mScreenPtr->GetSurface ());
    }
 
    if (false == mbPartieEnCours)
    {
-      mPlateau.OnAfficheEnPause (aScreenPtr);
+      mPlateau.OnAfficheEnPause (mScreenPtr->GetSurface ());
    }
+
+   mScreenPtr->Flip ();
 }
 
 void CJeu::OnReset   (void)

@@ -3,7 +3,6 @@
 
 #include "Defined.h"
 
-#include "Fenetre.h"
 #include "Jeu.h"
 #include "IA.h"
 
@@ -29,8 +28,6 @@ private:
 	//Le plateau de jeu
 	CJeu mJeu;
    CIA  mIA;
-   
-   CFenetre::Ptr	mScreenPtr;
 };
 
 #endif

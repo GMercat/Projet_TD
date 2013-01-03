@@ -23,9 +23,6 @@ bool CMoteur::OnInit (void)
    {
       mIA.OnInit ();
 
-      mScreenPtr.reset (new CFenetre ());
-      bReturn = mScreenPtr->Init (mJeu.GetLargeur (), mJeu.GetHauteur ());
-      
       mIA.ConstruireMatriceGraphe ();
       mJeu.PlacementEstAutorise ();
    }
@@ -70,8 +67,7 @@ void CMoteur::OnTire (void)
 
 void CMoteur::OnAffiche (void)
 {
-	mJeu.OnAffiche (mScreenPtr->GetSurface ());
-   mScreenPtr->Flip ();
+	mJeu.OnAffiche ();
 }
 
 void CMoteur::OnInputEvent (SDL_Event* apEvent)
