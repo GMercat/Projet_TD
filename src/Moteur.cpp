@@ -29,6 +29,7 @@ void CMoteur::OnClic (int aX, int aY)
 void CMoteur::OnMotion (int aX, int aY)
 {
    // Si on survole le plateau et si une tour est sélectionnée
+   // TODO a revoir/refaire autrement... Directement dans la classe CJeu
    if (mJeu.GetPlateau ().EstDansPlateau (aX, aY) && (mJeu.GetTourSelectionnee () != -1))
    {
       mJeu.GetPlateau ().OnSurvoleCase (aX, aY);

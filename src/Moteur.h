@@ -5,7 +5,6 @@
 
 #include "Log.h"
 #include "Jeu.h"
-#include "IA.h"
 
 class CMoteur
 {
