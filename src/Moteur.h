@@ -28,7 +28,6 @@ private:
 
 	//Le plateau de jeu
 	CJeu mJeu;
-   CIA  mIA;
 };
 
 #endif

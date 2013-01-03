@@ -7,6 +7,8 @@
 #include <vector>
 #include <list>
 #include <cstdlib>
+#include <cmath>
+#include <ctime>
 #include <SDL/SDL.h>
 
 #include "Log.h"

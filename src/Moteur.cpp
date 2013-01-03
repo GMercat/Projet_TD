@@ -1,9 +1,7 @@
 #include "Moteur.h"
 
 CMoteur::CMoteur (void):
-   mLog     ("Moteur"),
-   mIA      (mJeu.GetPlateau ()),
-   mJeu     (&mIA)
+   mLog     ("Moteur")
 {
 	;
 }
@@ -15,19 +13,7 @@ CMoteur::~CMoteur (void)
 
 bool CMoteur::OnInit (void)
 {
-	bool bReturn = false;
-   
-	bReturn  = mJeu.OnInit ();
-
-   if (bReturn)
-   {
-      mIA.OnInit ();
-
-      mIA.ConstruireMatriceGraphe ();
-      mJeu.PlacementEstAutorise ();
-   }
-
-	return bReturn;
+   return mJeu.OnInit ();
 }
 
 void CMoteur::OnQuit (void)

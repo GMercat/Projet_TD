@@ -4,17 +4,16 @@
 #include "Defined.h"
 
 #include "Fenetre.h"
+#include "IA.h"
 #include "Plateau.h"
 #include "Menu.h"
 #include "Timer.h"
 #include "VagueEnnemis.h"
 
-class CIA;
-
 class CJeu
 {
 public:
-	CJeu (CIA* apIA);
+	 CJeu (void);
 	~CJeu (void);
 
 	bool OnInit		      (void);
@@ -47,9 +46,9 @@ private:
 private:
    CLog           mLog;
    CConfiguration mConfig;
+   CIA            mIA;
    CPlateau       mPlateau;
    CMenu          mMenu;
-   CIA*           mpIA;
    CTimer         mTimerVague;
 
    CFenetre::Ptr	mScreenPtr;

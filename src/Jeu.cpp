@@ -1,12 +1,9 @@
 #include "Jeu.h"
-#include "IA.h"
-#include <cmath>
-#include <ctime>
 
-CJeu::CJeu (CIA* apIA):
+CJeu::CJeu (void):
    mLog                    ("Jeu"),
-   mpIA                    (apIA),
    mPlateau                (mConfig, *this),
+   mIA                     (mPlateau),
    mMenu                   (mConfig, *this),
 	mHauteur                (1),
 	mLargeur                (1),
@@ -33,17 +30,33 @@ bool CJeu::OnInit (void)
 
    mScreenPtr.reset (new CFenetre ());
    
-	bool bReturn = mPlateau.OnInit ();
-   bReturn &= mMenu.OnInit ();
+   bool bContinue = mConfig.Get ("tempsInterVague", mTempsInterVague);
+   if (bContinue)
+   {
+      bContinue = mPlateau.OnInit ();
+   }
+   if (bContinue)
+   {
+      bContinue = mMenu.OnInit ();
+   }
+   if (bContinue)
+   {
+      mHauteur = mPlateau.GetNbCaseHauteur () * mPlateau.GetHauteurCase ();
+      mLargeur = mPlateau.GetNbCaseLargeur () * mPlateau.GetLargeurCase () + mMenu.GetLargeur ();
+   }   
+   if (bContinue)
+   {
+      bContinue = mScreenPtr->Init (mLargeur, mHauteur);
+   }
+   if (bContinue)
+   {
+      mIA.OnInit ();
 
-   bReturn &= mConfig.Get ("tempsInterVague", mTempsInterVague);
+      mIA.ConstruireMatriceGraphe ();
+      PlacementEstAutorise (); // TODO Renommer ?
+   }
 
-   mHauteur = mPlateau.GetNbCaseHauteur () * mPlateau.GetHauteurCase ();
-   mLargeur = mPlateau.GetNbCaseLargeur () * mPlateau.GetLargeurCase () + mMenu.GetLargeur ();
-
-   bReturn = mScreenPtr->Init (mLargeur, mHauteur);
-
-  	return bReturn;
+  	return bContinue;
 }
 
 void CJeu::OnClic (int aX, int aY)
@@ -63,7 +76,7 @@ void CJeu::OnClic (int aX, int aY)
    }
    else
    {
-      mpIA->MiseAJourMatriceGraphe (NumCaseCliquee, true);
+      mIA.MiseAJourMatriceGraphe (NumCaseCliquee, true);
       
       // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
       if (PlacementEstAutorise ())
@@ -84,7 +97,7 @@ void CJeu::OnClic (int aX, int aY)
       {
          mLog << Erreur << "Placement non autorisé" << EndLine;
          mPlateau.AnnuleDerniereModif ();
-         mpIA->MiseAJourMatriceGraphe (NumCaseCliquee, false);
+         mIA.MiseAJourMatriceGraphe (NumCaseCliquee, false);
       }
    }
 }
@@ -126,7 +139,7 @@ void CJeu::OnReset   (void)
    mListTour      .clear ();
    mListTourTiree .clear ();
    mPlateau.OnReset ();
-   mpIA->OnInit ();
+   mIA.OnInit ();
 }
 
 void CJeu::OnQuit (void)
@@ -215,7 +228,7 @@ void CJeu::LancementVagueEnnemis (void)
 {
    // Création de la nouvelle vague d'ennemis
    // TODO : Type d'ennemi en paramètre
-   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (mConfig, mpIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()/*TypeEnnemi, nbEnnemis*/));
+   CVagueEnnemis::Ptr NouvelleVague (new CVagueEnnemis (mConfig, &mIA, mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee ()/*TypeEnnemi, nbEnnemis*/));
 
    // On l'ajoute
    mListVagues.push_back (NouvelleVague);
@@ -279,7 +292,7 @@ bool CJeu::PlacementEstAutorise  (void)
    bool bEstAutorise = true;
    
    std::list<int> PlusCourtChemin;
-   bEstAutorise = mpIA->CalculPlusCourtChemin (mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
+   bEstAutorise = mIA.CalculPlusCourtChemin (mPlateau.GetNumCaseDepart (), mPlateau.GetNumCaseArrivee (), PlusCourtChemin);
    
    // Parcours la liste des vagues d'ennemis afin de vérifier le placement de la tour
    CVagueEnnemis::Liste::iterator IterVague;
