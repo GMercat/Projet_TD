@@ -122,9 +122,9 @@ void CCase::SetType (CCase::ETypeCase aeNouvelType)
 /**
  * @brief   Renseigne la position de la case dans la fenêtre de jeu
  *
- * @parma[in]  aRectPtr       Postion de la case
- * @parma[in]  aIdPlateauX    Index X de la case dans le plateau
- * @parma[in]  aIdPlateauy    Index Y de la case dans le plateau
+ * @param[in]  aRectPtr       Position de la case
+ * @param[in]  aIdPlateauX    Index X de la case dans le plateau
+ * @param[in]  aIdPlateauy    Index Y de la case dans le plateau
  */
 void CCase::SetPosition (CRect::Ptr& aRectPtr, int aIdPlateauX, int aIdPlateauY)
 { 
