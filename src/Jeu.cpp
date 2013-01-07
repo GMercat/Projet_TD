@@ -2,13 +2,12 @@
 
 CJeu::CJeu (void):
    mLog                    ("Jeu"),
-   mPlateau                (mConfig, *this),
+   mPlateau                (mConfig, mContexte),
    mIA                     (mPlateau),
-   mMenu                   (mConfig, *this),
+   mMenu                   (mConfig, mContexte),
 	mHauteur                (1),
 	mLargeur                (1),
 	mbPremiereTour          (true),
-   mbPartieEnCours         (true),
    mTempsInterVague        (1),
    mTypeTourSelect         (-1)
 {
@@ -65,7 +64,7 @@ void CJeu::OnClic (int aX, int aY)
    int   IterLargeur    = 0;
    int   IterHauteur    = 0;
 
-   if (mbPartieEnCours)
+   if (mContexte.mbPartieEnCours)
    {
       NumCaseCliquee = mPlateau.OnClic (aX, aY);
    }
@@ -124,7 +123,7 @@ void CJeu::OnAffiche (void)
       (*IterTourTiree)->OnAfficheProjectiles (mScreenPtr->GetSurface ());
    }
 
-   if (false == mbPartieEnCours)
+   if (false == mContexte.mbPartieEnCours)
    {
       mPlateau.OnAfficheEnPause (mScreenPtr->GetSurface ());
    }
@@ -152,11 +151,14 @@ void CJeu::OnQuit (void)
 
 void CJeu::OnProgression   (void)
 {
-   // Progression des projectiles
-   ProgressionProjectiles ();
+   if (mContexte.mbPartieEnCours)
+   {
+      // Progression des projectiles
+      ProgressionProjectiles ();
 
-   // Progression des ennemis
-   ProgressionEnnemis ();
+      // Progression des ennemis
+      ProgressionEnnemis ();
+   }
 }
 
 void CJeu::ProgressionProjectiles (void)
@@ -236,55 +238,58 @@ void CJeu::LancementVagueEnnemis (void)
 
 void CJeu::OnTire (void)
 {
-   int XTour = 0;
-   int Ytour = 0;
-   bool bEnnemiTrouve   = false;
-   TCoordonnee CoordonneeCentreTour;
-
-   CEnnemi::Ptr   EnnemiSelectionnePtr;
-
-   // Gestion des tires des tours
-   CTour::Liste::iterator           IterTour;
-   CVagueEnnemis::Liste::iterator   IterVague;
-
-   // Parcours des tours pour rechercher les ennemis à la porté
-   for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
+   if (mContexte.mbPartieEnCours)
    {
-      // Si la tour peut tirer
-      if ((*IterTour)->AutoriseATirer ())
+      int XTour = 0;
+      int Ytour = 0;
+      bool bEnnemiTrouve   = false;
+      TCoordonnee CoordonneeCentreTour;
+
+      CEnnemi::Ptr   EnnemiSelectionnePtr;
+
+      // Gestion des tires des tours
+      CTour::Liste::iterator           IterTour;
+      CVagueEnnemis::Liste::iterator   IterVague;
+
+      // Parcours des tours pour rechercher les ennemis à la porté
+      for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
       {
-         // Récupération des positions de la tour
-         (*IterTour)->GetCentre (CoordonneeCentreTour);
-
-         for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (false == bEnnemiTrouve); ++IterVague)
+         // Si la tour peut tirer
+         if ((*IterTour)->AutoriseATirer ())
          {
-            bEnnemiTrouve = (*IterVague)->SelectionneEnnemi (CoordonneeCentreTour, (*IterTour)->GetPorteeTire (), EnnemiSelectionnePtr);
-         }
+            // Récupération des positions de la tour
+            (*IterTour)->GetCentre (CoordonneeCentreTour);
 
-         if (bEnnemiTrouve && EnnemiSelectionnePtr)
-         {
-            (*IterTour)->Tire (EnnemiSelectionnePtr);
-            mListTourTiree.push_back ((*IterTour));
-         }
+            for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (false == bEnnemiTrouve); ++IterVague)
+            {
+               bEnnemiTrouve = (*IterVague)->SelectionneEnnemi (CoordonneeCentreTour, (*IterTour)->GetPorteeTire (), EnnemiSelectionnePtr);
+            }
 
-         
+            if (bEnnemiTrouve && EnnemiSelectionnePtr)
+            {
+               (*IterTour)->Tire (EnnemiSelectionnePtr);
+               mListTourTiree.push_back ((*IterTour));
+            }
+         }
       }
+   }
+}
+
+void CJeu::TraiteDemande (void)
+{
+   if (mContexte.mbDemandeQuit)
+   {
+      OnQuit ();
+   }
+   else if (mContexte.mbDemandeReset)
+   {
+      OnReset ();
    }
 }
 
 CPlateau& CJeu::GetPlateau (void)
 {
    return mPlateau;
-}
-
-bool CJeu::PartieEnCours (void)
-{
-   return mbPartieEnCours;
-}
-
-void CJeu::ChangerEtatPartie (bool abEtatPartie)
-{
-   mbPartieEnCours = abEtatPartie;
 }
 
 bool CJeu::PlacementEstAutorise  (void)

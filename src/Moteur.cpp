@@ -38,18 +38,12 @@ void CMoteur::OnMotion (int aX, int aY)
 
 void CMoteur::OnProgression   (void)
 {
-   if (mJeu.PartieEnCours ())
-   {
-      mJeu.OnProgression ();
-   }
+   mJeu.OnProgression ();
 }
 
 void CMoteur::OnTire (void)
 {
-   if (mJeu.PartieEnCours ())
-   {
-      mJeu.OnTire ();
-   }
+   mJeu.OnTire ();
 }
 
 void CMoteur::OnAffiche (void)
@@ -60,4 +54,10 @@ void CMoteur::OnAffiche (void)
 void CMoteur::OnInputEvent (SDL_Event* apEvent)
 {
 	// Capture d'un appuis clavier
+}
+
+void CMoteur::OnDemande (void)
+{
+   mJeu.TraiteDemande ();
+   //TODO
 }

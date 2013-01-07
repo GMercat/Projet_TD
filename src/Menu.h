@@ -5,7 +5,7 @@
 #include "Config.h"
 #include "Image.h"
 
-class CJeu;
+class CContexteJeu;
 
 class CMenu
 {
@@ -21,7 +21,7 @@ public:
    };
 
 public:
-   CMenu    (CConfiguration& aConfig, CJeu& aJeu);
+   CMenu    (CConfiguration& aConfig, CContexteJeu& aContexte);
    ~CMenu   (void);
 
    bool OnInit    (void);
@@ -33,7 +33,7 @@ public:
 private:
    CLog              mLog;
    CConfiguration&   mConfig;
-   CJeu&             mJeu;
+   CContexteJeu&     mContexte;
 
    int mLargeur;
    int mNbTours;

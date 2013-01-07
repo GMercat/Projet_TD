@@ -6,12 +6,12 @@
 #include "Case.h"
 #include "Image.h"
 
-class CJeu;
+class CContexteJeu;
 
 class CPlateau
 {
 public:
-   CPlateau (CConfiguration& aConfig, CJeu& aJeu);
+   CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte);
    ~CPlateau (void);
 
    bool OnInit (void);
@@ -43,7 +43,7 @@ public:
 private:
    CLog              mLog;
    CConfiguration&   mConfig;
-   CJeu&             mJeu;
+   CContexteJeu&     mContexte;
 
    int mNbCasesLargeur; // Nombre de cases du plateau en largeur lu dans le fichier de config
    int mNbCasesHauteur; // Nombre de cases du plateau en hauteur lu dans le fichier de config

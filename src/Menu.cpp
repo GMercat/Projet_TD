@@ -1,11 +1,11 @@
 #include "Menu.h"
-#include "Jeu.h"
+#include "ContexteJeu.h"
 #include "Case.h"
 
-CMenu::CMenu (CConfiguration& aConfig, CJeu& aJeu):
+CMenu::CMenu (CConfiguration& aConfig, CContexteJeu& aContexte):
    mLog              ("Menu"),
    mConfig           (aConfig),
-   mJeu              (aJeu),
+   mContexte         (aContexte),
    mPositionFondPtr  (new CRect)
 {
    ;
@@ -159,7 +159,7 @@ void CMenu::OnClic (int aX, int aY)
    int   IdBouton;
    int   IdTour;
    
-   if (mJeu.PartieEnCours ())
+   if (mContexte.mbPartieEnCours)
    {
       for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
@@ -172,14 +172,14 @@ void CMenu::OnClic (int aX, int aY)
 
       if (bBoutonTrouve)
       {
-         mJeu.SelectTour (-1);
+         mContexte.mTypeTourSelectMenu = -1;
 
          // IdBouton a été incrémenté lors de la dernière itération
          IdBouton--;
          switch (IdBouton)
          {
             case ePause:
-               mJeu.ChangerEtatPartie (false);
+               mContexte.mbPartieEnCours = false;
                break;
 
 //            case eNewEnnemi:
@@ -204,11 +204,12 @@ void CMenu::OnClic (int aX, int aY)
 
          if (bBoutonTrouve)
          {
-            mJeu.SelectTour (IdTour - 1);
+            mContexte.mTypeTourSelectMenu = IdTour - 1;
          }
          else
          {
-            mJeu.SelectTour (-1);
+            mContexte.mTypeTourSelectMenu = -1;
+            
             mLog << Info << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << EndLine;
          }
       }
@@ -234,16 +235,16 @@ void CMenu::OnClic (int aX, int aY)
          switch (IdBouton)
          {
             case eNew:
-               mJeu.OnReset ();
-               mJeu.ChangerEtatPartie (true);
+               mContexte.mbDemandeReset = true;
+               mContexte.mbPartieEnCours = true;
                break;
 
             case eReprendre:
-               mJeu.ChangerEtatPartie (true);
+               mContexte.mbPartieEnCours = true;
                break;
 
             case eQuit:
-               mJeu.OnQuit ();
+               mContexte.mbDemandeQuit = true;
                break;
 
             default:
@@ -262,7 +263,7 @@ void CMenu::OnAffiche (CSurface::Ptr& aScreenPtr)
 {
    mImageFondPtr->Afficher (aScreenPtr, mPositionFondPtr);
 
-  if (mJeu.PartieEnCours ())
+  if (mContexte.mbPartieEnCours)
    {
       mImagesBoutons[ePause]     ->Afficher (aScreenPtr, mPositionsBoutons[ePause]);
       //mImagesBoutons[eNewEnnemi] ->Afficher (aScreenPtr, mPositionsBoutons[eNewEnnemi]);

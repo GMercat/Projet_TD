@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Config.cpp" />
+    <ClCompile Include="..\..\src\ContexteJeu.cpp" />
     <ClCompile Include="..\..\src\Fenetre.cpp" />
     <ClCompile Include="..\..\src\Image.cpp" />
     <ClCompile Include="..\..\src\Log.cpp" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Case.h" />
+    <ClInclude Include="..\..\src\ContexteJeu.h" />
     <ClInclude Include="..\..\src\Config.h" />
     <ClInclude Include="..\..\src\Defined.h" />
     <ClInclude Include="..\..\src\Ennemi.h" />

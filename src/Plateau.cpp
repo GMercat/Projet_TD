@@ -1,12 +1,12 @@
 #include "Plateau.h"
-#include "Jeu.h"
+#include "ContexteJeu.h"
 
 
 
-CPlateau::CPlateau (CConfiguration& aConfig, CJeu& aJeu):
+CPlateau::CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte):
    mLog                    ("Plateau"),
    mConfig                 (aConfig),
-   mJeu                    (aJeu),
+   mContexte               (aContexte),
    mNumCaseDepart          (-1),
    mNumCaseArrivee         (-1),
    mDerniereCaseSurvolee   (-1)
@@ -184,7 +184,7 @@ int CPlateau::OnClic (int aX, int aY)
       mLog << Info << "Case (" << IterLargeur << ", " << IterHauteur << ")" << EndLine;
 
       // Si la case est vide ET on a sélectionnée un type de tour dans le menu
-      if (GetCase(NumeroCaseCliquee)->EstVide() && (mJeu.GetTourSelectionnee () != -1))
+      if (GetCase(NumeroCaseCliquee)->EstVide() && (mContexte.mTypeTourSelectMenu != -1))
       {
          //On met le type à jour
          GetCase(NumeroCaseCliquee)->SetType (CCase::eTour);
@@ -290,8 +290,8 @@ CTour::Ptr& CPlateau::ConstruireTour (int aNumCaseCliquee)
    int Vitesse;
    int Cadence;
 
-   mConfig.GetCaracsTourParId (mJeu.GetTourSelectionnee (), Ressource, Portee, Puissance, Vitesse, Cadence);
-   return GetCase (aNumCaseCliquee)->ConstruireTour (mConfig, mJeu.GetTourSelectionnee (), Portee, Puissance, Vitesse, Cadence);
+   mConfig.GetCaracsTourParId (mContexte.mTypeTourSelectMenu, Ressource, Portee, Puissance, Vitesse, Cadence);
+   return GetCase (aNumCaseCliquee)->ConstruireTour (mConfig, mContexte.mTypeTourSelectMenu, Portee, Puissance, Vitesse, Cadence);
 }
 
 void CPlateau::AnnuleDerniereModif (void)

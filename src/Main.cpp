@@ -30,6 +30,9 @@ int main( int argc, char *argv[ ] )
 		//On demarre le timer fps
       Fps.Start();
 
+      // Gestion des demandes attentes
+      Moteur.OnDemande ();
+
 		//Traiter les evenements
 		while(SDL_PollEvent(&Event) && (bMotion == false))
 		{
@@ -55,7 +58,7 @@ int main( int argc, char *argv[ ] )
 					break;
 			}
 		}
-      
+
       // Déplacement des ennemis
       Moteur.OnProgression ();
       

@@ -7,6 +7,7 @@
 #include "IA.h"
 #include "Plateau.h"
 #include "Menu.h"
+#include "ContexteJeu.h"
 #include "Timer.h"
 #include "VagueEnnemis.h"
 
@@ -24,10 +25,10 @@ public:
    void OnProgression   (void);
    void OnTire          (void);
 
+   void TraiteDemande (void);
+
    CPlateau& GetPlateau (void);
 
-   bool PartieEnCours         (void);
-   void ChangerEtatPartie     (bool abEtatPartie);
    bool PlacementEstAutorise  (void);
 
    int   GetTourSelectionnee  (void);
@@ -49,13 +50,13 @@ private:
    CIA            mIA;
    CPlateau       mPlateau;
    CMenu          mMenu;
+   CContexteJeu   mContexte;
    CTimer         mTimerVague;
 
    CFenetre::Ptr	mScreenPtr;
 
    bool  mbPremiereTour;
-   bool  mbPartieEnCours;
-
+   
   	int   mHauteur;
 	int   mLargeur;
    int   mTypeTourSelect;
