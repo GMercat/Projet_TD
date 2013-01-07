@@ -5,13 +5,13 @@
  */
 CCase::CCase (void):
    mLog                 ("Case"),
-	mIdPlateauX          (-1),
-	mIdPlateauY          (-1),
-	mType		            (eVide),
-	mCourImage	         (0),
+   mType                (eVide),
    mNumCase             (-1),
    mbEstPlusCourtChemin (false),
    mbEstSurvolee        (false),
+	mIdPlateauX          (-1),
+	mIdPlateauY          (-1),
+	mCourImage	         (0),
    mPositionPtr         (new CRect)
 {
 ;
