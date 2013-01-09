@@ -19,6 +19,7 @@ public:
 
 public:
 typedef boost::shared_ptr<CCase> Ptr;
+typedef std::vector<CCase::Ptr> Vector;
 
 public:
    CCase    (void);

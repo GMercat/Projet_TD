@@ -10,7 +10,6 @@ CPlateau::CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte):
    mNumCaseDepart          (-1),
    mNumCaseArrivee         (-1),
    mDerniereCaseSurvolee   (-1)
-// TODO Non utilisé    mpImagePCC     (NULL)
 {
 	mCoordonneesDerniereCaseModifiee.first = -1;
    mCoordonneesDerniereCaseModifiee.second = -1;
@@ -19,148 +18,46 @@ CPlateau::CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte):
 CPlateau::~CPlateau (void)
 {
    ;
-   // TODO Non utilisé SDL_FreeSurface (mpImagePCC);
 }
 
 bool CPlateau::OnInit (void)
 {
-   bool bReturn = true;
-
-   std::string NomRessourceImageStr;
-   std::string CheminRessourcesImageStr;
-   int         IterImage = 0;
-
    bool bConfig = true;
-   bConfig &= mConfig.Get ("nbCaseLargeur",     mNbCasesLargeur);
-   bConfig &= mConfig.Get ("nbCaseHauteur",     mNbCasesHauteur);
+
+   std::string CheminRessourcesImageStr;
+
    bConfig &= mConfig.Get ("numeroCaseDepart",  mNumCaseDepart);
    bConfig &= mConfig.Get ("numeroCaseArrivee", mNumCaseArrivee);
    bConfig &= mConfig.Get ("largeurCase",       mLargeurCase);
    bConfig &= mConfig.Get ("hauteurCase",       mHauteurCase);
    bConfig &= mConfig.Get ("ressourcesImages",  CheminRessourcesImageStr);
 
-   bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
-   bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
-  
    if (bConfig)
    {
-
-      // Allocation des surfaces des cases
-      for (IterImage = 0; IterImage < mNomImagesCase.size (); ++IterImage)
-      {
-         CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
-         
-         ImageCourantePtr->Load (mNomImagesCase[IterImage]);
-         
-         mImagesCases.push_back (ImageCourantePtr);
-      }
-
-      // Allocation des surfaces des tours
-      for (IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
-      {
-         CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
-         
-         ImageCourantePtr->Load (mNomImagesTour[IterImage]);
-         
-         mImagesTours.push_back (ImageCourantePtr);
-      }
-
-      // TODO Non utilisé 
-      /*if(mpImagePCC != NULL)
-      {
-         SDL_FreeSurface(mpImagePCC), mpImagePCC = NULL;
-      }
-      if ((mLargeurCase == 50) && (mHauteurCase == 50))
-      {
-         mpImagePCC  = SDL_LoadBMP("../../Ressources/PCC_50.bmp");
-      }*/
-            
       std::string NomFichier ("JeuPause.bmp");
       mImagePausePtr = CImage::Ptr (new CImage (CheminRessourcesImageStr));
       mImagePausePtr->Load        (NomFichier);
       mImagePausePtr->SetAlpha    (128);
-      
-	   //Mis en place de la transparence
-	   //if(SDL_SetColorKey(o,SDL_SRCCOLORKEY,0)==-1)
-	   //	mLog << Erreur << "Erreur avec la transparence du rond" << EndLine;
-	   //if(SDL_SetColorKey(x,SDL_SRCCOLORKEY,0)==-1)
-	   //	mLog << Erreur << "Erreur avec la transparence de la croix" << EndLine;
 
-      mLog << Debug << "Largeur = " << mNbCasesLargeur << ", Hauteur = " << mNbCasesHauteur << EndLine;
-      mLog << Debug << "NbCaseLargeur = " << mNbCasesLargeur << EndLine;
-      mLog << Debug << "NbCaseHauteur = " << mNbCasesHauteur << EndLine;
       mLog << Debug << "NumCaseDepart = " << mNumCaseDepart << EndLine;
       mLog << Debug << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
       
       int NumCase = 0;
 
-	   // Initialisation du plateau
-      for (int iHauteur = 0; iHauteur < mNbCasesHauteur; iHauteur++)
-		{
-	      for (int iLargeur = 0; iLargeur < mNbCasesLargeur; iLargeur++)
-	      {
-            NumCase = iLargeur + (mNbCasesLargeur * iHauteur);
-
-		      CCase::Ptr CasePtr (new CCase());
-            CRect::Ptr	RectPtr (new CRect ());
-
-            CasePtr->OnInit ();
-
-	         RectPtr->SetW (mLargeurCase);
-	         RectPtr->SetH (mHauteurCase);
-			   RectPtr->SetX (iLargeur * mLargeurCase);
-			   RectPtr->SetY (iHauteur * mHauteurCase);
-			   CasePtr->SetPosition  (RectPtr, iLargeur, iHauteur);
-            CasePtr->SetNumCase   (NumCase);
-
-			   if ((iLargeur == 0) || (iLargeur == (mNbCasesLargeur - 1)) || (iHauteur == 0) || (iHauteur == (mNbCasesHauteur -1)))
-			   {
-			      if ((NumCase != mNumCaseDepart) && (NumCase != mNumCaseArrivee))
-			      {
-				      CasePtr->SetType (CCase::eMur);
-				   }
-			   }
-            mCases.push_back (CasePtr);
-		   }
-	   }
+	   // Initialisation du terrain
+      mTerrain.OnInit (mNumCaseDepart, mNumCaseArrivee);
    }
    else
    {
-      bReturn = false;
-
       mLog << Erreur << "Erreur de lecture de la configuration du plateau" << EndLine;
    }
 
-   return bReturn;
+   return bConfig;
 }
 
 void CPlateau::OnReset (void)
 {
-   int NumCase = 0;
-
-	// Initialisation du plateau
-	for (int iHauteur = 0; iHauteur < mNbCasesHauteur; iHauteur++)
-	{
-      for (int iLargeur = 0; iLargeur < mNbCasesLargeur; iLargeur++)
-	   {
-         NumCase = iHauteur * mNbCasesLargeur + iLargeur;
-
-         // Initialisation de la case
-         mCases[NumCase]->OnInit ();
-
-			if ((iLargeur == 0) || (iLargeur == (mNbCasesLargeur - 1)) || (iHauteur == 0) || (iHauteur == (mNbCasesHauteur -1)))
-			{
-            if ((NumCase != mNumCaseDepart) && (NumCase != mNumCaseArrivee))
-			   {
-               mCases[NumCase]->SetType (CCase::eMur);
-				}
-			}
-         else
-         {
-            mCases[NumCase]->SetType (CCase::eVide);
-         }
-		}
-	}
+   mTerrain.OnReset (mNumCaseDepart, mNumCaseArrivee);
 }
 
 int CPlateau::OnClic (int aX, int aY)
@@ -199,42 +96,7 @@ int CPlateau::OnClic (int aX, int aY)
 
 void CPlateau::OnAffiche (CSurface::Ptr& aEcranPtr)
 {
-   int IterLargeur = 0;
-   int IterHauteur = 0;
-
-   //Dessiner chaque case
-   for(IterHauteur = 0; IterHauteur < mNbCasesHauteur; IterHauteur++)
-   {
-      for(IterLargeur = 0; IterLargeur < mNbCasesLargeur; IterLargeur++)
-      {
-         // TODO Affichage Plus Court Chemin
-         /*if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstPlusCourtChemin ())
-         {
-             mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mpImagePCC);
-         }
-         else*/
-         {
-            //       Les surfaces ne sont pas les mêmes !
-            CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
-            if (EtatCase == CCase::eTour)
-            {
-               int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
-               mImagesTours[TypeCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
-            }
-            else
-            {
-               if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstSurvolee ())
-               {
-                  // TODO Image survolee
-               }
-               else
-               {
-                  mImagesCases[EtatCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
-               }
-            }
-         }
-      }
-   }
+   mTerrain.OnAffiche (aEcranPtr);
 }
 
 void CPlateau::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
@@ -324,18 +186,6 @@ int CPlateau::GetHauteurCase   (void)
    return mHauteurCase;
 }
 
-CCase::Ptr& CPlateau::GetCase (int aNumCase)
-{
-   int IterHauteur = aNumCase / mNbCasesLargeur;
-   int IterLargeur = aNumCase % mNbCasesLargeur;
-   return mCases[IterHauteur * mNbCasesLargeur + IterLargeur];
-}
-
-CCase::Ptr& CPlateau::GetCase (int aX, int aY)
-{
-   return mCases[aY * mNbCasesLargeur + aX];
-}
-
 void CPlateau::GetCoordonneesCaseParNumero (int aNumero, TCoordonnee& aCoordonnees)
 {
    int IterHauteur = aNumero / mNbCasesLargeur;
@@ -362,7 +212,7 @@ int CPlateau::GetNumCaseArrivee (void)
 {
    return mNumCaseArrivee;
 }
-
+/*
 void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
 {
    int IterHauteur = 0;
@@ -383,3 +233,4 @@ void CPlateau::RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin)
       mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->SetPlusCourtChemin (true);
    }
 }
+*/
