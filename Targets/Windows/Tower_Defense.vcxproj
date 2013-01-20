@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\src\Fenetre.cpp" />
     <ClCompile Include="..\..\src\Image.cpp" />
     <ClCompile Include="..\..\src\Log.cpp" />
+    <ClCompile Include="..\..\src\Mur.cpp" />
     <ClCompile Include="..\..\src\Projectile.cpp" />
     <ClCompile Include="..\..\src\Case.cpp" />
     <ClCompile Include="..\..\src\Ennemi.cpp" />
@@ -115,6 +116,7 @@
     <ClCompile Include="..\..\src\Plateau.cpp" />
     <ClCompile Include="..\..\src\Rect.cpp" />
     <ClCompile Include="..\..\src\Surface.cpp" />
+    <ClCompile Include="..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Tour.cpp" />
     <ClCompile Include="..\..\src\VagueEnnemis.cpp" />
@@ -132,10 +134,12 @@
     <ClInclude Include="..\..\src\Log.h" />
     <ClInclude Include="..\..\src\Menu.h" />
     <ClInclude Include="..\..\src\Moteur.h" />
+    <ClInclude Include="..\..\src\Mur.h" />
     <ClInclude Include="..\..\src\Plateau.h" />
     <ClInclude Include="..\..\src\Projectile.h" />
     <ClInclude Include="..\..\src\Rect.h" />
     <ClInclude Include="..\..\src\Surface.h" />
+    <ClInclude Include="..\..\src\Terrain.h" />
     <ClInclude Include="..\..\src\Timer.h" />
     <ClInclude Include="..\..\src\Tour.h" />
     <ClInclude Include="..\..\src\VagueEnnemis.h" />

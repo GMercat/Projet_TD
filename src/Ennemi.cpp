@@ -11,7 +11,7 @@ CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseD
    mLargeur          (20), // TODO
    mHauteur          (20)  // TODO
 {
-   mpIA->GetCoordonneesCaseParNumero (aNumCaseDepart, mCoordonnee);
+   mpIA->GetCoordonneesCentreCaseCaseParNumero (aNumCaseDepart, mCoordonnee);
    
    switch (mType)
    {

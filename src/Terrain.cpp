@@ -1,9 +1,10 @@
 #include "Terrain.h"
 
 CTerrain::CTerrain (CConfiguration& aConfig):
-   mConfig         (aConfig),
-   mNbCasesHauteur (1),
-   mNbCasesLargeur (1)
+   mLog              ("Terrain"),
+   mConfig           (aConfig),
+   mNbCasesHauteur   (1),
+   mNbCasesLargeur   (1)
 {
    ;
 }
@@ -20,16 +21,23 @@ void CTerrain::OnInit (int aNumCaseDepart, int aNumCaseArrivee)
    std::string NomRessourceImageStr;
    std::string CheminRessourcesImageStr;
 
-   bConfig  = mConfig.Get ("nbCaseLargeur", mNbCasesLargeur);
-   bConfig &= mConfig.Get ("nbCaseHauteur", mNbCasesHauteur);
+   bConfig  = mConfig.Get ("nbCaseLargeur",     mNbCasesLargeur);
+   bConfig &= mConfig.Get ("nbCaseHauteur",     mNbCasesHauteur);
+   bConfig &= mConfig.Get ("largeurCase",       mLargeurCase);
+   bConfig &= mConfig.Get ("hauteurCase",       mHauteurCase);
    bConfig &= mConfig.Get ("ressourcesImages",  CheminRessourcesImageStr);
    bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
    bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
 
    if (bConfig)
    {
+      std::string NomFichier ("JeuPause.bmp");
+      mImagePausePtr = CImage::Ptr (new CImage (CheminRessourcesImageStr));
+      mImagePausePtr->Load        (NomFichier);
+      mImagePausePtr->SetAlpha    (128);
+
       // Allocation des surfaces des cases
-      for (int IterImage = 0; IterImage < mNomImagesCase.size (); ++IterImage)
+      for (unsigned int IterImage = 0; IterImage < mNomImagesCase.size (); ++IterImage)
       {
          CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
 
@@ -39,7 +47,7 @@ void CTerrain::OnInit (int aNumCaseDepart, int aNumCaseArrivee)
       }
 
       // Allocation des surfaces des tours
-      for (int IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
+      for (unsigned int IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
       {
          CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
 
@@ -145,8 +153,126 @@ void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
    }
 }
 
-CCase::Ptr& CTerrain::GetCase (int aX, int aY)
+void CTerrain::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
 {
-   return mCases[aY * mNbCasesLargeur + aX];
+   CRect::Ptr PositionPtr (new CRect ());
+   PositionPtr->SetX (0);
+   PositionPtr->SetY (0);
+   PositionPtr->SetW (mNbCasesLargeur * mLargeurCase);
+   PositionPtr->SetH (mNbCasesHauteur * mHauteurCase);
+      
+   mImagePausePtr->Afficher (aEcranPtr, PositionPtr);
 }
 
+int CTerrain::OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu)
+{
+   bool bCaseTrouvee = false;
+
+   // Cas 1 : la case est vide et un type de tour est sélectionné dans le menu
+   if (GetCase(aCoordonneeClic)->EstVide() && (aTypeTourSelectMenu != -1))
+   {
+      //On met le type à jour
+      GetCase(aCoordonneeClic)->SetType (CCase::eTour);
+
+      mIndexDerniereCaseModifiee = GetCase(aCoordonneeClic)->GetIdPlateau ();
+   }
+
+   // Cas 2 : la case contient une tour, on l'upgrade (TODO gestion des fonds dispo !)
+   else if (false == GetCase (aCoordonneeClic)->EstVide ())
+   {
+      // TODO upgrade
+      mIndexDerniereCaseModifiee = GetCase(aCoordonneeClic)->GetIdPlateau ();
+   }
+
+   mLog << Info << "Case (" << mIndexDerniereCaseModifiee.mIndLargeur << ", " << mIndexDerniereCaseModifiee.mIndHauteur << ")" << EndLine;
+
+   return IndexToNum (mIndexDerniereCaseModifiee);
+}
+
+CTour::Ptr& CTerrain::ConstruireTour (int aTypeTourSelectMenu, int aNumCaseCliquee)
+{
+   std::string Ressource; // Non utilisé ici !
+   int Portee;
+   int Puissance;
+   int Vitesse;
+   int Cadence;
+
+   mConfig.GetCaracsTourParId (aTypeTourSelectMenu, Ressource, Portee, Puissance, Vitesse, Cadence);
+   return mCases [aNumCaseCliquee]->ConstruireTour (mConfig, aTypeTourSelectMenu, Portee, Puissance, Vitesse, Cadence);
+}
+
+void CTerrain::AnnuleDerniereModif (void)
+{
+   if (mIndexDerniereCaseModifiee.mIndLargeur != -1 && mIndexDerniereCaseModifiee.mIndHauteur != -1)
+   {
+      GetCase (mIndexDerniereCaseModifiee)->SetType (CCase::eVide);
+      GetCase (mIndexDerniereCaseModifiee)->SetPlusCourtChemin (GetCase (mIndexDerniereCaseModifiee)->EstPlusCourtChemin ());
+   }
+}
+
+bool CTerrain::EstCaseVide (const TIndexTableau& aIndexCase)
+{
+   return mCases[IndexToNum (aIndexCase)]->EstVide ();
+}
+
+CCase::Ptr& CTerrain::GetCase (const TCoordonnee& aCoordonneeClic)
+{
+   return mCases[CoordonneeToNum (aCoordonneeClic)];
+}
+
+CCase::Ptr& CTerrain::GetCase (const TIndexTableau& aIndexCase)
+{
+   return mCases[aIndexCase.mIndHauteur * mNbCasesLargeur + aIndexCase.mIndLargeur];
+}
+
+int CTerrain::GetLargeur (void)
+{
+   return mNbCasesLargeur * mLargeurCase;
+}
+
+int CTerrain::GetHauteur (void)
+{
+   return mNbCasesHauteur * mHauteurCase;
+}
+
+int CTerrain::GetNbCaseLargeur (void)
+{
+   return mNbCasesLargeur;
+}
+
+int CTerrain::GetNbCaseHauteur (void)
+{
+   return mNbCasesHauteur;
+}
+
+int CTerrain::GetLargeurCase (void)
+{
+   return mLargeurCase;
+}
+
+int CTerrain::GetHauteurCase (void)
+{
+   return mHauteurCase;
+}
+
+void CTerrain::GetCoordonneesCentreCaseCaseParNumero (int aNumCase, TCoordonnee& aCoordonnees)
+{
+   int IterHauteur = aNumCase / mNbCasesLargeur;
+   int IterLargeur = aNumCase % mNbCasesLargeur;
+   
+   mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetCentre (aCoordonnees);
+}
+
+int CTerrain::CoordonneeToNum (const TCoordonnee& aCoordonnee)
+{
+   TIndexTableau IndexTableau;
+   IndexTableau.mIndLargeur = aCoordonnee.mX / mLargeurCase;
+   IndexTableau.mIndHauteur = aCoordonnee.mY / mHauteurCase;
+
+   return (IndexToNum (IndexTableau));
+}
+
+int CTerrain::IndexToNum (const TIndexTableau& aIndexPlateau)
+{
+   return aIndexPlateau.mIndLargeur + aIndexPlateau.mIndHauteur * mNbCasesLargeur;
+}

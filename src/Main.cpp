@@ -5,16 +5,14 @@
 
 int main( int argc, char *argv[ ] )
 {
-   CLog  Log ("Main");
+   int Done = 0;
 
-	SDL_Event		Event;
-		
-	//Le regulateur
-   CTimer Fps;
-
-	int Done = 0;
-
-	CMoteur Moteur;
+   SDL_Event	Event;
+	CLog        Log ("Main");
+   CTimer      Fps; //Le regulateur
+   CMoteur     Moteur;
+   TCoordonnee CoordonneeClic;
+   TCoordonnee CoordonneeSouri;
 	
    //Initialiser le jeu
    if(false == Moteur.OnInit ())
@@ -48,10 +46,14 @@ int main( int argc, char *argv[ ] )
 						Done=1;
 					break;
 				case SDL_MOUSEBUTTONUP:
-					Moteur.OnClic(Event.button.x, Event.button.y);
+               CoordonneeClic.mX = Event.button.x;
+               CoordonneeClic.mY = Event.button.y;
+					Moteur.OnClic(CoordonneeClic);
 					break;
             case SDL_MOUSEMOTION:
-               Moteur.OnMotion (Event.motion.x, Event.motion.y);
+               CoordonneeSouri.mX = Event.motion.x;
+               CoordonneeSouri.mY = Event.motion.y;
+               Moteur.OnMotion (CoordonneeSouri);
                bMotion = true;
                break;
 				default:

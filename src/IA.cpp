@@ -70,14 +70,14 @@ void CIA::ConstruireMatriceGraphe (void)
       {
          NumCaseCourante = IterLargeur + (IterHauteur * NbCaseLargeur);
 
-         if (mPlateau.GetCase(IterLargeur, IterHauteur)->EstVide ())
+         if (mPlateau.EstCaseVide(IterLargeur, IterHauteur))
          {
             // On observe les cases autour
             // Si on est pas sur la bordure gauche, 
             if (IterLargeur != 0)
             {
                // Est ce que la case de gauche est Vide ?
-               if (mPlateau.GetCase(IterLargeur - 1, IterHauteur)->EstVide ())
+               if (mPlateau.EstCaseVide(IterLargeur - 1, IterHauteur))
                {
                   mMatriceGraph[NumCaseCourante][(IterLargeur - 1) + IterHauteur * NbCaseLargeur] = 1;
                   mMatriceGraph[(IterLargeur - 1) + IterHauteur * NbCaseLargeur][NumCaseCourante] = 1;
@@ -92,7 +92,7 @@ void CIA::ConstruireMatriceGraphe (void)
             if (IterLargeur != (NbCaseLargeur - 1))
             {
                // Est ce que la case de droite est Vide ?
-               if (mPlateau.GetCase(IterLargeur + 1, IterHauteur)->EstVide ())
+               if (mPlateau.EstCaseVide (IterLargeur + 1, IterHauteur))
                {
                   mMatriceGraph[NumCaseCourante][(IterLargeur + 1) + IterHauteur * NbCaseLargeur] = 1;
                   mMatriceGraph[(IterLargeur + 1) + IterHauteur * NbCaseLargeur][NumCaseCourante] = 1;
@@ -107,7 +107,7 @@ void CIA::ConstruireMatriceGraphe (void)
             if (IterHauteur != 0)
             {
                // Est ce que la case du haut est Vide ?
-               if (mPlateau.GetCase(IterLargeur, IterHauteur - 1)->EstVide ())
+               if (mPlateau.EstCaseVide(IterLargeur, IterHauteur - 1))
                {
                   mMatriceGraph[NumCaseCourante][IterLargeur + (IterHauteur - 1) * NbCaseLargeur] = 1;
                   mMatriceGraph[IterLargeur + (IterHauteur - 1) * NbCaseLargeur][NumCaseCourante] = 1;
@@ -122,7 +122,7 @@ void CIA::ConstruireMatriceGraphe (void)
             if (IterHauteur != (NbCaseHauteur - 1))
             {
                // Est ce que la case du dessous est Vide ?
-               if (mPlateau.GetCase(IterLargeur, IterHauteur + 1)->EstVide ())
+               if (mPlateau.EstCaseVide(IterLargeur, IterHauteur + 1))
                {
                   mMatriceGraph[NumCaseCourante][IterLargeur + (IterHauteur + 1) * NbCaseLargeur] = 1;
                   mMatriceGraph[IterLargeur + (IterHauteur + 1) * NbCaseLargeur][NumCaseCourante] = 1;
@@ -208,25 +208,25 @@ void CIA::MiseAJourMatriceGraphe (int aNumCase, bool abEstOccuped)
       int IterHauteur = ((int)(aNumCase / (double)NbCaseLargeur));
    
       // Si on est pas sur le bord supérieur ET que la case du haut est Vide
-      if ((aNumCase >= NbCaseLargeur) && (mPlateau.GetCase(IterLargeur, IterHauteur - 1)->EstVide ()))
+      if ((aNumCase >= NbCaseLargeur) && (mPlateau.EstCaseVide(IterLargeur, IterHauteur - 1)))
       {   
          mMatriceGraph[aNumCase][aNumCase - NbCaseLargeur] = 1;
          mMatriceGraph[aNumCase - NbCaseLargeur][aNumCase] = 1;
       }
       // Si on est pas sur le bord droit ET que la case de droite est Vide
-      if ((((aNumCase + 1) % NbCaseLargeur ) != 0) && (mPlateau.GetCase(IterLargeur + 1, IterHauteur)->EstVide ()))
+      if ((((aNumCase + 1) % NbCaseLargeur ) != 0) && (mPlateau.EstCaseVide(IterLargeur + 1, IterHauteur)))
       {
          mMatriceGraph[aNumCase][aNumCase + 1] = 1;
          mMatriceGraph[aNumCase + 1][aNumCase] = 1;
       }
       // Si on est pas sur le bord inférieur ET que la case du dessous est Vide
-      if ((aNumCase < (NbCaseLargeur * (NbCaseHauteur - 1))) && (mPlateau.GetCase(IterLargeur, IterHauteur + 1)->EstVide ()))
+      if ((aNumCase < (NbCaseLargeur * (NbCaseHauteur - 1))) && (mPlateau.EstCaseVide(IterLargeur, IterHauteur + 1)))
       {
          mMatriceGraph[aNumCase][aNumCase + NbCaseLargeur] = 1;
          mMatriceGraph[aNumCase + NbCaseLargeur][aNumCase] = 1;
       }
       // Si on est pas sur le bord gauche ET que la case de gauche est Vide
-      if (((aNumCase % NbCaseLargeur) != 0) && (mPlateau.GetCase(IterLargeur - 1, IterHauteur)->EstVide ()))
+      if (((aNumCase % NbCaseLargeur) != 0) && (mPlateau.EstCaseVide(IterLargeur - 1, IterHauteur)))
       {
          mMatriceGraph[aNumCase][aNumCase - 1] = 1;
          mMatriceGraph[aNumCase - 1][aNumCase] = 1;
@@ -461,9 +461,9 @@ int CIA::GetNumCaseParCoordonnees (TCoordonnee& aCoordonnees)
    return mPlateau.GetNumCaseParCoordonnees (aCoordonnees);
 }
 
-void CIA::GetCoordonneesCaseParNumero (int aNumero, TCoordonnee& aCoordonnees)
+void CIA::GetCoordonneesCentreCaseCaseParNumero (int aNumero, TCoordonnee& aCoordonnees)
 {
-   mPlateau.GetCoordonneesCaseParNumero (aNumero, aCoordonnees);
+   mPlateau.GetCoordonneesCentreCaseCaseParNumero (aNumero, aCoordonnees);
 }
 
 void CIA::AfficherMatrice (void)

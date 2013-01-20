@@ -25,7 +25,7 @@ public:
    ~CMenu   (void);
 
    bool OnInit    (void);
-   void OnClic		(int aX, int aY);
+   void OnClic		(const TCoordonnee& aCoordonneeClic);
    void OnAffiche (CSurface::Ptr& aScreenPtr);
 
    int GetLargeur (void);

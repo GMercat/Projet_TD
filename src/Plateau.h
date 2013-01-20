@@ -15,27 +15,29 @@ public:
    CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte);
    ~CPlateau (void);
 
-   bool OnInit (void);
-   void OnReset (void);
-   int  OnClic (int aX, int aY);
-   void OnAffiche (CSurface::Ptr& aEcranPtr);
-   void OnAfficheEnPause (CSurface::Ptr& aEcranPtr);
-   void OnSurvoleCase (int aX, int aY);
+   bool  OnInit             (void);
+   void  OnReset            (void);
+   int   OnClic             (const TCoordonnee& aCoordonneeClic);
+   void  OnAffiche          (CSurface::Ptr& aEcranPtr);
+   void  OnAfficheEnPause   (CSurface::Ptr& aEcranPtr);
+   void  OnSurvoleCase      (const TCoordonnee& aCoordonnee);
 
-   bool EstDansPlateau (int aX, int aY);
+   bool EstDansPlateau     (const TCoordonnee& aCoordonneeClic);
+   bool EstCaseVide        (int aIndexLargeur, int aIndexHauteur);
 
    CTour::Ptr& ConstruireTour (int aNumCaseCliquee);
    void AnnuleDerniereModif   (void);
 
+   // TODO à virer ?
    int GetNbCaseLargeur (void);
    int GetNbCaseHauteur (void);
    int GetLargeurCase   (void);
    int GetHauteurCase   (void);
 
-   void        GetCoordonneesCaseParNumero   (int aNumero, TCoordonnee& aCoordonnees);
-   int         GetNumCaseParCoordonnees      (TCoordonnee& aCoordonnees); // Coordonnées
-   int         GetNumCaseDepart              (void);
-   int         GetNumCaseArrivee             (void);
+   void        GetCoordonneesCentreCaseCaseParNumero  (int aNumCase, TCoordonnee& aCoordonnees);
+   int         GetNumCaseParCoordonnees               (TCoordonnee& aCoordonnees); // Coordonnées
+   int         GetNumCaseDepart                       (void);
+   int         GetNumCaseArrivee                      (void);
 
    // void RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin);
 
@@ -44,18 +46,11 @@ private:
    CConfiguration&   mConfig;
    CContexteJeu&     mContexte;
    CTerrain          mTerrain;
-
-   int mLargeurCase;
-   int mHauteurCase;
-
+   
    int mDerniereCaseSurvolee;
 
    int mNumCaseDepart;
    int mNumCaseArrivee;
-
-   std::pair<int, int>  mCoordonneesDerniereCaseModifiee;
-      
-   CImage::Ptr   mImagePausePtr;
 };
 
 #endif

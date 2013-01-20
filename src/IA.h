@@ -19,8 +19,8 @@ public:
    bool CalculPlusCourtChemin    (int aNumCaseDepart, int aNumCaseArrivee, std::list<int>& aPlusCourtChemin);
    void CalculPCCheminReel       (std::list<int>& aPCChemin, TCoordonnee& aCoordonnees, std::list<TVecteurChemin>& aPCCheminReel);
 
-   int   GetNumCaseParCoordonnees      (TCoordonnee& aCoordonnees);
-   void  GetCoordonneesCaseParNumero   (int aNumero, TCoordonnee& aCoordonnees);
+   int   GetNumCaseParCoordonnees               (TCoordonnee& aCoordonnees);
+   void  GetCoordonneesCentreCaseCaseParNumero  (int aNumero, TCoordonnee& aCoordonnees);
    
    void AfficherMatrice (void);
 

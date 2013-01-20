@@ -33,7 +33,7 @@ public:
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);
 
-	void GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY);
+	TIndexTableau& GetIdPlateau (void);
 	
    const ETypeCase	GetType        (void) const;
          void	      SetType        (ETypeCase aeNouvelType);
@@ -58,8 +58,7 @@ private:
    bool        mbEstPlusCourtChemin;
    bool        mbEstSurvolee;
 
-   int	      mIdPlateauX;
-	int	      mIdPlateauY;
+   TIndexTableau  mIdPlateau;
 
    CTour::Ptr  mTourPtr;
 

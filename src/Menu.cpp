@@ -153,7 +153,7 @@ bool CMenu::OnInit (void)
    return bReturn;
 }
 
-void CMenu::OnClic (int aX, int aY)
+void CMenu::OnClic (const TCoordonnee& aCoordonneeClic)
 {
    bool  bBoutonTrouve  = false;
    int   IdBouton;
@@ -163,8 +163,8 @@ void CMenu::OnClic (int aX, int aY)
    {
       for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
-         if (  (mPositionsBoutons[IdBouton]->GetX () < aX) && (aX < (mPositionsBoutons[IdBouton]->GetX () + mPositionsBoutons[IdBouton]->GetW ()))
-            && (mPositionsBoutons[IdBouton]->GetY () < aY) && (aY < (mPositionsBoutons[IdBouton]->GetY () + mPositionsBoutons[IdBouton]->GetH ())))
+         if (  (mPositionsBoutons[IdBouton]->GetX () < aCoordonneeClic.mX) && (aCoordonneeClic.mX < (mPositionsBoutons[IdBouton]->GetX () + mPositionsBoutons[IdBouton]->GetW ()))
+            && (mPositionsBoutons[IdBouton]->GetY () < aCoordonneeClic.mY) && (aCoordonneeClic.mY < (mPositionsBoutons[IdBouton]->GetY () + mPositionsBoutons[IdBouton]->GetH ())))
          {
             bBoutonTrouve = true;
          }
@@ -195,8 +195,8 @@ void CMenu::OnClic (int aX, int aY)
       {
          for (IdTour = 0; (IdTour < mNbTours) && (false == bBoutonTrouve); ++IdTour)
          {
-            if (  (mPositionsTours[IdTour]->GetX () < aX) && (aX < (mPositionsTours[IdTour]->GetX () + mPositionsTours[IdTour]->GetW ()))
-               && (mPositionsTours[IdTour]->GetY () < aY) && (aY < (mPositionsTours[IdTour]->GetY () + mPositionsTours[IdTour]->GetH ())))
+            if (  (mPositionsTours[IdTour]->GetX () < aCoordonneeClic.mX) && (aCoordonneeClic.mX < (mPositionsTours[IdTour]->GetX () + mPositionsTours[IdTour]->GetW ()))
+               && (mPositionsTours[IdTour]->GetY () < aCoordonneeClic.mY) && (aCoordonneeClic.mY < (mPositionsTours[IdTour]->GetY () + mPositionsTours[IdTour]->GetH ())))
             {
                bBoutonTrouve = true;
             }
@@ -210,7 +210,7 @@ void CMenu::OnClic (int aX, int aY)
          {
             mContexte.mTypeTourSelectMenu = -1;
             
-            mLog << Info << "[GAME ON] Aucun bouton correspond à la position : " << aX << ", " << aY << EndLine;
+            mLog << Info << "[GAME ON] Aucun bouton correspond à la position : " << aCoordonneeClic.mX << ", " << aCoordonneeClic.mY << EndLine;
          }
       }
    }
@@ -218,8 +218,8 @@ void CMenu::OnClic (int aX, int aY)
    {
       for (IdBouton = eNew; (IdBouton < eNbBouton) && (false == bBoutonTrouve); ++IdBouton)
       {
-         if (  (mPositionsBoutons[IdBouton]->GetX () < aX) && (aX < (mPositionsBoutons[IdBouton]->GetX () + mPositionsBoutons[IdBouton]->GetW ()))
-            && (mPositionsBoutons[IdBouton]->GetY () < aY) && (aY < (mPositionsBoutons[IdBouton]->GetY () + mPositionsBoutons[IdBouton]->GetH ())))
+         if (  (mPositionsBoutons[IdBouton]->GetX () < aCoordonneeClic.mX) && (aCoordonneeClic.mX < (mPositionsBoutons[IdBouton]->GetX () + mPositionsBoutons[IdBouton]->GetW ()))
+            && (mPositionsBoutons[IdBouton]->GetY () < aCoordonneeClic.mY) && (aCoordonneeClic.mY < (mPositionsBoutons[IdBouton]->GetY () + mPositionsBoutons[IdBouton]->GetH ())))
          {
             bBoutonTrouve = true;
 
@@ -254,7 +254,7 @@ void CMenu::OnClic (int aX, int aY)
       }
       else
       {
-         mLog << Erreur << "[GAME OFF] Aucun bouton correspond à la position : " << aX << ", " << aY << EndLine;
+         mLog << Erreur << "[GAME OFF] Aucun bouton correspond à la position : " << aCoordonneeClic.mX << ", " << aCoordonneeClic.mY << EndLine;
       }
    }
 }

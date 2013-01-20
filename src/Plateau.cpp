@@ -7,12 +7,11 @@ CPlateau::CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte):
    mLog                    ("Plateau"),
    mConfig                 (aConfig),
    mContexte               (aContexte),
+   mTerrain                (aConfig),
    mNumCaseDepart          (-1),
    mNumCaseArrivee         (-1),
    mDerniereCaseSurvolee   (-1)
 {
-	mCoordonneesDerniereCaseModifiee.first = -1;
-   mCoordonneesDerniereCaseModifiee.second = -1;
 }
 
 CPlateau::~CPlateau (void)
@@ -28,17 +27,9 @@ bool CPlateau::OnInit (void)
 
    bConfig &= mConfig.Get ("numeroCaseDepart",  mNumCaseDepart);
    bConfig &= mConfig.Get ("numeroCaseArrivee", mNumCaseArrivee);
-   bConfig &= mConfig.Get ("largeurCase",       mLargeurCase);
-   bConfig &= mConfig.Get ("hauteurCase",       mHauteurCase);
-   bConfig &= mConfig.Get ("ressourcesImages",  CheminRessourcesImageStr);
 
    if (bConfig)
    {
-      std::string NomFichier ("JeuPause.bmp");
-      mImagePausePtr = CImage::Ptr (new CImage (CheminRessourcesImageStr));
-      mImagePausePtr->Load        (NomFichier);
-      mImagePausePtr->SetAlpha    (128);
-
       mLog << Debug << "NumCaseDepart = " << mNumCaseDepart << EndLine;
       mLog << Debug << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
       
@@ -60,38 +51,17 @@ void CPlateau::OnReset (void)
    mTerrain.OnReset (mNumCaseDepart, mNumCaseArrivee);
 }
 
-int CPlateau::OnClic (int aX, int aY)
+int CPlateau::OnClic (const TCoordonnee& aCoordonneeClic)
 {
-   int NumeroCaseCliquee = -1;
-   int IterLargeur = 0;
-   int IterHauteur = 0;
-
-   mCoordonneesDerniereCaseModifiee.first    = -1;
-   mCoordonneesDerniereCaseModifiee.second   = -1;
-
-   // Test si on est sur le plateau
-   if(EstDansPlateau (aX, aY))
-   {
-      IterLargeur = (int)(aX / mLargeurCase);
-      IterHauteur = (int)(aY / mHauteurCase);
+   int NumCaseCliquee = -1;
       
-      //On renseigne le numéro de la case que l'on a trouvé
-      NumeroCaseCliquee = IterHauteur * mNbCasesLargeur + IterLargeur;
-
-      mLog << Info << "Case (" << IterLargeur << ", " << IterHauteur << ")" << EndLine;
-
-      // Si la case est vide ET on a sélectionnée un type de tour dans le menu
-      if (GetCase(NumeroCaseCliquee)->EstVide() && (mContexte.mTypeTourSelectMenu != -1))
-      {
-         //On met le type à jour
-         GetCase(NumeroCaseCliquee)->SetType (CCase::eTour);
-
-         mCoordonneesDerniereCaseModifiee.first    = IterLargeur;
-         mCoordonneesDerniereCaseModifiee.second   = IterHauteur;
-      }
+   // Test si on est sur le plateau
+   if(EstDansPlateau (aCoordonneeClic))
+   {
+      NumCaseCliquee = mTerrain.OnClic (aCoordonneeClic, mContexte.mTypeTourSelectMenu);
    }
 
-   return NumeroCaseCliquee;
+   return NumCaseCliquee;
 }
 
 void CPlateau::OnAffiche (CSurface::Ptr& aEcranPtr)
@@ -101,37 +71,28 @@ void CPlateau::OnAffiche (CSurface::Ptr& aEcranPtr)
 
 void CPlateau::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
 {
-   CRect::Ptr PositionPtr (new CRect ());
-   PositionPtr->SetX (0);
-   PositionPtr->SetY (0);
-   PositionPtr->SetW (mNbCasesLargeur * mLargeurCase);
-   PositionPtr->SetH (mNbCasesHauteur * mHauteurCase);
-      
-   mImagePausePtr->Afficher (aEcranPtr, PositionPtr);
+   mTerrain.OnAfficheEnPause (aEcranPtr);
 }
 
-void CPlateau::OnSurvoleCase (int aX, int aY)
+void CPlateau::OnSurvoleCase (const TCoordonnee& aCoordonnee)
 {
-   int IterLargeur = (int)(aX / mLargeurCase);
-   int IterHauteur = (int)(aY / mHauteurCase);
-      
    //On renseigne le numéro de la case que l'on a trouvé
-   int NumeroCaseSurvolee = IterHauteur * mNbCasesLargeur + IterLargeur;
+   int NumeroCaseSurvolee = mTerrain.CoordonneeToNum (aCoordonnee);
 
-   mLog << Erreur << "CaseSurvolée (" << IterLargeur << ", " << IterHauteur << ") = " << NumeroCaseSurvolee << EndLine;
+   mLog << Erreur << "Case n: " << NumeroCaseSurvolee << " survolée" << EndLine;
 
    if (NumeroCaseSurvolee != mDerniereCaseSurvolee)
    {
       if (mDerniereCaseSurvolee != -1)
       {
-         GetCase(mDerniereCaseSurvolee)->MarqueSurvolee (false);
+         mTerrain.GetCase (aCoordonnee)->MarqueSurvolee (false);
       }
 
       // Si la case est vide
-      if (GetCase(NumeroCaseSurvolee)->EstVide())
+      if (mTerrain.GetCase(aCoordonnee)->EstVide())
       {
          //On met le type à jour
-         GetCase(NumeroCaseSurvolee)->MarqueSurvolee (true);
+         mTerrain.GetCase(aCoordonnee)->MarqueSurvolee (true);
       }
 
       mDerniereCaseSurvolee = NumeroCaseSurvolee;
@@ -139,68 +100,56 @@ void CPlateau::OnSurvoleCase (int aX, int aY)
 }
 
 // Test si on est sur le plateau
-bool CPlateau::EstDansPlateau (int aX, int aY)
+bool CPlateau::EstDansPlateau (const TCoordonnee& aCoordonneeClic)
 {
-   return (aX < (mNbCasesLargeur * mLargeurCase)) && (aY < (mNbCasesHauteur * mHauteurCase));
+   return (aCoordonneeClic.mX < (mTerrain.GetLargeur ())) && (aCoordonneeClic.mY < (mTerrain.GetHauteur ()));
+}
+
+bool CPlateau::EstCaseVide (int aIndexLargeur, int aIndexHauteur)
+{
+   TIndexTableau IndexCase (aIndexLargeur, aIndexHauteur);
+
+   return mTerrain.EstCaseVide (IndexCase);
 }
 
 CTour::Ptr& CPlateau::ConstruireTour (int aNumCaseCliquee)
 {
-   std::string Ressource; // Non utilisé ici !
-   int Portee;
-   int Puissance;
-   int Vitesse;
-   int Cadence;
-
-   mConfig.GetCaracsTourParId (mContexte.mTypeTourSelectMenu, Ressource, Portee, Puissance, Vitesse, Cadence);
-   return GetCase (aNumCaseCliquee)->ConstruireTour (mConfig, mContexte.mTypeTourSelectMenu, Portee, Puissance, Vitesse, Cadence);
+   return mTerrain.ConstruireTour (mContexte.mTypeTourSelectMenu, aNumCaseCliquee);
 }
 
 void CPlateau::AnnuleDerniereModif (void)
 {
-   if (mCoordonneesDerniereCaseModifiee.first != -1 && mCoordonneesDerniereCaseModifiee.second != -1)
-   {
-      GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->SetType (CCase::eVide);
-      GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)
-         ->SetPlusCourtChemin (GetCase (mCoordonneesDerniereCaseModifiee.first, mCoordonneesDerniereCaseModifiee.second)->EstPlusCourtChemin ());
-   }
+   mTerrain.AnnuleDerniereModif ();
 }
 
 int CPlateau::GetNbCaseLargeur (void)
 {
-   return mNbCasesLargeur;
+   return mTerrain.GetNbCaseLargeur ();
 }
 
 int CPlateau::GetNbCaseHauteur (void)
 {
-   return mNbCasesHauteur;
+   return mTerrain.GetNbCaseHauteur ();
 }
 
 int CPlateau::GetLargeurCase   (void)
 {
-   return mLargeurCase;
+   return mTerrain.GetLargeurCase ();
 }
 
 int CPlateau::GetHauteurCase   (void)
 {
-   return mHauteurCase;
+   return mTerrain.GetHauteurCase ();
 }
 
-void CPlateau::GetCoordonneesCaseParNumero (int aNumero, TCoordonnee& aCoordonnees)
+void CPlateau::GetCoordonneesCentreCaseCaseParNumero (int aNumCase, TCoordonnee& aCoordonnees)
 {
-   int IterHauteur = aNumero / mNbCasesLargeur;
-   int IterLargeur = aNumero % mNbCasesLargeur;
-   
-   mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetCentre (aCoordonnees);
-
+   mTerrain.GetCoordonneesCentreCaseCaseParNumero (aNumCase, aCoordonnees);
 }
 
 int CPlateau::GetNumCaseParCoordonnees (TCoordonnee& aCoordonnees)
 {
-   int IndexCaseX = aCoordonnees.mX / mLargeurCase;
-   int IndexCaseY = aCoordonnees.mY / mHauteurCase;
-
-   return IndexCaseY * mNbCasesLargeur + IndexCaseX;
+   return mTerrain.CoordonneeToNum (aCoordonnees);
 }
 
 int CPlateau::GetNumCaseDepart  (void)

@@ -58,7 +58,7 @@ bool CJeu::OnInit (void)
   	return bContinue;
 }
 
-void CJeu::OnClic (int aX, int aY)
+void CJeu::OnClic (const TCoordonnee& aCoordonneeClic)
 {
    int   NumCaseCliquee = -1;
    int   IterLargeur    = 0;
@@ -66,12 +66,12 @@ void CJeu::OnClic (int aX, int aY)
 
    if (mContexte.mbPartieEnCours)
    {
-      NumCaseCliquee = mPlateau.OnClic (aX, aY);
+      NumCaseCliquee = mPlateau.OnClic (aCoordonneeClic);
    }
 
    if (NumCaseCliquee == -1)
    {
-      mMenu.OnClic (aX, aY);
+      mMenu.OnClic (aCoordonneeClic);
    }
    else
    {

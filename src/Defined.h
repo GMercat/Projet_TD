@@ -24,6 +24,32 @@ const int IMAGES_PAR_SECONDE = 50;
 // Definition du nombre Pi
 #define PI     3.14159265
 
+struct TIndexTableau
+{
+   int mIndLargeur;
+   int mIndHauteur;
+
+   TIndexTableau ()
+   {
+      mIndLargeur = 0;
+      mIndHauteur = 0;
+   };
+
+   TIndexTableau (int aIndexLargeur, int aIndexHauteur)
+   {
+      mIndLargeur = aIndexLargeur;
+      mIndHauteur = aIndexHauteur;
+   };
+
+   TIndexTableau& operator = (const TIndexTableau& aIndex)
+   {
+      this->mIndLargeur = aIndex.mIndLargeur;
+      this->mIndHauteur = aIndex.mIndHauteur;
+
+      return *this;
+   };
+};
+
 struct TCoordonnee
 {
    int mX;

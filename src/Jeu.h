@@ -18,7 +18,7 @@ public:
 	~CJeu (void);
 
 	bool OnInit		      (void);
-	void OnClic		      (int aX, int aY);
+	void OnClic		      (const TCoordonnee& aCoordonneeClic);
 	void OnAffiche	      (void);
    void OnReset         (void);
    void OnQuit          (void);

@@ -9,8 +9,6 @@ CCase::CCase (void):
    mNumCase             (-1),
    mbEstPlusCourtChemin (false),
    mbEstSurvolee        (false),
-	mIdPlateauX          (-1),
-	mIdPlateauY          (-1),
 	mCourImage	         (0),
    mPositionPtr         (new CRect)
 {
@@ -128,8 +126,8 @@ void CCase::SetType (CCase::ETypeCase aeNouvelType)
  */
 void CCase::SetPosition (CRect::Ptr& aRectPtr, int aIdPlateauX, int aIdPlateauY)
 { 
-	mIdPlateauX  = aIdPlateauX;
-	mIdPlateauY  = aIdPlateauY;
+   mIdPlateau.mIndLargeur  = aIdPlateauX;
+   mIdPlateau.mIndHauteur  = aIdPlateauY;
 	mPositionPtr = aRectPtr;
 }
 
@@ -220,13 +218,11 @@ bool CCase::EstPlusCourtChemin (void)
 /**
  * @brief   Récupération des index "X" et "Y" de la case dans le plateau
  *
- * @param[out] aIdPlateauX    Index X
- * @param[out] aIdPlateauY    Index Y
+ * @return L'index de la case dans le tableau
  */
-void CCase::GetIdPlateau (int& aIdPlateauX, int& aIdPlateauY)
+TIndexTableau& CCase::GetIdPlateau (void)
 {
-	aIdPlateauX = mIdPlateauX;
-	aIdPlateauY = mIdPlateauY;
+	return mIdPlateau;
 }
 
 /**
