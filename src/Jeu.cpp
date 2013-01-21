@@ -254,18 +254,23 @@ void CJeu::OnTire (void)
       // Parcours des tours pour rechercher les ennemis à la porté
       for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
       {
-         // Si la tour peut tirer
-         if ((*IterTour)->AutoriseATirer ())
+         // Récupération des positions de la tour
+         (*IterTour)->GetCentre (CoordonneeCentreTour);
+
+         for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (false == bEnnemiTrouve); ++IterVague)
          {
-            // Récupération des positions de la tour
-            (*IterTour)->GetCentre (CoordonneeCentreTour);
+            bEnnemiTrouve = (*IterVague)->SelectionneEnnemi (CoordonneeCentreTour, (*IterTour)->GetPorteeTire (), EnnemiSelectionnePtr);
+         }
 
-            for (IterVague = mListVagues.begin (); (IterVague != mListVagues.end ()) && (false == bEnnemiTrouve); ++IterVague)
-            {
-               bEnnemiTrouve = (*IterVague)->SelectionneEnnemi (CoordonneeCentreTour, (*IterTour)->GetPorteeTire (), EnnemiSelectionnePtr);
-            }
+         if (bEnnemiTrouve && EnnemiSelectionnePtr)
+         {
+            TCoordonnee CoordonneeEnnemi;
+            EnnemiSelectionnePtr->GetCentre (CoordonneeEnnemi);
 
-            if (bEnnemiTrouve && EnnemiSelectionnePtr)
+            (*IterTour)->Vise (CoordonneeEnnemi);
+
+            // Si la tour peut tirer
+            if ((*IterTour)->AutoriseATirer ())
             {
                (*IterTour)->Tire (EnnemiSelectionnePtr);
                mListTourTiree.push_back ((*IterTour));

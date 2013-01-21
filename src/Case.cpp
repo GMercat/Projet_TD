@@ -39,8 +39,10 @@ void CCase::OnInit (void)
  * @param[in]  aSurfaceCasePtr  Surface SDL dans laquelle la case est affichée
  */
 void CCase::OnAffiche (CSurface::Ptr& aSurfaceDestPtr, CSurface::Ptr& aSurfaceCasePtr)
-{   
-   aSurfaceCasePtr->Blit (aSurfaceDestPtr, mPositionPtr);
+{
+   // TODO Enlever le second paramètre de la méthode qui est inutile
+   mTourPtr->Afficher (aSurfaceDestPtr);
+   //aSurfaceCasePtr->Blit (aSurfaceDestPtr, mPositionPtr);
 }
 
 /**
