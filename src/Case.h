@@ -22,10 +22,10 @@ typedef boost::shared_ptr<CCase> Ptr;
 typedef std::vector<CCase::Ptr> Vector;
 
 public:
-   CCase    (void);
-	~CCase	(void);
+            CCase (void);
+	virtual ~CCase	(void);
 
-	         void OnInit     (void);
+	virtual  void OnInit     (void);
 	virtual  void OnAffiche  (CSurface::Ptr& aSurfaceDestPtr);
    
    CTour::Ptr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);

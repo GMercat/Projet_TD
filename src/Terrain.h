@@ -12,12 +12,11 @@ public :
     CTerrain (CConfiguration& aConfig);
    ~CTerrain (void);
 
-   void  OnInit    (int aNumCaseDepart, int aNumCaseArrivee);
-   void  OnReset   (int aNumCaseDepart, int aNumCaseArrivee);
-   void  OnAffiche (CSurface::Ptr& aEcranPtr);
-   void  OnAfficheEnPause (CSurface::Ptr& aEcranPtr);
-
-   int   OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu);
+   void  OnInit            (int aNumCaseDepart, int aNumCaseArrivee);
+   void  OnReset           (int aNumCaseDepart, int aNumCaseArrivee);
+   void  OnAffiche         (CSurface::Ptr& aEcranPtr);
+   void  OnAfficheEnPause  (CSurface::Ptr& aEcranPtr);
+   int   OnClic            (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu);
 
    CTour::Ptr& ConstruireTour       (int aTypeTourSelectMenu, int aNumCaseCliquee);
    void        AnnuleDerniereModif  (void);
