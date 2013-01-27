@@ -58,8 +58,6 @@ private:
 
    std::vector <std::string>  mNomImagesCase;
    std::vector <CImage::Ptr>  mImagesCases;
-   std::vector <std::string>  mNomImagesTour;
-   std::vector <CImage::Ptr>  mImagesTours;
 };
 
 #endif

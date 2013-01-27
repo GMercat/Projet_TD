@@ -27,7 +27,6 @@ void CTerrain::OnInit (int aNumCaseDepart, int aNumCaseArrivee)
    bConfig &= mConfig.Get ("hauteurCase",       mHauteurCase);
    bConfig &= mConfig.Get ("ressourcesImages",  CheminRessourcesImageStr);
    bConfig &= mConfig.GetRessourcesCases (mNomImagesCase);
-   bConfig &= mConfig.GetRessourcesTours (mNomImagesTour);
 
    if (bConfig)
    {
@@ -44,16 +43,6 @@ void CTerrain::OnInit (int aNumCaseDepart, int aNumCaseArrivee)
          ImageCourantePtr->Load (mNomImagesCase[IterImage]);
 
          mImagesCases.push_back (ImageCourantePtr);
-      }
-
-      // Allocation des surfaces des tours
-      for (unsigned int IterImage = 0; IterImage < mNomImagesTour.size (); ++IterImage)
-      {
-         CImage::Ptr ImageCourantePtr (new CImage (CheminRessourcesImageStr));
-
-         ImageCourantePtr->Load (mNomImagesTour[IterImage]);
-
-         mImagesTours.push_back (ImageCourantePtr);
       }
    }
 
@@ -118,36 +107,27 @@ void CTerrain::OnReset (int aNumCaseDepart, int aNumCaseArrivee)
 
 void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
 {
-   //Dessiner chaque case
+   // Dessiner chaque case
    for (int IterHauteur = 0; IterHauteur < mNbCasesHauteur; IterHauteur++)
    {
       for (int IterLargeur = 0; IterLargeur < mNbCasesLargeur; IterLargeur++)
       {
-         // TODO Affichage Plus Court Chemin
-         /*if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstPlusCourtChemin ())
+         // Les surfaces ne sont pas les mêmes !
+         CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
+         if (EtatCase == CCase::eTour)
          {
-             mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (apEcran, mpImagePCC);
+            int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
+            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr, aEcranPtr);
          }
-         else*/
+         else
          {
-            //       Les surfaces ne sont pas les mêmes !
-            CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
-            if (EtatCase == CCase::eTour)
+            if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstSurvolee ())
             {
-               int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
-               mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr, aEcranPtr);
-               //mImagesTours[TypeCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
+               // TODO Image survolee
             }
             else
             {
-               if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstSurvolee ())
-               {
-                  // TODO Image survolee
-               }
-               else
-               {
-                  mImagesCases[EtatCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
-               }
+               mImagesCases[EtatCase]->Afficher (aEcranPtr, mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetPosition ());
             }
          }
       }
