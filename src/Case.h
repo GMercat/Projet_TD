@@ -25,8 +25,8 @@ public:
    CCase    (void);
 	~CCase	(void);
 
-	void OnInit                (void);
-	void OnAffiche             (CSurface::Ptr& aSurfaceDestPtr, CSurface::Ptr& aSurfaceCasePtr);
+	         void OnInit     (void);
+	virtual  void OnAffiche  (CSurface::Ptr& aSurfaceDestPtr);
    
    CTour::Ptr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
    

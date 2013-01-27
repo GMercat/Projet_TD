@@ -117,7 +117,7 @@ void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
          if (EtatCase == CCase::eTour)
          {
             int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
-            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr, aEcranPtr);
+            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr);
          }
          else
          {
