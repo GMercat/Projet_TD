@@ -19,7 +19,6 @@ public:
 
    void Afficher (CSurface::Ptr& aEcranPtr);
 
-   // TODO Retourner une TCoordonnee
    void GetCentre (TCoordonnee& aCoordonnee);
 
    void OnAfficheProjectiles  (CSurface::Ptr& aSurfaceDestPtr);
