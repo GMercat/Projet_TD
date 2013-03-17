@@ -54,9 +54,8 @@ bool CTour::OnAvanceProjectiles (void)
 {
    bool bProjectileDetruit = false;
       
-   CProjectile::Liste::iterator IterProjectile    = mListeProjectilesTires.begin ();
-   CProjectile::Liste::iterator IterProjectileEnd = mListeProjectilesTires.end ();
-   while (IterProjectile != IterProjectileEnd)
+   CProjectile::Liste::iterator IterProjectile = mListeProjectilesTires.begin ();
+   while (IterProjectile != mListeProjectilesTires.end ())
    {
       bProjectileDetruit = (*IterProjectile)->Avance ();
 

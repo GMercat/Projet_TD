@@ -117,10 +117,10 @@ void CJeu::OnAffiche (void)
    }
 
    // Affichage des projectiles
-   CTour::Liste::iterator IterTourTiree = mListTourTiree.begin ();
-   for (IterTourTiree; IterTourTiree != mListTourTiree.end (); ++IterTourTiree)
+   CTour::Liste::iterator IterTour;
+   for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
    {
-      (*IterTourTiree)->OnAfficheProjectiles (mScreenPtr->GetSurface ());
+      (*IterTour)->OnAfficheProjectiles (mScreenPtr->GetSurface ());
    }
 
    if (false == mContexte.mbPartieEnCours)
@@ -136,7 +136,6 @@ void CJeu::OnReset   (void)
    mTypeTourSelect = -1;
    mListVagues    .clear ();
    mListTour      .clear ();
-   mListTourTiree .clear ();
    mPlateau.OnReset ();
    mIA.OnInit ();
 }
@@ -163,18 +162,10 @@ void CJeu::OnProgression   (void)
 
 void CJeu::ProgressionProjectiles (void)
 {
-   CTour::Liste::iterator IterTourTiree    = mListTourTiree.begin ();
-   while (IterTourTiree != mListTourTiree.end ())
+   CTour::Liste::iterator IterTour;
+   for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
    {
-      // S'il ne reste plus de projectiles, on enlève la tour de la liste des tours qui ont tiré
-      if (false == (*IterTourTiree)->OnAvanceProjectiles ())
-      {
-         IterTourTiree = mListTourTiree.erase (IterTourTiree);
-      }
-      else
-      {
-         ++IterTourTiree;
-      }
+      (*IterTour)->OnAvanceProjectiles ();
    }
 }
 
@@ -274,7 +265,6 @@ void CJeu::OnTire (void)
             if ((*IterTour)->AutoriseATirer ())
             {
                (*IterTour)->Tire (EnnemiSelectionnePtr);
-               mListTourTiree.push_back ((*IterTour));
             }
          }
       }

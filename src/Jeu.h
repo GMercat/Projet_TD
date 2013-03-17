@@ -63,7 +63,6 @@ private:
    int   mTempsInterVague;
    
    CTour::Liste         mListTour;
-   CTour::Liste         mListTourTiree;
    CVagueEnnemis::Liste mListVagues;
 };
 
