@@ -135,7 +135,7 @@ void CEnnemi::Avance (void)
    mPosition.mX = mCoordonnee.mX - (mLargeur / 2);
    mPosition.mY = mCoordonnee.mY - (mHauteur / 2);
 
-   mLog << Info << "X = " << mCoordonnee.mX << ", Y = " << mCoordonnee.mY << EndLine;
+   mLog << Debug << "X = " << mCoordonnee.mX << ", Y = " << mCoordonnee.mY << EndLine;
 }
 
 bool CEnnemi::EstArrive (void)
