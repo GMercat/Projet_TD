@@ -164,9 +164,9 @@ void CJeu::OnProgression   (void)
 void CJeu::ProgressionProjectiles (void)
 {
    CTour::Liste::iterator IterTourTiree    = mListTourTiree.begin ();
-   CTour::Liste::iterator IterTourTireeEnd = mListTourTiree.end ();
-   while (IterTourTiree != IterTourTireeEnd)
+   while (IterTourTiree != mListTourTiree.end ())
    {
+      // S'il ne reste plus de projectiles, on enlève la tour de la liste des tours qui ont tiré
       if (false == (*IterTourTiree)->OnAvanceProjectiles ())
       {
          IterTourTiree = mListTourTiree.erase (IterTourTiree);

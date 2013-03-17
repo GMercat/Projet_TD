@@ -48,6 +48,8 @@ void CTour::OnAfficheProjectiles(CSurface::Ptr& aSurfaceDestPtr)
    }
 }
 
+// Cette méthode permet de faire avancer les projectiles tirés par la tour
+// Retourne True si il rester des projectiles, False sinon.
 bool CTour::OnAvanceProjectiles (void)
 {
    bool bProjectileDetruit = false;
