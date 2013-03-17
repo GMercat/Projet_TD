@@ -242,7 +242,6 @@ void CJeu::OnTire (void)
    {
       int XTour = 0;
       int Ytour = 0;
-      bool bEnnemiTrouve   = false;
       TCoordonnee CoordonneeCentreTour;
 
       CEnnemi::Ptr   EnnemiSelectionnePtr;
@@ -254,6 +253,8 @@ void CJeu::OnTire (void)
       // Parcours des tours pour rechercher les ennemis à la porté
       for (IterTour = mListTour.begin (); IterTour != mListTour.end (); ++IterTour)
       {
+         bool bEnnemiTrouve   = false;
+
          // Récupération des positions de la tour
          (*IterTour)->GetCentre (CoordonneeCentreTour);
 
