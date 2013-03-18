@@ -43,7 +43,7 @@ void CProjectile::OnAffiche (CSurface::Ptr& aScreenPtr)
 
 bool CProjectile::Avance (void)
 {
-   bool bEstDetruit = false;
+   bool bADetruire = false;
    
    // Si l'ennemi est pas encore détruit
    if (mEnnemiCiblePtr)
@@ -52,22 +52,22 @@ bool CProjectile::Avance (void)
 
       // Récupération de la position de l'ennemi
       mEnnemiCiblePtr->GetCentre (CoordonneeEnnemi);
-
+      
       // Calcul de l'avancé du projectile
       double Avance = mVitesse;
    
       // Calcul de la distance restante à parcourir
       double DistanceRestante = sqrt ((double)((CoordonneeEnnemi.mX - mCoordonnee.mX) * (CoordonneeEnnemi.mX - mCoordonnee.mX))
-                                   +  (double)((CoordonneeEnnemi.mX - mCoordonnee.mY) * (CoordonneeEnnemi.mY - mCoordonnee.mY)));
+                                   +  (double)((CoordonneeEnnemi.mY - mCoordonnee.mY) * (CoordonneeEnnemi.mY - mCoordonnee.mY)));
    
       double PourcentageParcouru = Avance / DistanceRestante;
-   
+      
       if (Avance > DistanceRestante)
       {
          // L'ennemi est touché !
          mEnnemiCiblePtr->Touche (mPuissance);
          
-         bEstDetruit = true;
+         bADetruire = true;
       }
       else
       {
@@ -78,8 +78,8 @@ bool CProjectile::Avance (void)
    }
    else
    {
-      bEstDetruit = true;
+      bADetruire = true;
    }
    
-   return bEstDetruit;
+   return bADetruire;
 }
