@@ -478,6 +478,55 @@ void CConfiguration::Trim (const std::string& aStringEntree, std::string& aStrin
    }
 }
 
+bool CConfiguration::LectureEtEnregistrement (std::ifstream& aFichier, std::string& aElement)
+{
+   bool bResultat = false;
+   
+   std::string Ligne;
+   std::string Cle;
+   std::string Valeur;
+
+   std::getline (aFichier, Ligne);
+   // Lecture de la ligne si elle n'est pas vide
+   if (false == Ligne.empty ())
+   {
+      bResultat = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrement de la valeur
+   if (  (true == bResultat)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      aElement = Valeur;
+   }
+
+   return bResultat;
+}
+
+bool CConfiguration::LectureEtEnregistrement (std::ifstream& aFichier, int& aElement)
+{
+   bool bResultat = false;
+
+   std::string Ligne;
+   std::string Cle;
+   std::string Valeur;
+   std::stringstream Temp;
+
+   std::getline (aFichier, Ligne);
+   // Lecture de la ligne si elle n'est pas vide
+   if (false == Ligne.empty ())
+   {
+      bResultat = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrement de la valeur
+   if (  (true == bResultat)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      Temp << Valeur;
+      Temp >> aElement;
+   }
+
+   return bResultat;
+}
 
 void CConfiguration::EnregistrementDonnee (std::ifstream& aFichier, std::string& aStrType)
 {
@@ -507,233 +556,125 @@ void CConfiguration::EnregistrementDonnee (std::ifstream& aFichier, std::string&
 void CConfiguration::EnregistrementTypeCase (std::ifstream& aFichier)
 {
    bool bResultatLecture = false;
-   std::string Ligne;
-   std::string Cle;
-   std::string Valeur;
+
    std::string Nom;
    std::string Ressource;
 
    // Lecture du nom de la case
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
-   {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer le Nom
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Nom = Valeur;
-   }
+   bResultatLecture = LectureEtEnregistrement (aFichier, Nom);
 
-   // Lecture de la ressource associée
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer la Ressource
-      if (  (true == bResultatLecture)
-         && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Ressource = Valeur;
+      // Lecture de la ressource associée
+      bResultatLecture = LectureEtEnregistrement (aFichier, Ressource);
    }
    
-   mDonneesCases[Nom] = Ressource;
+   if (bResultatLecture)
+   {
+      mDonneesCases[Nom] = Ressource;
+   }
+   else
+   {
+      // TODO LOG
+   }
 }
 
 void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
 {
    bool bResultatLecture = false;
-   std::string Ligne;
-   std::string Cle;
-   std::string Valeur;
-   std::string Nom;
-   std::stringstream Temp;
    
+   std::string Nom;
    TCaracsTour CaracsTour;
 
    // Lecture du nom de la tour
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   bResultatLecture = LectureEtEnregistrement (aFichier, Nom);
+
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer le Nom
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Nom = Valeur;
+      // Lecture de la ressource associée
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mRessource);
    }
 
-   // Lecture de la ressource associée
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer la Ressource
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      CaracsTour.mRessource = Valeur;
+      // Lecture de la portée de la tour
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mPortee);
    }
 
-   // Lecture de la portée de la tour
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+      // Lecture de la puissance des projectiles de la tour
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mPuissance);
    }
-   // Enregistrer la portée
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsTour.mPortee;
+   
+   if (bResultatLecture)
+   {   
+      // Lecture de la vitesse des projectiles de la tour
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mVitesse);
    }
 
-   Temp.clear ();
-   // Lecture de la puissance des projectiles de la tour
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
-   {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer la puissance des projectiles
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsTour.mPuissance;
+   if (bResultatLecture)
+   {   
+      // Lecture de la cadence de tire de la tour
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mCadence);
    }
 
-   Temp.clear ();
-   // Lecture de la vitesse des projectiles de la tour
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+      mDonneesTours [Nom] = CaracsTour;
    }
-   // Enregistrer la vitesse
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   else
    {
-      Temp << Valeur;
-      Temp >> CaracsTour.mVitesse;
+      //TODO LOG
    }
-
-   Temp.clear ();
-   // Lecture de la cadence de tire de la tour
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
-   {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer la cadence
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsTour.mCadence;
-   }
-
-   mDonneesTours [Nom] = CaracsTour;
 }
 
 void CConfiguration::EnregistrementTypeEnnemi (std::ifstream& aFichier)
 {
    bool bResultatLecture = false;
-   std::string Ligne;
-   std::string Cle;
-   std::string Valeur;
-   std::string Nom;
-   std::stringstream Temp;
-   
+
+   std::string    Nom;
    TCaracsEnnemi CaracsEnnemi;
 
    // Lecture du nom de l'ennemi
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
-   {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer le Nom
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Nom = Valeur;
-   }
+   bResultatLecture = LectureEtEnregistrement (aFichier, Nom);
 
-   // Lecture de la ressource associée
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer la Ressource
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      CaracsEnnemi.mRessource = Valeur;
+      // Lecture de la ressource associée
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsEnnemi.mRessource);
    }
 
    // Lecture de la taille de l'ennemi
    // - Largeur
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrement
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsEnnemi.mLargeur;
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsEnnemi.mLargeur);
    }
    // - Hauteur
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrement
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsEnnemi.mHauteur;
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsEnnemi.mHauteur);
    }
    
-   // Lecture de la vitesse de l'ennemi
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer la vitesse
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsEnnemi.mVitesse;
+      // Lecture de la vitesse de l'ennemi
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsEnnemi.mVitesse);
    }
 
-   Temp.clear ();
-   // Lecture du nombre de point de vie de l'ennemi
-   std::getline (aFichier, Ligne);
-   if (false == Ligne.empty ())
+   if (bResultatLecture)
    {
-      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
-   }
-   // Enregistrer du nombre de point de vie de l'ennemi
-   if (  (true == bResultatLecture)
-      && (false == Cle.empty ()) && (false == Valeur.empty ()))
-   {
-      Temp << Valeur;
-      Temp >> CaracsEnnemi.mVie;
+      // Lecture du nombre de point de vie de l'ennemi
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsEnnemi.mVie);
    }
    
-   mDonneesEnnemis [Nom] = CaracsEnnemi;
+   if (bResultatLecture)
+   {
+      mDonneesEnnemis [Nom] = CaracsEnnemi;
+   }
+   else
+   {
+      // TODO LOG
+   }
 }

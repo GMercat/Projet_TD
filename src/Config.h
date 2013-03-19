@@ -89,6 +89,10 @@ private:
    // Supprime les espaces
    void Trim (const std::string& aStringEntree, std::string& aStringSortie);
 
+   // Lecture et enregistrement d'un élément
+   bool LectureEtEnregistrement (std::ifstream& aFichier, std::string& aElement);
+   bool LectureEtEnregistrement (std::ifstream& aFichier, int& aElement);
+
    // Enregistrement de type de données particulier
    void EnregistrementDonnee     (std::ifstream& aFichier, std::string& aStrType);
    void EnregistrementTypeCase   (std::ifstream& aFichier);
