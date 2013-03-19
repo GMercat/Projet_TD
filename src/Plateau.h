@@ -28,7 +28,6 @@ public:
    CTour::Ptr& ConstruireTour (int aNumCaseCliquee);
    void AnnuleDerniereModif   (void);
 
-   // TODO à virer ?
    int GetNbCaseLargeur (void);
    int GetNbCaseHauteur (void);
    int GetLargeurCase   (void);
