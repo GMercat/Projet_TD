@@ -25,9 +25,9 @@ CConfiguration::~CConfiguration (void)
  */
 void CConfiguration::RaZ()
 {
-   mDonnees			.clear();
-   mDonneesCases	.clear();
-   mDonneesTours	.clear();
+   mDonnees			   .clear();
+   mDonneesCases	   .clear();
+   mDonneesTours	   .clear();
    mDonneesEnnemis	.clear();
 }
 
@@ -318,18 +318,22 @@ bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessource,
  *
  * @param[in]  aNom        Nom de l'ennemi
  * @param[out] aRessource  Chemin du fichier
+ * @param[out] aLargeur    Largeur d'un ennemi
+ * @param[out] aHauteur    Hauteur d'un ennemi
  * @param[out] aVitesse    Vitesse de déplacement de l'ennemi
  * @param[out] aVie        Nombre de point de l'ennemi
  *
  * @retrun  True si les caractéristiques ont été trouvées
  */
-bool CConfiguration::GetCaracsEnnemiParNom (const std::string& aNom, std::string& aRessource, int& aVitesse, int& aVie) const
+bool CConfiguration::GetCaracsEnnemiParNom (const std::string& aNom, std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const
 {
    std::map<std::string, TCaracsEnnemi>::const_iterator IterDonnees = mDonneesEnnemis.find (aNom);
 
    if (IterDonnees != mDonneesEnnemis.end ())
    {
       aRessource  = IterDonnees->second.mRessource;
+      aLargeur    = IterDonnees->second.mLargeur;
+      aHauteur    = IterDonnees->second.mHauteur;
       aVitesse    = IterDonnees->second.mVitesse;
       aVie        = IterDonnees->second.mVie;
 
@@ -648,7 +652,7 @@ void CConfiguration::EnregistrementTypeEnnemi (std::ifstream& aFichier)
    
    TCaracsEnnemi CaracsEnnemi;
 
-   // Lecture du nom de la tour
+   // Lecture du nom de l'ennemi
    std::getline (aFichier, Ligne);
    if (false == Ligne.empty ())
    {
@@ -674,13 +678,41 @@ void CConfiguration::EnregistrementTypeEnnemi (std::ifstream& aFichier)
       CaracsEnnemi.mRessource = Valeur;
    }
 
+   // Lecture de la taille de l'ennemi
+   // - Largeur
+   std::getline (aFichier, Ligne);
+   if (false == Ligne.empty ())
+   {
+      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrement
+   if (  (true == bResultatLecture)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      Temp << Valeur;
+      Temp >> CaracsEnnemi.mLargeur;
+   }
+   // - Hauteur
+   std::getline (aFichier, Ligne);
+   if (false == Ligne.empty ())
+   {
+      bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
+   }
+   // Enregistrement
+   if (  (true == bResultatLecture)
+      && (false == Cle.empty ()) && (false == Valeur.empty ()))
+   {
+      Temp << Valeur;
+      Temp >> CaracsEnnemi.mHauteur;
+   }
+   
    // Lecture de la vitesse de l'ennemi
    std::getline (aFichier, Ligne);
    if (false == Ligne.empty ())
    {
       bResultatLecture = LectureLigne (Ligne, Cle, Valeur);
    }
-   // Enregistrer la portée
+   // Enregistrer la vitesse
    if (  (true == bResultatLecture)
       && (false == Cle.empty ()) && (false == Valeur.empty ()))
    {

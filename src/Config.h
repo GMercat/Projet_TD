@@ -32,12 +32,16 @@ struct TCaracsTour
 struct TCaracsEnnemi
 {
    std::string mRessource;
+   int         mLargeur;
+   int         mHauteur;
    int         mVitesse;
    int         mVie;
 
    void operator = (const TCaracsEnnemi& aCaracsEnnemi)
    {
       mRessource  = aCaracsEnnemi.mRessource;
+      mLargeur    = aCaracsEnnemi.mLargeur;
+      mHauteur    = aCaracsEnnemi.mHauteur;
       mVitesse    = aCaracsEnnemi.mVitesse;
       mVie        = aCaracsEnnemi.mVie;
    }
@@ -69,7 +73,7 @@ public:
    bool GetRessourceCaseParNom   (const std::string& aNom,  std::string& aRessource) const;
    bool GetCaracsTourParNom      (const std::string& aNom,  std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsTourParId       (const int aId,            std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
-   bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aVitesse, int& aVie) const;
+   bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const;
    bool GetRessourceEnnemiParType(const int aType,          std::string& aRessource) const;
 
    bool GetRessourcesCases    (std::vector<std::string>&    aRessources)      const;
