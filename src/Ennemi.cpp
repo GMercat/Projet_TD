@@ -7,9 +7,7 @@ CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseD
    mLog              ("Ennemi"),
    mpIA              (apIA),
    mType             (aType),
-   mNumCaseArrivee   (aNumCaseArrivee),
-   mLargeur          (20), // TODO
-   mHauteur          (20)  // TODO
+   mNumCaseArrivee   (aNumCaseArrivee)
 {
    std::string Ressource; // TODO non utilisé !
 
