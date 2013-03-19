@@ -74,6 +74,7 @@ public:
    bool GetCaracsTourParNom      (const std::string& aNom,  std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsTourParId       (const int aId,            std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const;
+   bool GetCaracsEnnemiParId     (const int aId,            std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const;
    bool GetRessourceEnnemiParType(const int aType,          std::string& aRessource) const;
 
    bool GetRessourcesCases    (std::vector<std::string>&    aRessources)      const;

@@ -345,6 +345,33 @@ bool CConfiguration::GetCaracsEnnemiParNom (const std::string& aNom, std::string
    }
 }
 
+bool CConfiguration::GetCaracsEnnemiParId (const int aId, std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const
+{
+   int IndexEnnemi = 0;
+   std::map<std::string, TCaracsEnnemi>::const_iterator IterDonnees = mDonneesEnnemis.begin ();
+   
+   while ((IterDonnees != mDonneesEnnemis.end ()) && (aId != IndexEnnemi))
+   {
+      IndexEnnemi++;
+      IterDonnees++;
+   }
+
+   if ((IterDonnees != mDonneesEnnemis.end ()) && (aId == IndexEnnemi))
+   {
+      aRessource  = IterDonnees->second.mRessource;
+      aLargeur    = IterDonnees->second.mLargeur;
+      aHauteur    = IterDonnees->second.mHauteur;
+      aVitesse    = IterDonnees->second.mVitesse;
+      aVie        = IterDonnees->second.mVie;
+
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
 bool CConfiguration::GetRessourceEnnemiParType (const int aType, std::string& aRessource) const
 {
    int IndexEnnemi = 0;

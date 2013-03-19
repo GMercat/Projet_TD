@@ -11,23 +11,11 @@ CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseD
    mLargeur          (20), // TODO
    mHauteur          (20)  // TODO
 {
+   std::string Ressource; // TODO non utilisé !
+
+   mConfig.GetCaracsEnnemiParId ((int)mType, Ressource, mLargeur, mHauteur, mVitesse, mVie);
+
    mpIA->GetCoordonneesCentreCaseCaseParNumero (aNumCaseDepart, mCoordonnee);
-   
-   switch (mType)
-   {
-      case eType1:
-         mVitesse = 2;
-         mVie     = 100;
-         break;
-      case eType2:
-         mVitesse = 10;
-         mVie     = 50;
-         break;
-      default:
-         mVitesse = 1;
-         mVie     = 100;
-         break;
-   }
 }
 
 CEnnemi::~CEnnemi (void)
