@@ -54,14 +54,14 @@ void CCase::OnAffiche (CSurface::Ptr& aSurfaceDestPtr)
  *
  * @return Pointeur intelligent sur la tour construite
  */
-CTour::Ptr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence)
+CTour::Ptr& CCase::ConstruireTour (CConfiguration& aConfig, int aTypeTour)
 {
    TCoordonnee CoordCentre;
    
    CoordCentre.mX = mPositionPtr->GetX () + (mPositionPtr->GetW () / 2);
    CoordCentre.mY = mPositionPtr->GetY () + (mPositionPtr->GetH () / 2);
 
-   mTourPtr = CTour::Ptr (new CTour (aConfig, CoordCentre, aTypeTour, aPortee, aPuissance, aVitesse, aCadence));
+   mTourPtr = CTour::Ptr (new CTour (aConfig, CoordCentre, aTypeTour));
    return mTourPtr;
 }
 

@@ -14,7 +14,7 @@ public:
    typedef std::list<CTour::Ptr>    Liste;
 
 public:
-   CTour	   (CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
+   CTour	   (CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour);
 	~CTour	(void);
 
    void Afficher (CSurface::Ptr& aEcranPtr);

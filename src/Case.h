@@ -28,7 +28,7 @@ public:
 	virtual  void OnInit     (void);
 	virtual  void OnAffiche  (CSurface::Ptr& aSurfaceDestPtr);
    
-   CTour::Ptr& ConstruireTour (CConfiguration& aConfig, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence);
+   CTour::Ptr& ConstruireTour (CConfiguration& aConfig, int aTypeTour);
    
 	bool EstDedans	(int aX, int aY);
 	bool EstVide	(void);

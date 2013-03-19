@@ -1,15 +1,15 @@
 #include "Tour.h"
 
-CTour::CTour	(CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour, int aPortee, int aPuissance, int aVitesse, int aCadence):
+CTour::CTour	(CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour):
    mConfig              (aConfig),
    mCoordCentre         (aCoordCentre),
    mAngleTire           (0.0),
-   mTypeTour            (aTypeTour),
-   mPorteeTire          (aPortee),
-   mPuissanceProjectile (aPuissance),
-   mVitesseProjectile   (aVitesse),
-   mCadenceTire         (aCadence)
-{
+   mTypeTour            (aTypeTour)
+{   
+   std::string Ressource; // Non utilisé ici !
+
+   mConfig.GetCaracsTourParId (mTypeTour, Ressource, mPorteeTire, mPuissanceProjectile, mVitesseProjectile, mCadenceTire);
+
    // TODO Config nom image
    std::string NomImageBase ("../../ressources/Tour_Base.bmp");
    std::string NomImageTourelle ("../../ressources/Tour_Tourelle.bmp");

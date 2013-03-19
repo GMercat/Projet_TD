@@ -172,14 +172,7 @@ int CTerrain::OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMen
 
 CTour::Ptr& CTerrain::ConstruireTour (int aTypeTourSelectMenu, int aNumCaseCliquee)
 {
-   std::string Ressource; // Non utilisé ici !
-   int Portee;
-   int Puissance;
-   int Vitesse;
-   int Cadence;
-
-   mConfig.GetCaracsTourParId (aTypeTourSelectMenu, Ressource, Portee, Puissance, Vitesse, Cadence);
-   return mCases [aNumCaseCliquee]->ConstruireTour (mConfig, aTypeTourSelectMenu, Portee, Puissance, Vitesse, Cadence);
+   return mCases [aNumCaseCliquee]->ConstruireTour (mConfig, aTypeTourSelectMenu);
 }
 
 void CTerrain::AnnuleDerniereModif (void)
