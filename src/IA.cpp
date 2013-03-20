@@ -287,7 +287,7 @@ void CIA::CalculCheminMinimaux (void)
       }
    }
 
-   std::cout << "CalculCheminMinimaux=" << Timer.GetNbTicks () << std::endl;
+   mLog << Debug << "CalculCheminMinimaux=" << Timer.GetNbTicks () << EndLine;
 }
 
 

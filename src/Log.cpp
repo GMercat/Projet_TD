@@ -107,11 +107,15 @@ void CLog::EcrireLog (void) const
 {
    if (mLevel >= LOG_INFO) // TODO a définir le niveau des log
    {
-      std::cout << (char) 27 << "[" << GetSeverityEscapeColor (mLevel) << "m"
+      std::cout << std::setfill(' ') << std::setw(10) << std::left << mPrefix.c_str ()
+                << ": "
+                << std::setfill(' ') << std::setw(0) << mFluxUtf16.str ().c_str () << std::endl;
+
+      /*std::cout << (char) 27 << "[" << GetSeverityEscapeColor (mLevel) << "m"
                 << std::setfill(' ') << std::setw(10) << std::left << mPrefix.c_str ()
                 << " "
                 << std::setfill(' ') << std::setw(0) << mFluxUtf16.str ().c_str ()
-                << (char) 27 << "[39m" << std::endl;
+                << (char) 27 << "[39m" << std::endl;*/
    }
 }
 

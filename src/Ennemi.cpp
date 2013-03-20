@@ -151,7 +151,7 @@ void CEnnemi::Touche (int aPuissance)
 {
    mVie -= aPuissance;
 
-   mLog << Info << "Vie restante = " << mVie << EndLine;
+   mLog << Debug << "Vie restante = " << mVie << EndLine;
 }
 
 bool CEnnemi::EstVivant (void)
