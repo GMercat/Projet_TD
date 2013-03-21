@@ -1,4 +1,5 @@
 #include "Surface.h"
+#include <SDL/SDL_rotozoom.h>
 
 CSurface::CSurface (bool abEstFenetre):
    mLog                    ("Surface"),
