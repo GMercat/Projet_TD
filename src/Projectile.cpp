@@ -3,10 +3,10 @@
 
 CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, TCoordonnee& aCoordonnee, int aPuissance, int aVitesse) :
    mLog              ("Projectile"),
-   mEnnemiCiblePtr   (aEnnemiCiblePtr),
-   mCoordonnee       (aCoordonnee),
    mPuissance        (aPuissance),
-   mVitesse          (aVitesse)
+   mVitesse          (aVitesse),
+   mCoordonnee       (aCoordonnee),
+   mEnnemiCiblePtr   (aEnnemiCiblePtr)
 {
    ;
 }

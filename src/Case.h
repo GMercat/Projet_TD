@@ -35,7 +35,7 @@ public:
 
 	TIndexTableau& GetIdPlateau (void);
 	
-   const ETypeCase	GetType        (void) const;
+         ETypeCase	GetType        (void) const;
          void	      SetType        (ETypeCase aeNouvelType);
          void	      SetPosition    (CRect::Ptr& aRectPtr, int aIdPlateauX, int aIdPlateauY);
          void        SetNumCase     (int aNumCase);

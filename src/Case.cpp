@@ -100,7 +100,7 @@ bool CCase::EstVide (void)
  *
  * @return  Le type de la case
  */
-const CCase::ETypeCase	CCase::GetType (void) const
+CCase::ETypeCase	CCase::GetType (void) const
 {
 	return mType;
 }

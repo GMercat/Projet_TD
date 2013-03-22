@@ -116,7 +116,6 @@ void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
          CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
          if (EtatCase == CCase::eTour)
          {
-            int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
             mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr);
          }
          else
@@ -147,8 +146,6 @@ void CTerrain::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
 
 int CTerrain::OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu)
 {
-   bool bCaseTrouvee = false;
-
    // Cas 1 : la case est vide et un type de tour est sélectionné dans le menu
    if (GetCase(aCoordonneeClic)->EstVide() && (aTypeTourSelectMenu != -1))
    {

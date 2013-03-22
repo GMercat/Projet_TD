@@ -40,8 +40,6 @@ void CConfiguration::RaZ()
  */
 bool CConfiguration::Chargement (const std::string& aNomFichier)
 {
-   int Position = 0;
-
    std::ifstream Fichier (aNomFichier.c_str());
 
    if (false == Fichier.good())
@@ -464,7 +462,7 @@ bool CConfiguration::LectureLigne (std::string& aLigne, std::string& aCle, std::
 {
    bool bResultatLecture = false;
 
-   int Position = aLigne.find ('#');
+   unsigned int Position = aLigne.find ('#');
 
    if (Position != std::string::npos)
    {
@@ -490,8 +488,8 @@ bool CConfiguration::LectureLigne (std::string& aLigne, std::string& aCle, std::
 
 void CConfiguration::Trim (const std::string& aStringEntree, std::string& aStringSortie)
 {
-   int Last  = 0;
-   int First = aStringEntree.find_first_not_of (" \t");
+   unsigned int Last  = 0;
+   unsigned int First = aStringEntree.find_first_not_of (" \t");
 
    if (First != std::string::npos)
    {
