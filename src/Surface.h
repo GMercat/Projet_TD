@@ -21,7 +21,7 @@ public:
    void Flip            (void);
    void Free            (void);
    bool SetVideoMode    (const int aLargeur, const int aHauteur);
-   void Rotation		(double aAngleDegre);
+   void Rotation		   (double aAngleDegre);
    void Fill            (int aValeurRouge, int aValeurVert, int aValeurBleu);
 
 protected:

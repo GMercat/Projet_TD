@@ -28,12 +28,7 @@ void CMoteur::OnClic (const TCoordonnee& aCoordonneeClic)
 
 void CMoteur::OnMotion (const TCoordonnee& aCoordonneeSouri)
 {
-   // Si on survole le plateau et si une tour est sélectionnée
-   // TODO a revoir/refaire autrement... Directement dans la classe CJeu
-   if (mJeu.GetPlateau ().EstDansPlateau (aCoordonneeSouri) && (mJeu.GetTourSelectionnee () != -1))
-   {
-      mJeu.GetPlateau ().OnSurvoleCase (aCoordonneeSouri);
-   }
+   mJeu.OnSurvole (aCoordonneeSouri);
 }
 
 void CMoteur::OnProgression   (void)

@@ -116,7 +116,6 @@ void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
          CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
          if (EtatCase == CCase::eTour)
          {
-            int TypeCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetTypeTour ();
             mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr);
          }
          else
@@ -145,29 +144,46 @@ void CTerrain::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
    mImagePausePtr->Afficher (aEcranPtr, PositionPtr);
 }
 
-int CTerrain::OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu)
+// Méthode déterminant la construction ou la sélection d'un tour
+// Retourne true si une tour existait et donc est sélectionné, false sinon.
+bool CTerrain::OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu, int& aNumCaseCliquee)
 {
-   bool bCaseTrouvee = false;
+   bool bSelectionTour  = false;
+   bool bCaseTrouvee    = false;
+
+   CCase::Ptr CaseCliquee = GetCase (aCoordonneeClic);
+
+   DeselectionTour ();
 
    // Cas 1 : la case est vide et un type de tour est sélectionné dans le menu
-   if (GetCase(aCoordonneeClic)->EstVide() && (aTypeTourSelectMenu != -1))
+   if (CaseCliquee->EstVide() && (aTypeTourSelectMenu != -1))
    {
       //On met le type à jour
-      GetCase(aCoordonneeClic)->SetType (CCase::eTour);
+      CaseCliquee->SetType (CCase::eTour);
 
-      mIndexDerniereCaseModifiee = GetCase(aCoordonneeClic)->GetIdPlateau ();
+      mIndexDerniereCaseModifiee = CaseCliquee->GetIdPlateau ();
+      mIndexCaseSelectionnee     = mIndexDerniereCaseModifiee;
    }
 
-   // Cas 2 : la case contient une tour, on l'upgrade (TODO gestion des fonds dispo !)
-   else if (false == GetCase (aCoordonneeClic)->EstVide ())
+   // Cas 2 : la case contient une tour, on la sélection pour afficher sa portée et toutes les infos sur elle (TODO endroit de l'affichage à définir)
+   //         On déselectionne la tour du menu dans le contexte
+   else if (false == CaseCliquee->EstVide ())
    {
-      // TODO upgrade
-      mIndexDerniereCaseModifiee = GetCase(aCoordonneeClic)->GetIdPlateau ();
+      // Marque la tour comme celle sélectionnée
+      CaseCliquee->MarqueSelectionnee (true);
+
+      // Désélection dans le contexte du type de tour à construire
+      aTypeTourSelectMenu = -1;
+
+      mIndexCaseSelectionnee = CaseCliquee->GetIdPlateau ();
+      bSelectionTour = true;
    }
 
    mLog << Info << "Case (" << mIndexDerniereCaseModifiee.mIndLargeur << ", " << mIndexDerniereCaseModifiee.mIndHauteur << ")" << EndLine;
 
-   return IndexToNum (mIndexDerniereCaseModifiee);
+   aNumCaseCliquee = IndexToNum (mIndexDerniereCaseModifiee);
+
+   return bSelectionTour;
 }
 
 CTour::Ptr& CTerrain::ConstruireTour (int aTypeTourSelectMenu, int aNumCaseCliquee)
@@ -182,6 +198,14 @@ void CTerrain::AnnuleDerniereModif (void)
       GetCase (mIndexDerniereCaseModifiee)->SetType (CCase::eVide);
       GetCase (mIndexDerniereCaseModifiee)->SetPlusCourtChemin (GetCase (mIndexDerniereCaseModifiee)->EstPlusCourtChemin ());
    }
+}
+
+/**
+ * @brief   Désélection de la tour
+ */
+void CTerrain::DeselectionTour (void)
+{
+   mIndexCaseSelectionnee.RaZ ();   
 }
 
 bool CTerrain::EstCaseVide (const TIndexTableau& aIndexCase)

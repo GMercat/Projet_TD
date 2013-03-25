@@ -15,12 +15,13 @@ public:
    CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte);
    ~CPlateau (void);
 
-   bool  OnInit             (void);
-   void  OnReset            (void);
-   int   OnClic             (const TCoordonnee& aCoordonneeClic);
-   void  OnAffiche          (CSurface::Ptr& aEcranPtr);
-   void  OnAfficheEnPause   (CSurface::Ptr& aEcranPtr);
-   void  OnSurvoleCase      (const TCoordonnee& aCoordonnee);
+   bool  OnInit            (void);
+   void  OnReset           (void);
+   bool  OnClic            (const TCoordonnee& aCoordonneeClic, int& aNumCaseCliquee);
+   void  OnAffiche         (CSurface::Ptr& aEcranPtr);
+   void  OnAfficheEnPause  (CSurface::Ptr& aEcranPtr);
+   void  OnSurvoleCase     (const TCoordonnee& aCoordonnee);
+   void  OnSurvoleCase     (const TCoordonnee& aCoordonnee, const int aTypeTourSelect);
 
    bool EstDansPlateau     (const TCoordonnee& aCoordonneeClic);
    bool EstCaseVide        (int aIndexLargeur, int aIndexHauteur);

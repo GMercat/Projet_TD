@@ -9,6 +9,7 @@ CCase::CCase (void):
    mNumCase             (-1),
    mbEstPlusCourtChemin (false),
    mbEstSurvolee        (false),
+   mbEstSelectionnee    (false),
 	mCourImage	         (0),
    mPositionPtr         (new CRect)
 {
@@ -39,7 +40,7 @@ void CCase::OnInit (void)
  */
 void CCase::OnAffiche (CSurface::Ptr& aSurfaceDestPtr)
 {
-   mTourPtr->Afficher (aSurfaceDestPtr);
+   mTourPtr->Afficher (aSurfaceDestPtr, mbEstSelectionnee);
 }
 
 /**
@@ -232,6 +233,16 @@ TIndexTableau& CCase::GetIdPlateau (void)
 void CCase::MarqueSurvolee (bool abEstSurvolee)
 {
    mbEstSurvolee = abEstSurvolee;
+}
+
+/**
+ * @brief   Marque la case comme sélectionnée par un clic
+ *
+ * @param[in] abEstSelectionnee  Nouvelle valeur de la sélection
+ */
+void CCase::MarqueSelectionnee (bool abEstSelectionnee)
+{
+   mbEstSelectionnee = abEstSelectionnee;
 }
 
 bool CCase::EstSurvolee (void)

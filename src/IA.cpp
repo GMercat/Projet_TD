@@ -475,7 +475,7 @@ void CIA::AfficherMatrice (void)
    {
       for (int IterColonne= 0; IterColonne < NbCaseLargeur * NbCaseHauteur; IterColonne++)
       {
-         mLog << Info << mMatriceGraph[IterLigne][IterColonne] << " ";
+         mLog << Debug << mMatriceGraph[IterLigne][IterColonne] << " ";
       }
       mLog << EndLine;
    }

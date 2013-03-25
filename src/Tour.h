@@ -17,7 +17,7 @@ public:
    CTour	   (CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour);
 	~CTour	(void);
 
-   void Afficher (CSurface::Ptr& aEcranPtr);
+   void Afficher (CSurface::Ptr& aEcranPtr, bool abEstSelectionnee);
 
    void GetCentre (TCoordonnee& aCoordonnee);
 

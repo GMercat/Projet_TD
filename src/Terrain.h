@@ -16,10 +16,11 @@ public :
    void  OnReset           (int aNumCaseDepart, int aNumCaseArrivee);
    void  OnAffiche         (CSurface::Ptr& aEcranPtr);
    void  OnAfficheEnPause  (CSurface::Ptr& aEcranPtr);
-   int   OnClic            (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu);
+   bool  OnClic            (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMenu, int& aNumCaseCliquee);
 
    CTour::Ptr& ConstruireTour       (int aTypeTourSelectMenu, int aNumCaseCliquee);
    void        AnnuleDerniereModif  (void);
+   void        DeselectionTour      (void);
 
    bool EstCaseVide (const TIndexTableau& aIndexCase);
 
@@ -52,6 +53,7 @@ private:
    int mHauteurCase;    // Hauteur d'une case lu dans le fichier de config
 
    TIndexTableau mIndexDerniereCaseModifiee;
+   TIndexTableau mIndexCaseSelectionnee;
    
    CImage::Ptr   mImagePausePtr;
 

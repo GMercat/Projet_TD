@@ -24,6 +24,7 @@ public:
    void OnQuit          (void);
    void OnProgression   (void);
    void OnTire          (void);
+   void OnSurvole       (const TCoordonnee& aCoordonneeSurvole);
 
    void TraiteDemande (void);
 

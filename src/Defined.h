@@ -31,8 +31,7 @@ struct TIndexTableau
 
    TIndexTableau ()
    {
-      mIndLargeur = 0;
-      mIndHauteur = 0;
+      RaZ ();
    };
 
    TIndexTableau (int aIndexLargeur, int aIndexHauteur)
@@ -47,6 +46,12 @@ struct TIndexTableau
       this->mIndHauteur = aIndex.mIndHauteur;
 
       return *this;
+   };
+
+   void RaZ (void)
+   {
+      mIndLargeur = -1;
+      mIndHauteur = -1;
    };
 };
 

@@ -27,10 +27,15 @@ CTour::~CTour (void)
    ;
 }
 
-void CTour::Afficher (CSurface::Ptr& aEcranPtr)
+void CTour::Afficher (CSurface::Ptr& aEcranPtr, bool abEstSelectionnee)
 {
    mImageBasePtr     ->AfficherParCentre (aEcranPtr, mCoordCentre);   
    mImageTourellePtr ->AfficherParCentre (aEcranPtr, mCoordCentre);
+
+   if (abEstSelectionnee)
+   {
+      //TODO
+   }
 }
 
 void CTour::GetCentre (TCoordonnee& aCoordonnee)

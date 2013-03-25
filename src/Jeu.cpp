@@ -60,13 +60,14 @@ bool CJeu::OnInit (void)
 
 void CJeu::OnClic (const TCoordonnee& aCoordonneeClic)
 {
-   int   NumCaseCliquee = -1;
-   int   IterLargeur    = 0;
-   int   IterHauteur    = 0;
+   bool  bCaseSelectionnee = false;
+   int   NumCaseCliquee    = -1;
+   int   IterLargeur       = 0;
+   int   IterHauteur       = 0;
 
    if (mContexte.mbPartieEnCours)
    {
-      NumCaseCliquee = mPlateau.OnClic (aCoordonneeClic);
+      bCaseSelectionnee = mPlateau.OnClic (aCoordonneeClic, NumCaseCliquee);
    }
 
    if (NumCaseCliquee == -1)
@@ -75,28 +76,37 @@ void CJeu::OnClic (const TCoordonnee& aCoordonneeClic)
    }
    else
    {
-      mIA.MiseAJourMatriceGraphe (NumCaseCliquee, true);
-      
-      // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
-      if (PlacementEstAutorise ())
+      // Le clic correspond à un clic sur une tour (sélection d'une tour)
+      if (bCaseSelectionnee)
       {
-         // Construction de la tour dans la case
-         CTour::Ptr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
-         mListTour.push_back (NouvelleTour);
-
-         // Première tour posée ?
-         if (mbPremiereTour)
-         {
-            mTimerVague.Start ();
-            
-            mbPremiereTour = false;
-         }
+         mLog << Info << "sélection d'une tour" << EndLine;
       }
+      // Le clic correspond à un clic sur une case vide (construction d'une tour)
       else
       {
-         mLog << Erreur << "Placement non autorisé" << EndLine;
-         mPlateau.AnnuleDerniereModif ();
-         mIA.MiseAJourMatriceGraphe (NumCaseCliquee, false);
+         mIA.MiseAJourMatriceGraphe (NumCaseCliquee, true);
+      
+         // Vérification de la possibilité de poser la tour en parcourant les listes des ennemis
+         if (PlacementEstAutorise ())
+         {
+            // Construction de la tour dans la case
+            CTour::Ptr NouvelleTour = mPlateau.ConstruireTour (NumCaseCliquee);
+            mListTour.push_back (NouvelleTour);
+
+            // Première tour posée ?
+            if (mbPremiereTour)
+            {
+               mTimerVague.Start ();
+            
+               mbPremiereTour = false;
+            }
+         }
+         else
+         {
+            mLog << Erreur << "Placement non autorisé" << EndLine;
+            mPlateau.AnnuleDerniereModif ();
+            mIA.MiseAJourMatriceGraphe (NumCaseCliquee, false);
+         }
       }
    }
 }
@@ -267,6 +277,24 @@ void CJeu::OnTire (void)
                (*IterTour)->Tire (EnnemiSelectionnePtr);
             }
          }
+      }
+   }
+}
+
+void CJeu::OnSurvole (const TCoordonnee& aCoordonneeSurvole)
+{
+   // Si on survole le plateau
+   if (mPlateau.EstDansPlateau (aCoordonneeSurvole))
+   {
+      // Cas 1 : Une tour est sélectionnée
+      if (mTypeTourSelect != -1)
+      {
+         mPlateau.OnSurvoleCase (aCoordonneeSurvole, mTypeTourSelect);
+      }
+      // Cas 2 : Pas de tour sélectionnée
+      else
+      {
+         mPlateau.OnSurvoleCase (aCoordonneeSurvole);
       }
    }
 }

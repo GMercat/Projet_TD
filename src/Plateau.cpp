@@ -51,17 +51,19 @@ void CPlateau::OnReset (void)
    mTerrain.OnReset (mNumCaseDepart, mNumCaseArrivee);
 }
 
-int CPlateau::OnClic (const TCoordonnee& aCoordonneeClic)
+// Méthode déterminant la construction ou la sélection d'un tour
+// Retourne true si une tour existait et donc est sélectionné, false sinon.
+bool CPlateau::OnClic (const TCoordonnee& aCoordonneeClic, int& aNumCaseCliquee)
 {
-   int NumCaseCliquee = -1;
-      
+   bool bSelectionTour = false;
+
    // Test si on est sur le plateau
    if(EstDansPlateau (aCoordonneeClic))
    {
-      NumCaseCliquee = mTerrain.OnClic (aCoordonneeClic, mContexte.mTypeTourSelectMenu);
+      bSelectionTour = mTerrain.OnClic (aCoordonneeClic, mContexte.mTypeTourSelectMenu, aNumCaseCliquee);
    }
 
-   return NumCaseCliquee;
+   return bSelectionTour;
 }
 
 void CPlateau::OnAffiche (CSurface::Ptr& aEcranPtr)
@@ -74,15 +76,30 @@ void CPlateau::OnAfficheEnPause (CSurface::Ptr& aEcranPtr)
    mTerrain.OnAfficheEnPause (aEcranPtr);
 }
 
+// Survole du plateau sans tour sélectionné
 void CPlateau::OnSurvoleCase (const TCoordonnee& aCoordonnee)
 {
    //On renseigne le numéro de la case que l'on a trouvé
    int NumeroCaseSurvolee = mTerrain.CoordonneeToNum (aCoordonnee);
-
-   mLog << Erreur << "Case n: " << NumeroCaseSurvolee << " survolée" << EndLine;
-
+   
    if (NumeroCaseSurvolee != mDerniereCaseSurvolee)
    {
+      mLog << Erreur << "Case n: " << NumeroCaseSurvolee << " survolée" << EndLine;
+    
+      mDerniereCaseSurvolee = NumeroCaseSurvolee;
+   }
+}
+
+// Survole du plateau avec une tour sélectionné dans le menu
+void CPlateau::OnSurvoleCase (const TCoordonnee& aCoordonnee, const int aTypeTourSelect)
+{
+   //On renseigne le numéro de la case que l'on a trouvé
+   int NumeroCaseSurvolee = mTerrain.CoordonneeToNum (aCoordonnee);
+   
+   if (NumeroCaseSurvolee != mDerniereCaseSurvolee)
+   {
+      mLog << Erreur << "Case n: " << NumeroCaseSurvolee << " survolée" << EndLine;
+
       if (mDerniereCaseSurvolee != -1)
       {
          mTerrain.GetCase (aCoordonnee)->MarqueSurvolee (false);

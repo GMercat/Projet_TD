@@ -47,16 +47,18 @@ public:
    void SetPlusCourtChemin (bool abEstPlusCourtChemin);
    bool EstPlusCourtChemin (void);
 
-   void MarqueSurvolee (bool abEstSurvolee);
+   void MarqueSurvolee     (bool abEstSurvolee);
+   void MarqueSelectionnee (bool abEstSelectionnee);
    bool EstSurvolee (void);
 
 private:
    CLog           mLog;
 	ETypeCase      mType;
    
-   int         mNumCase;
-   bool        mbEstPlusCourtChemin;
-   bool        mbEstSurvolee;
+   int   mNumCase;
+   bool  mbEstPlusCourtChemin;
+   bool  mbEstSurvolee;
+   bool  mbEstSelectionnee;
 
    TIndexTableau  mIdPlateau;
 
