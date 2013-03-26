@@ -8,9 +8,9 @@ CPlateau::CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte):
    mConfig                 (aConfig),
    mContexte               (aContexte),
    mTerrain                (aConfig),
+   mDerniereCaseSurvolee   (-1),
    mNumCaseDepart          (-1),
-   mNumCaseArrivee         (-1),
-   mDerniereCaseSurvolee   (-1)
+   mNumCaseArrivee         (-1)
 {
 }
 
@@ -33,8 +33,6 @@ bool CPlateau::OnInit (void)
       mLog << Debug << "NumCaseDepart = " << mNumCaseDepart << EndLine;
       mLog << Debug << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
       
-      int NumCase = 0;
-
 	   // Initialisation du terrain
       mTerrain.OnInit (mNumCaseDepart, mNumCaseArrivee);
    }

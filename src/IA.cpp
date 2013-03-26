@@ -64,7 +64,7 @@ void CIA::ConstruireMatriceGraphe (void)
    int NbCaseHauteur = mPlateau.GetNbCaseHauteur ();
 
    // Parcours du plateau pour construire la matrice
-   for (IterLargeur; IterLargeur < NbCaseLargeur; IterLargeur++)
+   for (; IterLargeur < NbCaseLargeur; IterLargeur++)
    {
       for (IterHauteur = 0; IterHauteur < NbCaseHauteur; IterHauteur++)
       {
@@ -243,7 +243,6 @@ void CIA::CalculCheminMinimaux (void)
 
    int NbCaseLargeur = mPlateau.GetNbCaseLargeur ();
    int NbCaseHauteur = mPlateau.GetNbCaseHauteur ();
-   int NbLigneColonne = NbCaseLargeur * NbCaseHauteur;
 
    int IterLigne = 0;
          
@@ -317,7 +316,7 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
    mLog << Debug << "Nombre d'iteration : " << NbIter << EndLine;
 
    std::list <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
-   for (IterPlusCourtChemin; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
+   for (; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
       mLog << Debug << (*IterPlusCourtChemin) << " " << EndLine;
    }
@@ -386,7 +385,7 @@ void CIA::CalculPCCheminReel (std::list<int>& aPCChemin, TCoordonnee& aCoordonne
       IterPCChemin++;
       std::list<int>::iterator IterLast = aPCChemin.end ();
       IterLast--;
-      for (IterPCChemin; IterPCChemin != IterLast; ++IterPCChemin)
+      for (; IterPCChemin != IterLast; ++IterPCChemin)
       {
          IterPCCheminNext = IterPCChemin;
          IterPCCheminNext++;

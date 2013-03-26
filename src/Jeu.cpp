@@ -2,14 +2,14 @@
 
 CJeu::CJeu (void):
    mLog                    ("Jeu"),
-   mPlateau                (mConfig, mContexte),
    mIA                     (mPlateau),
+   mPlateau                (mConfig, mContexte),
    mMenu                   (mConfig, mContexte),
+	mbPremiereTour          (true),
 	mHauteur                (1),
 	mLargeur                (1),
-	mbPremiereTour          (true),
-   mTempsInterVague        (1),
-   mTypeTourSelect         (-1)
+   mTypeTourSelect         (-1),
+   mTempsInterVague        (1)
 {
    ;
 }
@@ -62,8 +62,6 @@ void CJeu::OnClic (const TCoordonnee& aCoordonneeClic)
 {
    bool  bCaseSelectionnee = false;
    int   NumCaseCliquee    = -1;
-   int   IterLargeur       = 0;
-   int   IterHauteur       = 0;
 
    if (mContexte.mbPartieEnCours)
    {
@@ -241,8 +239,6 @@ void CJeu::OnTire (void)
 {
    if (mContexte.mbPartieEnCours)
    {
-      int XTour = 0;
-      int Ytour = 0;
       TCoordonnee CoordonneeCentreTour;
 
       CEnnemi::Ptr   EnnemiSelectionnePtr;

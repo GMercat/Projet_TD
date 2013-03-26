@@ -1,0 +1,3 @@
+[submodule "libs/LoggerCpp"]
+	path = libs/LoggerCpp
+	url = https://GMercat@github.com/GMercat/LoggerCpp.git
