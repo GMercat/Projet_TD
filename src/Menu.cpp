@@ -129,7 +129,7 @@ bool CMenu::OnInit (void)
             
       int iImage = 0;
       
-      bReturn &= mConfig.GetRessourcesTours (mNomImagesTour);
+      bReturn &= mConfig.GetRessourcesMenuTours (mNomImagesTour);
       mImagesTours.resize (mNbTours);
 
       // Pour les boutons tours

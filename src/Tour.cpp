@@ -5,20 +5,19 @@ CTour::CTour	(CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTyp
    mCoordCentre         (aCoordCentre),
    mAngleTire           (0.0),
    mTypeTour            (aTypeTour)
-{   
-   std::string Ressource; // Non utilisé ici !
+{
+   std::string CheminRessource;
+   std::string NomImageBase;
+   std::string NomImageTourelle;
 
-   mConfig.GetCaracsTourParId (mTypeTour, Ressource, mPorteeTire, mPuissanceProjectile, mVitesseProjectile, mCadenceTire);
+   bool bLectureConf  = mConfig.Get ("ressourcesImages", CheminRessource);
+   bLectureConf      &= mConfig.GetCaracsTourParId (mTypeTour, NomImageBase, NomImageTourelle, mPorteeTire, mPuissanceProjectile, mVitesseProjectile, mCadenceTire);
 
-   // TODO Config nom image
-   std::string NomImageBase ("../../ressources/Tour_Base.bmp");
-   std::string NomImageTourelle ("../../ressources/Tour_Tourelle.bmp");
-
-   mImageBasePtr.reset (new CImage ());
-   mImageTourellePtr.reset (new CImage ());
+   //On charge toutes les images dans les surfaces associées
+   mImageBasePtr.reset (new CImage (CheminRessource));
    mImageBasePtr->Load (NomImageBase);
+   mImageTourellePtr.reset (new CImage (CheminRessource));
    mImageTourellePtr->Load (NomImageTourelle);
-
    mImageTourellePtr->SetTransparence (255,0,0);
 }
 

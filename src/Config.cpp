@@ -243,26 +243,28 @@ bool CConfiguration::GetRessourceCaseParNom (const std::string& aNom, std::strin
 /**
  * @brief   Recupération des caractéristiques d'une tour à partir du nom
  *
- * @param[in]  aNom        Nom de la tour
- * @param[out] aRessource  Chemin du fichier
- * @param[out] aPortee     Portée de tire de la tour
- * @param[out] aPuissance  Puissance de tire de la tour
- * @param[out] aVitesse    Vitesse des projectiles tirés par la tour
- * @param[out] aCadence    Cadence de tire de la tour 
+ * @param[in]  aNom                 Nom de la tour
+ * @param[out] aRessourceBase       Nom du fichier utilisé pour la base de le tour
+ * @param[out] aRessourceTourelle   Nom du fichier utilisé pour la tourelle de tire de la tour
+ * @param[out] aPortee              Portée de tire de la tour
+ * @param[out] aPuissance           Puissance de tire de la tour
+ * @param[out] aVitesse             Vitesse des projectiles tirés par la tour
+ * @param[out] aCadence             Cadence de tire de la tour 
  *
  * @retrun  True si les caractéristiques ont été trouvées
  */
-bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
+bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& aRessourceBase, std::string& aRessourceTourelle, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
 {
    std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.find (aNom);
 
    if (IterDonnees != mDonneesTours.end ())
    {
-      aRessource  = IterDonnees->second.mRessource;
-      aPortee     = IterDonnees->second.mPortee;
-      aPuissance  = IterDonnees->second.mPuissance;
-      aVitesse    = IterDonnees->second.mVitesse;
-      aCadence    = IterDonnees->second.mCadence;
+      aRessourceBase       = IterDonnees->second.mRessourceBase;
+      aRessourceTourelle   = IterDonnees->second.mRessourceTourelle;
+      aPortee              = IterDonnees->second.mPortee;
+      aPuissance           = IterDonnees->second.mPuissance;
+      aVitesse             = IterDonnees->second.mVitesse;
+      aCadence             = IterDonnees->second.mCadence;
 
       return true;
    }
@@ -276,16 +278,17 @@ bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& 
 /**
  * @brief   Recupération des caractéristiques d'une tour à partir de son index
  *
- * @param[in]  aId         Index de la tour
- * @param[out] aRessource  Chemin du fichier
- * @param[out] aPortee     Portée de tire de la tour
- * @param[out] aPuissance  Puissance de tire de la tour
- * @param[out] aVitesse    Vitesse des projectiles tirés par la tour
- * @param[out] aCadence    Cadence de tire de la tour 
+ * @param[in]  aId                  Index de la tour
+ * @param[out] aRessourceBase       Nom du fichier utilisé pour la base de la tour
+ * @param[out] aRessourceTourelle   Nom du fichier utilisé pour la tourelle de tire de la tour
+ * @param[out] aPortee              Portée de tire de la tour
+ * @param[out] aPuissance           Puissance de tire de la tour
+ * @param[out] aVitesse             Vitesse des projectiles tirés par la tour
+ * @param[out] aCadence             Cadence de tire de la tour 
  *
  * @retrun  True si les caractéristiques ont été trouvées
  */
-bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessource, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
+bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessourceBase, std::string& aRessourceTourelle, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
 {
    int IndexTour = 0;
    std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.begin ();
@@ -298,11 +301,12 @@ bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessource,
 
    if ((IterDonnees != mDonneesTours.end ()) && (aId == IndexTour))
    {
-      aRessource  = IterDonnees->second.mRessource;
-      aPortee     = IterDonnees->second.mPortee;
-      aPuissance  = IterDonnees->second.mPuissance;
-      aVitesse    = IterDonnees->second.mVitesse;
-      aCadence    = IterDonnees->second.mCadence;
+      aRessourceBase       = IterDonnees->second.mRessourceBase;
+      aRessourceTourelle   = IterDonnees->second.mRessourceTourelle;
+      aPortee              = IterDonnees->second.mPortee;
+      aPuissance           = IterDonnees->second.mPuissance;
+      aVitesse             = IterDonnees->second.mVitesse;
+      aCadence             = IterDonnees->second.mCadence;
 
       return true;
    }
@@ -408,14 +412,14 @@ bool CConfiguration::GetRessourcesCases (std::vector<std::string>& aRessources) 
    return bResultat;
 }
 
-bool CConfiguration::GetRessourcesTours (std::vector<std::string>& aRessources) const
+bool CConfiguration::GetRessourcesMenuTours (std::vector<std::string>& aRessources) const
 {
    bool bResultat = false;
    
    std::map<std::string, TCaracsTour>::const_iterator IterCaracs;
    for (IterCaracs = mDonneesTours.begin (); IterCaracs != mDonneesTours.end (); IterCaracs++)
    {
-      aRessources.push_back((*IterCaracs).second.mRessource);
+      aRessources.push_back((*IterCaracs).second.mRessourceBase); // TODO mRessourceBase=>mRessourceMenu : Avoir une ressouces fixe (Base+tourelle) pour le menu
       bResultat = true;
    }
    return bResultat;
@@ -619,7 +623,13 @@ void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
    if (bResultatLecture)
    {
       // Lecture de la ressource associée
-      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mRessource);
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mRessourceBase);
+   }
+
+   if (bResultatLecture)
+   {
+      // Lecture de la ressource associée
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mRessourceTourelle);
    }
 
    if (bResultatLecture)
