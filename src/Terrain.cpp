@@ -1,7 +1,7 @@
 #include "Terrain.h"
 
 CTerrain::CTerrain (CConfiguration& aConfig):
-   mLog              ("Terrain"),
+   mLogger           ("Terrain"),
    mConfig           (aConfig),
    mNbCasesHauteur   (1),
    mNbCasesLargeur   (1)
@@ -179,7 +179,7 @@ bool CTerrain::OnClic (const TCoordonnee& aCoordonneeClic, int aTypeTourSelectMe
       bSelectionTour = true;
    }
 
-   mLog << Info << "Case (" << mIndexDerniereCaseModifiee.mIndLargeur << ", " << mIndexDerniereCaseModifiee.mIndHauteur << ")" << EndLine;
+   mLogger.info () << "Case (" << mIndexDerniereCaseModifiee.mIndLargeur << ", " << mIndexDerniereCaseModifiee.mIndHauteur << ")";
 
    aNumCaseCliquee = IndexToNum (mIndexDerniereCaseModifiee);
 

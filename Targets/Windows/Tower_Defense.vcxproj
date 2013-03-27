@@ -49,13 +49,17 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(OutDir)\..\..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL.lib;SDLmain.lib;sdlgfx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL.lib;SDLmain.lib;sdlgfx.lib;LoggerCpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,11 +103,10 @@
     <None Include="..\..\ressources\Vide_50.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Config.cpp" />
+    <ClCompile Include="..\..\src\ConfigJeu.cpp" />
     <ClCompile Include="..\..\src\ContexteJeu.cpp" />
     <ClCompile Include="..\..\src\Fenetre.cpp" />
     <ClCompile Include="..\..\src\Image.cpp" />
-    <ClCompile Include="..\..\src\Log.cpp" />
     <ClCompile Include="..\..\src\Mur.cpp" />
     <ClCompile Include="..\..\src\Projectile.cpp" />
     <ClCompile Include="..\..\src\Case.cpp" />
@@ -124,14 +127,13 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\Case.h" />
     <ClInclude Include="..\..\src\ContexteJeu.h" />
-    <ClInclude Include="..\..\src\Config.h" />
+    <ClInclude Include="..\..\src\ConfigJeu.h" />
     <ClInclude Include="..\..\src\Defined.h" />
     <ClInclude Include="..\..\src\Ennemi.h" />
     <ClInclude Include="..\..\src\Fenetre.h" />
     <ClInclude Include="..\..\src\IA.h" />
     <ClInclude Include="..\..\src\Image.h" />
     <ClInclude Include="..\..\src\Jeu.h" />
-    <ClInclude Include="..\..\src\Log.h" />
     <ClInclude Include="..\..\src\Menu.h" />
     <ClInclude Include="..\..\src\Moteur.h" />
     <ClInclude Include="..\..\src\Mur.h" />

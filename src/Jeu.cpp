@@ -1,7 +1,7 @@
 #include "Jeu.h"
 
 CJeu::CJeu (void):
-   mLog                    ("Jeu"),
+   mLogger                 ("Jeu"),
    mIA                     (mPlateau),
    mPlateau                (mConfig, mContexte),
    mMenu                   (mConfig, mContexte),
@@ -77,7 +77,7 @@ void CJeu::OnClic (const TCoordonnee& aCoordonneeClic)
       // Le clic correspond à un clic sur une tour (sélection d'une tour)
       if (bCaseSelectionnee)
       {
-         mLog << Info << "sélection d'une tour" << EndLine;
+         mLogger.info () << "sélection d'une tour";
       }
       // Le clic correspond à un clic sur une case vide (construction d'une tour)
       else
@@ -101,7 +101,7 @@ void CJeu::OnClic (const TCoordonnee& aCoordonneeClic)
          }
          else
          {
-            mLog << Erreur << "Placement non autorisé" << EndLine;
+            mLogger.error () << "Placement non autorisé";
             mPlateau.AnnuleDerniereModif ();
             mIA.MiseAJourMatriceGraphe (NumCaseCliquee, false);
          }

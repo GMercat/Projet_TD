@@ -5,12 +5,12 @@
 #include "Projectile.h"
 #include "Timer.h"
 #include "Image.h"
-#include "Config.h"
+#include "ConfigJeu.h"
 
 class CTour
 {
 public:
-   typedef boost::shared_ptr<CTour> Ptr;
+   typedef std::shared_ptr<CTour> Ptr;
    typedef std::list<CTour::Ptr>    Liste;
 
 public:

@@ -2,7 +2,7 @@
 #include "Plateau.h"
 
 CIA::CIA (CPlateau& aPlateau):
-   mLog     ("IA"),
+   mLogger     ("IA"),
    mPlateau (aPlateau)
 {
    ;
@@ -286,7 +286,7 @@ void CIA::CalculCheminMinimaux (void)
       }
    }
 
-   mLog << Debug << "CalculCheminMinimaux=" << Timer.GetNbTicks () << EndLine;
+   mLogger.debug () << "CalculCheminMinimaux=" << Timer.GetNbTicks ();
 }
 
 
@@ -313,12 +313,12 @@ bool CIA::CalculPlusCourtChemin (int aNumCaseDepart, int aNumCaseArrivee, std::l
 
    bReturn = (NbIter != NbIterMax);
 
-   mLog << Debug << "Nombre d'iteration : " << NbIter << EndLine;
+   mLogger.debug () << "Nombre d'iteration : " << NbIter;
 
    std::list <int>::iterator IterPlusCourtChemin = aPlusCourtChemin.begin ();
    for (; IterPlusCourtChemin != aPlusCourtChemin.end (); IterPlusCourtChemin++)
    {
-      mLog << Debug << (*IterPlusCourtChemin) << " " << EndLine;
+      mLogger.debug () << (*IterPlusCourtChemin) << " ";
    }
 
    return bReturn;
@@ -467,15 +467,17 @@ void CIA::GetCoordonneesCentreCaseCaseParNumero (int aNumero, TCoordonnee& aCoor
 
 void CIA::AfficherMatrice (void)
 {
+   /*std::ostringstream LigneMatrice;
    int NbCaseLargeur = mPlateau.GetNbCaseLargeur ();
    int NbCaseHauteur = mPlateau.GetNbCaseHauteur ();
 
    for (int IterLigne = 0; IterLigne < NbCaseLargeur * NbCaseHauteur; IterLigne++)
    {
+      LigneMatrice.str("");
       for (int IterColonne= 0; IterColonne < NbCaseLargeur * NbCaseHauteur; IterColonne++)
       {
-         mLog << Debug << mMatriceGraph[IterLigne][IterColonne] << " ";
+         LigneMatrice << mMatriceGraph[IterLigne][IterColonne] << " ";
       }
-      mLog << EndLine;
-   }
+      mLogger << LigneMatrice.str ();
+   }*/
 }

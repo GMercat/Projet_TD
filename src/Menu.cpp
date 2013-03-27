@@ -3,7 +3,7 @@
 #include "Case.h"
 
 CMenu::CMenu (CConfiguration& aConfig, CContexteJeu& aContexte):
-   mLog              ("Menu"),
+   mLogger              ("Menu"),
    mConfig           (aConfig),
    mContexte         (aContexte),
    mPositionFondPtr  (new CRect)
@@ -137,7 +137,7 @@ bool CMenu::OnInit (void)
       for (IterImage = mImagesTours.begin (); (IterImage != mImagesTours.end ()) && (bReturn); ++IterImage)
       {
          //On charge toutes les images dans les surfaces associées
-         mLog << Info << "Chargement de : " << mNomImagesTour[iImage].c_str () << EndLine;
+         mLogger.info () << "Chargement de : " << mNomImagesTour[iImage].c_str ();
 
          (*IterImage).reset (new CImage (CheminRessource));
          bReturn = (*IterImage)->Load (mNomImagesTour[iImage]);
@@ -147,7 +147,7 @@ bool CMenu::OnInit (void)
    }
    else
    {
-      mLog << Erreur << "Problème de configuration du menu" << EndLine;
+      mLogger.error () << "Problème de configuration du menu";
    }
 
    return bReturn;
@@ -187,7 +187,7 @@ void CMenu::OnClic (const TCoordonnee& aCoordonneeClic)
 //               break;
                
             default:
-               mLog << Info << "Ce bouton n'est pas actif dans ce mode" << EndLine;
+               mLogger.info () << "Ce bouton n'est pas actif dans ce mode";
                break;
          }
       }
@@ -210,7 +210,7 @@ void CMenu::OnClic (const TCoordonnee& aCoordonneeClic)
          {
             mContexte.mTypeTourSelectMenu = -1;
             
-            mLog << Info << "[GAME ON] Aucun bouton correspond à la position : " << aCoordonneeClic.mX << ", " << aCoordonneeClic.mY << EndLine;
+            mLogger.info () << "[GAME ON] Aucun bouton correspond à la position : " << aCoordonneeClic.mX << ", " << aCoordonneeClic.mY;
          }
       }
    }
@@ -223,7 +223,7 @@ void CMenu::OnClic (const TCoordonnee& aCoordonneeClic)
          {
             bBoutonTrouve = true;
 
-            mLog << Info << "Bouton trouve OFF : " << IdBouton << EndLine;
+            mLogger.info () << "Bouton trouve OFF : " << IdBouton;
          }
       }
 
@@ -248,13 +248,13 @@ void CMenu::OnClic (const TCoordonnee& aCoordonneeClic)
                break;
 
             default:
-               mLog << Info << "Ce bouton n'est pas actif dans ce mode" << EndLine;
+               mLogger.info () << "Ce bouton n'est pas actif dans ce mode";
                break;
          }
       }
       else
       {
-         mLog << Erreur << "[GAME OFF] Aucun bouton correspond à la position : " << aCoordonneeClic.mX << ", " << aCoordonneeClic.mY << EndLine;
+         mLogger.error () << "[GAME OFF] Aucun bouton correspond à la position : " << aCoordonneeClic.mX << ", " << aCoordonneeClic.mY;
       }
    }
 }

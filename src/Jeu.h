@@ -46,7 +46,7 @@ private:
    void LancementVagueEnnemis                   (void);
 
 private:
-   CLog           mLog;
+   Log::Logger           mLogger;
    CConfiguration mConfig;
    CIA            mIA;
    CPlateau       mPlateau;

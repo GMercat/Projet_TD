@@ -3,7 +3,6 @@
 
 #include "Defined.h"
 
-#include "Log.h"
 #include "Jeu.h"
 
 class CMoteur
@@ -24,7 +23,7 @@ public:
 	void OnDemande       (void);                                // La fonction de gestion des demandes en attente
 
 private:
-   CLog mLog;
+   Log::Logger mLogger;
 
 	//Le plateau de jeu
 	CJeu mJeu;

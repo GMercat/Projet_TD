@@ -2,7 +2,7 @@
 #include "Rect.h"
 
 CFenetre::CFenetre (void):
-   mLog ("Fenetre"),
+   mLogger ("Fenetre"),
    mLargeur (1),
    mHauteur (1)
 {
@@ -24,7 +24,7 @@ bool CFenetre::Init (int aLargeur, int aHauteur)
    //Initialisation de la SDL
    if (SDL_Init(SDL_INIT_VIDEO) != 0)
    {
-      mLog << Erreur << "Probleme pour initialiser SDL: " << SDL_GetError() << EndLine;
+      mLogger.error () << "Probleme pour initialiser SDL: " << SDL_GetError();
       bReturn = false;
    }
 

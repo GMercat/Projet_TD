@@ -8,7 +8,7 @@
 class CImage : public CSurface
 {
 public:
-   typedef boost::shared_ptr<CImage> Ptr;
+   typedef std::shared_ptr<CImage> Ptr;
    typedef std::vector<CImage::Ptr>  Vecteur;
 
 public:

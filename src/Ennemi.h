@@ -2,7 +2,7 @@
 #define _ENNEMI_H_
 
 #include "Defined.h"
-#include "Config.h"
+#include "ConfigJeu.h"
 #include "Image.h"
 
 class CIA;
@@ -18,7 +18,7 @@ public:
    };
 
 public:
-   typedef boost::shared_ptr<CEnnemi>  Ptr;
+   typedef std::shared_ptr<CEnnemi>  Ptr;
    typedef std::list<CEnnemi::Ptr>     Liste;
 
 public:
@@ -43,7 +43,7 @@ public:
    
 private:
    CConfiguration&   mConfig;
-   CLog              mLog;
+   Log::Logger              mLogger;
    CIA*              mpIA;
 
    EType mType;

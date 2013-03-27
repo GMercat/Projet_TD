@@ -6,7 +6,8 @@
 class CRect
 {
 public:
-   typedef boost::shared_ptr<CRect> Ptr;
+   typedef std::shared_ptr<CRect> Ptr;
+   
 
 public:
    CRect (void);

@@ -4,7 +4,7 @@
 
 
 CPlateau::CPlateau (CConfiguration& aConfig, CContexteJeu& aContexte):
-   mLog                    ("Plateau"),
+   mLogger                    ("Plateau"),
    mConfig                 (aConfig),
    mContexte               (aContexte),
    mTerrain                (aConfig),
@@ -30,15 +30,15 @@ bool CPlateau::OnInit (void)
 
    if (bConfig)
    {
-      mLog << Debug << "NumCaseDepart = " << mNumCaseDepart << EndLine;
-      mLog << Debug << "NumCaseArrivee = " << mNumCaseArrivee << EndLine;
+      mLogger.debug () << "NumCaseDepart = " << mNumCaseDepart;
+      mLogger.debug () << "NumCaseArrivee = " << mNumCaseArrivee;
       
 	   // Initialisation du terrain
       mTerrain.OnInit (mNumCaseDepart, mNumCaseArrivee);
    }
    else
    {
-      mLog << Erreur << "Erreur de lecture de la configuration du plateau" << EndLine;
+      mLogger.error () << "Erreur de lecture de la configuration du plateau";
    }
 
    return bConfig;
@@ -82,7 +82,7 @@ void CPlateau::OnSurvoleCase (const TCoordonnee& aCoordonnee)
    
    if (NumeroCaseSurvolee != mDerniereCaseSurvolee)
    {
-      mLog << Erreur << "Case n: " << NumeroCaseSurvolee << " survolée" << EndLine;
+      mLogger.error () << "Case n: " << NumeroCaseSurvolee << " survolée";
     
       mDerniereCaseSurvolee = NumeroCaseSurvolee;
    }
@@ -96,7 +96,7 @@ void CPlateau::OnSurvoleCase (const TCoordonnee& aCoordonnee, const int aTypeTou
    
    if (NumeroCaseSurvolee != mDerniereCaseSurvolee)
    {
-      mLog << Erreur << "Case n: " << NumeroCaseSurvolee << " survolée" << EndLine;
+      mLogger.error () << "Case n: " << NumeroCaseSurvolee << " survolée";
 
       if (mDerniereCaseSurvolee != -1)
       {

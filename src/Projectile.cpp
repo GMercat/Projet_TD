@@ -2,7 +2,7 @@
 #include <cmath>
 
 CProjectile::CProjectile (CEnnemi::Ptr aEnnemiCiblePtr, TCoordonnee& aCoordonnee, int aPuissance, int aVitesse) :
-   mLog              ("Projectile"),
+   mLogger           ("Projectile"),
    mPuissance        (aPuissance),
    mVitesse          (aVitesse),
    mCoordonnee       (aCoordonnee),
@@ -31,7 +31,7 @@ bool CProjectile::OnInit (std::string& aCheminRessource, std::string& aNomImage)
    }
    else
    {
-      mLog << Erreur << "Erreur lors du chargement de l'image d'un projectile " << aCheminRessource + aNomImage << EndLine;
+      mLogger.error () << "Erreur lors du chargement de l'image d'un projectile " << aCheminRessource + aNomImage;
    }
 	return bReturn;
 }

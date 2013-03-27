@@ -4,7 +4,7 @@
 
 CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee):
    mConfig           (aConfig),
-   mLog              ("Ennemi"),
+   mLogger              ("Ennemi"),
    mpIA              (apIA),
    mType             (aType),
    mNumCaseArrivee   (aNumCaseArrivee)
@@ -121,7 +121,7 @@ void CEnnemi::Avance (void)
    mPosition.mX = mCoordonnee.mX - (mLargeur / 2);
    mPosition.mY = mCoordonnee.mY - (mHauteur / 2);
 
-   mLog << Debug << "X = " << mCoordonnee.mX << ", Y = " << mCoordonnee.mY << EndLine;
+   mLogger.debug () << "X = " << mCoordonnee.mX << ", Y = " << mCoordonnee.mY;
 }
 
 bool CEnnemi::EstArrive (void)
@@ -151,7 +151,7 @@ void CEnnemi::Touche (int aPuissance)
 {
    mVie -= aPuissance;
 
-   mLog << Debug << "Vie restante = " << mVie << EndLine;
+   mLogger.debug () << "Vie restante = " << mVie;
 }
 
 bool CEnnemi::EstVivant (void)

@@ -2,10 +2,10 @@
 #include <SDL/SDL_rotozoom.h>
 
 CSurface::CSurface (bool abEstFenetre):
+   mLogger                 ("Surface"),
    mbEstFenetre            (abEstFenetre),
    mpSurfaceSDLOrigine     (NULL),
-   mpSurfaceSDLAffichable  (NULL),
-   mLog                    ("Surface")
+   mpSurfaceSDLAffichable  (NULL)
 {
 
 }
@@ -47,7 +47,7 @@ bool CSurface::LoadBMP (std::string aNom)
 
    if(mpSurfaceSDLOrigine == NULL || mpSurfaceSDLAffichable == NULL)
    {
-	   mLog << Erreur << "Probleme de chargement de l'image : " << aNom.c_str () << EndLine;
+	   mLogger.error () << "Probleme de chargement de l'image : " << aNom.c_str ();
 	   bResultat = false;
    }
 
@@ -59,7 +59,7 @@ void CSurface::SetTransparence (int aValeurRouge, int aValeurVert, int aValeurBl
    if(   (SDL_SetColorKey (mpSurfaceSDLOrigine, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDLOrigine->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1)
       || (SDL_SetColorKey (mpSurfaceSDLAffichable, SDL_SRCCOLORKEY, SDL_MapRGB(mpSurfaceSDLAffichable->format, aValeurRouge, aValeurVert, aValeurBleu)) == -1))
    {
-		mLog << Erreur << "Erreur avec la transparence" << EndLine;
+		mLogger.error () << "Erreur avec la transparence";
    }
 }
 

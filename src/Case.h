@@ -3,7 +3,7 @@
 
 #include "Defined.h"
 #include "Tour.h"
-#include "Config.h"
+#include "ConfigJeu.h"
 #include "Ennemi.h"
 #include "Rect.h"
 
@@ -18,7 +18,7 @@ public:
 	};
 
 public:
-typedef boost::shared_ptr<CCase> Ptr;
+typedef std::shared_ptr<CCase> Ptr;
 typedef std::vector<CCase::Ptr> Vector;
 
 public:
@@ -52,7 +52,7 @@ public:
    bool EstSurvolee (void);
 
 private:
-   CLog           mLog;
+   Log::Logger           mLogger;
 	ETypeCase      mType;
    
    int   mNumCase;

@@ -8,16 +8,28 @@ int main( int argc, char *argv[ ] )
    int Done = 0;
 
    SDL_Event	Event;
-	CLog        Log ("Main");
+	Log::Logger        Logger ("Main");
    CTimer      Fps; //Le regulateur
    CMoteur     Moteur;
    TCoordonnee CoordonneeClic;
    TCoordonnee CoordonneeSouri;
 	
+   Log::Config::Vector ConfigList;
+   Log::Config::Ptr    ConfigConsolePtr(new Log::Config("OutputConsole"));
+   ConfigList.push_back(ConfigConsolePtr);
+   Log::Config::Ptr    ConfigFilePtr(new Log::Config("OutputFile"));
+   ConfigFilePtr->setValue("filename", "log.txt");
+   ConfigList.push_back(ConfigFilePtr);
+   Log::Config::Ptr    ConfigDebugPtr(new Log::Config("OutputDebug"));
+   ConfigList.push_back(ConfigDebugPtr);
+   
+   Log::Manager::configure(ConfigList);
+
+
    //Initialiser le jeu
    if(false == Moteur.OnInit ())
    {
-      Log << Erreur << "Problème rencontré à l'initialisation du moteur" << EndLine;
+      Logger.error () << "Problème rencontré à l'initialisation du moteur";
       Done = 1;
    }
 

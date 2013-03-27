@@ -4,7 +4,7 @@
  * @brief   Constructeur de la class "CCase"
  */
 CCase::CCase (void):
-   mLog                 ("Case"),
+   mLogger                 ("Case"),
    mType                (eVide),
    mNumCase             (-1),
    mbEstPlusCourtChemin (false),

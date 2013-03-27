@@ -8,7 +8,7 @@
 class CProjectile
 {
 public:
-   typedef boost::shared_ptr<CProjectile> Ptr;
+   typedef std::shared_ptr<CProjectile> Ptr;
    typedef std::list<CProjectile::Ptr>    Liste;
 
 public:
@@ -21,7 +21,7 @@ public:
    bool  Avance    (void);
 
 private:
-   CLog  mLog;
+   Log::Logger  mLogger;
    int   mPuissance;
    int   mVitesse;
 

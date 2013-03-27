@@ -2,7 +2,7 @@
 #define _MENU_H_
 
 #include "Defined.h"
-#include "Config.h"
+#include "ConfigJeu.h"
 #include "Image.h"
 
 class CContexteJeu;
@@ -31,7 +31,7 @@ public:
    int GetLargeur (void);
 
 private:
-   CLog              mLog;
+   Log::Logger              mLogger;
    CConfiguration&   mConfig;
    CContexteJeu&     mContexte;
 

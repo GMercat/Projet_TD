@@ -28,7 +28,7 @@ private:
    void CalculCheminMinimaux     (void);
 
 private:
-   CLog        mLog;
+   Log::Logger        mLogger;
    CPlateau&   mPlateau;
 
    int **mMatriceGraph;

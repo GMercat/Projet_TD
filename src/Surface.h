@@ -7,7 +7,7 @@
 class CSurface
 {
 public:
-   typedef boost::shared_ptr<CSurface> Ptr;
+   typedef std::shared_ptr<CSurface> Ptr;
 
 public:
    CSurface    (bool bEstFenetre = false);
@@ -30,7 +30,7 @@ protected:
    SDL_Surface*   mpSurfaceSDLAffichable;
 
 private:
-   CLog           mLog;
+   Log::Logger           mLogger;
 };
 
 #endif

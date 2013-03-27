@@ -2,7 +2,7 @@
 #define _PLATEAU_H_
 
 #include "Defined.h"
-#include "Config.h"
+#include "ConfigJeu.h"
 #include "Case.h"
 #include "Image.h"
 #include "Terrain.h"
@@ -42,7 +42,7 @@ public:
    // void RenseignePlusCourtChemin (std::vector<int>& aPlusCourtChemin);
 
 private:
-   CLog              mLog;
+   Log::Logger              mLogger;
    CConfiguration&   mConfig;
    CContexteJeu&     mContexte;
    CTerrain          mTerrain;

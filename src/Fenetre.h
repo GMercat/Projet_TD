@@ -8,7 +8,7 @@
 class CFenetre
 {
 public:
-   typedef boost::shared_ptr<CFenetre> Ptr;
+   typedef std::shared_ptr<CFenetre> Ptr;
 
 public:
    CFenetre (void);
@@ -22,7 +22,7 @@ public:
    inline CSurface::Ptr& GetSurface (void);
 
 private:
-   CLog           mLog;
+   Log::Logger           mLogger;
    CSurface::Ptr  mSurfacePtr;
    CImage::Ptr    mImagePtr;
 

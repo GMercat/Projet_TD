@@ -11,12 +11,14 @@
 #include <ctime>
 #include <SDL/SDL.h>
 
-#include "Log.h"
+//#include "Log.h"
 
-#include "../libs/boost/shared_ptr.hpp"
+//#define LOGGER_USE_BOOST_SHARED_PTR
 
-// Pour activer ou non les traces DEBUG
-//#define DEBUG
+//#include <boost/shared_ptr.hpp>
+
+#include <LoggerCpp/src/LoggerCpp.h>
+
 
 // Le nombre de frame par seconde
 const int IMAGES_PAR_SECONDE = 50;

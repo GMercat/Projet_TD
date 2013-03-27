@@ -3,7 +3,7 @@
 
 #include "Defined.h"
 
-#include "Config.h"
+#include "ConfigJeu.h"
 #include "Case.h"
 
 class CTerrain
@@ -42,7 +42,7 @@ private:
    int IndexToNum (const TIndexTableau& aIndexPlateau);
 
 private:
-   CLog              mLog;
+   Log::Logger              mLogger;
    CConfiguration&   mConfig;
 
    CCase::Vector mCases;
