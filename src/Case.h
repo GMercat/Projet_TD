@@ -49,7 +49,8 @@ public:
 
    void MarqueSurvolee     (bool abEstSurvolee);
    void MarqueSelectionnee (bool abEstSelectionnee);
-   bool EstSurvolee (void);
+   bool EstSurvolee     (void);
+   bool EstSelectionnee (void);
 
 private:
    Log::Logger           mLogger;

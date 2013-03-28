@@ -245,7 +245,22 @@ void CCase::MarqueSelectionnee (bool abEstSelectionnee)
    mbEstSelectionnee = abEstSelectionnee;
 }
 
+/**
+ * @brief   Accesseur au flag indiquant le survole de la case
+ *
+ * @return  True si la case est survolée, false sinon.
+ */
 bool CCase::EstSurvolee (void)
 {
    return mbEstSurvolee;
+}
+
+/**
+ * @brief   Accesseur au flag indiquant la sélection de la case
+ *
+ * @return  True si la case est sélectionnée, false sinon.
+ */
+bool CCase::EstSelectionnee (void)
+{
+   return mbEstSelectionnee;
 }

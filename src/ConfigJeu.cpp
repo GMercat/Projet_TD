@@ -244,6 +244,7 @@ bool CConfiguration::GetRessourceCaseParNom (const std::string& aNom, std::strin
  * @param[in]  aNom                 Nom de la tour
  * @param[out] aRessourceBase       Nom du fichier utilisé pour la base de le tour
  * @param[out] aRessourceTourelle   Nom du fichier utilisé pour la tourelle de tire de la tour
+ * @param[out] aRessourcePortee     Nom du fichier utilisé pour afficher la portée de la tour lorsqu'elle est sélectionnée
  * @param[out] aPortee              Portée de tire de la tour
  * @param[out] aPuissance           Puissance de tire de la tour
  * @param[out] aVitesse             Vitesse des projectiles tirés par la tour
@@ -251,7 +252,7 @@ bool CConfiguration::GetRessourceCaseParNom (const std::string& aNom, std::strin
  *
  * @retrun  True si les caractéristiques ont été trouvées
  */
-bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& aRessourceBase, std::string& aRessourceTourelle, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
+bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& aRessourceBase, std::string& aRessourceTourelle, std::string& aRessourcePortee, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
 {
    std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.find (aNom);
 
@@ -259,6 +260,7 @@ bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& 
    {
       aRessourceBase       = IterDonnees->second.mRessourceBase;
       aRessourceTourelle   = IterDonnees->second.mRessourceTourelle;
+      aRessourcePortee     = IterDonnees->second.mRessourcePortee;
       aPortee              = IterDonnees->second.mPortee;
       aPuissance           = IterDonnees->second.mPuissance;
       aVitesse             = IterDonnees->second.mVitesse;
@@ -279,6 +281,7 @@ bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& 
  * @param[in]  aId                  Index de la tour
  * @param[out] aRessourceBase       Nom du fichier utilisé pour la base de la tour
  * @param[out] aRessourceTourelle   Nom du fichier utilisé pour la tourelle de tire de la tour
+ * @param[out] aRessourcePortee     Nom du fichier utilisé pour afficher la portée de la tour lorsqu'elle est sélectionnée
  * @param[out] aPortee              Portée de tire de la tour
  * @param[out] aPuissance           Puissance de tire de la tour
  * @param[out] aVitesse             Vitesse des projectiles tirés par la tour
@@ -286,7 +289,7 @@ bool CConfiguration::GetCaracsTourParNom (const std::string& aNom, std::string& 
  *
  * @retrun  True si les caractéristiques ont été trouvées
  */
-bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessourceBase, std::string& aRessourceTourelle, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
+bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessourceBase, std::string& aRessourceTourelle, std::string& aRessourcePortee, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const
 {
    int IndexTour = 0;
    std::map<std::string, TCaracsTour>::const_iterator IterDonnees = mDonneesTours.begin ();
@@ -301,6 +304,7 @@ bool CConfiguration::GetCaracsTourParId (const int aId, std::string& aRessourceB
    {
       aRessourceBase       = IterDonnees->second.mRessourceBase;
       aRessourceTourelle   = IterDonnees->second.mRessourceTourelle;
+      aRessourcePortee     = IterDonnees->second.mRessourcePortee;
       aPortee              = IterDonnees->second.mPortee;
       aPuissance           = IterDonnees->second.mPuissance;
       aVitesse             = IterDonnees->second.mVitesse;
@@ -628,6 +632,12 @@ void CConfiguration::EnregistrementTypeTour   (std::ifstream& aFichier)
    {
       // Lecture de la ressource associée
       bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mRessourceTourelle);
+   }
+
+   if (bResultatLecture)
+   {
+      // Lecture de la ressource associée
+      bResultatLecture = LectureEtEnregistrement (aFichier, CaracsTour.mRessourcePortee);
    }
 
    if (bResultatLecture)

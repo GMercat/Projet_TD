@@ -11,6 +11,7 @@ struct TCaracsTour
 {
    std::string mRessourceBase;      // Ressource graphique de la base de la tour
    std::string mRessourceTourelle;  // Ressource graphique de la tourelle de tire de la tour
+   std::string mRessourcePortee;    // Ressource graphique de la portée de tire de la tour
    int         mPortee;
    int         mPuissance;
    int         mVitesse;
@@ -20,6 +21,7 @@ struct TCaracsTour
    {
       mRessourceBase       = aCaracsTour.mRessourceBase;
       mRessourceTourelle   = aCaracsTour.mRessourceTourelle;
+      mRessourcePortee     = aCaracsTour.mRessourcePortee;
       mPortee              = aCaracsTour.mPortee;
       mPuissance           = aCaracsTour.mPuissance;
       mVitesse             = aCaracsTour.mVitesse;
@@ -72,8 +74,8 @@ public:
    bool Get (const std::string& aCle, bool&   aValeur) const;
 
    bool GetRessourceCaseParNom   (const std::string& aNom,  std::string& aRessource) const;
-   bool GetCaracsTourParNom      (const std::string& aNom,  std::string& aRessourceBase, std::string& aRessourceTourelle, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
-   bool GetCaracsTourParId       (const int aId,            std::string& aRessourceBase, std::string& aRessourceTourelle, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
+   bool GetCaracsTourParNom      (const std::string& aNom,  std::string& aRessourceBase, std::string& aRessourceTourelle, std::string& aRessourcePortee, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
+   bool GetCaracsTourParId       (const int aId,            std::string& aRessourceBase, std::string& aRessourceTourelle, std::string& aRessourcePortee, int& aPortee, int& aPuissance, int& aVitesse, int& aCadence) const;
    bool GetCaracsEnnemiParNom    (const std::string& aNom,  std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const;
    bool GetCaracsEnnemiParId     (const int aId,            std::string& aRessource, int& aLargeur, int& aHauteur, int& aVitesse, int& aVie) const;
    bool GetRessourceEnnemiParType(const int aType,          std::string& aRessource) const;

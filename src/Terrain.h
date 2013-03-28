@@ -42,7 +42,7 @@ private:
    int IndexToNum (const TIndexTableau& aIndexPlateau);
 
 private:
-   Log::Logger              mLogger;
+   Log::Logger       mLogger;
    CConfiguration&   mConfig;
 
    CCase::Vector mCases;

@@ -17,7 +17,8 @@ public:
    CTour	   (CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTypeTour);
 	~CTour	(void);
 
-   void Afficher (CSurface::Ptr& aEcranPtr, bool abEstSelectionnee);
+   void Afficher        (CSurface::Ptr& aEcranPtr, bool abEstSelectionnee);
+   void AfficherPortee  (CSurface::Ptr& aEcranPtr);
 
    void GetCentre (TCoordonnee& aCoordonnee);
 
@@ -46,6 +47,7 @@ private:
 
    CImage::Ptr mImageBasePtr;
    CImage::Ptr mImageTourellePtr;
+   CImage::Ptr mImagePorteePtr;
 
    CProjectile::Liste  mListeProjectilesTires; // Liste de projectiles tirés par la tour
 };

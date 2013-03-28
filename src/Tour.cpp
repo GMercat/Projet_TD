@@ -9,9 +9,10 @@ CTour::CTour	(CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTyp
    std::string CheminRessource;
    std::string NomImageBase;
    std::string NomImageTourelle;
+   std::string NomImagePortee;
 
    bool bLectureConf  = mConfig.Get ("ressourcesImages", CheminRessource);
-   bLectureConf      &= mConfig.GetCaracsTourParId (mTypeTour, NomImageBase, NomImageTourelle, mPorteeTire, mPuissanceProjectile, mVitesseProjectile, mCadenceTire);
+   bLectureConf      &= mConfig.GetCaracsTourParId (mTypeTour, NomImageBase, NomImageTourelle, NomImagePortee, mPorteeTire, mPuissanceProjectile, mVitesseProjectile, mCadenceTire);
 
    //On charge toutes les images dans les surfaces associées
    mImageBasePtr.reset (new CImage (CheminRessource));
@@ -19,6 +20,9 @@ CTour::CTour	(CConfiguration& aConfig, const TCoordonnee& aCoordCentre, int aTyp
    mImageTourellePtr.reset (new CImage (CheminRessource));
    mImageTourellePtr->Load (NomImageTourelle);
    mImageTourellePtr->SetTransparence (255,0,0);
+   mImagePorteePtr.reset (new CImage (CheminRessource));
+   mImagePorteePtr->Load (NomImagePortee);
+   mImagePorteePtr->SetAlpha    (128);
 }
 
 CTour::~CTour (void)
@@ -28,13 +32,18 @@ CTour::~CTour (void)
 
 void CTour::Afficher (CSurface::Ptr& aEcranPtr, bool abEstSelectionnee)
 {
-   mImageBasePtr     ->AfficherParCentre (aEcranPtr, mCoordCentre);   
-   mImageTourellePtr ->AfficherParCentre (aEcranPtr, mCoordCentre);
-
    if (abEstSelectionnee)
    {
-      //TODO
+      AfficherPortee (aEcranPtr);
    }
+
+   mImageBasePtr     ->AfficherParCentre (aEcranPtr, mCoordCentre);   
+   mImageTourellePtr ->AfficherParCentre (aEcranPtr, mCoordCentre);
+}
+
+void CTour::AfficherPortee  (CSurface::Ptr& aEcranPtr)
+{
+   mImagePorteePtr->AfficherParCentre (aEcranPtr, mCoordCentre);
 }
 
 void CTour::GetCentre (TCoordonnee& aCoordonnee)

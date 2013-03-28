@@ -107,6 +107,8 @@ void CTerrain::OnReset (int aNumCaseDepart, int aNumCaseArrivee)
 
 void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
 {
+   CCase::Ptr  CaseSelectioneePtr;
+
    // Dessiner chaque case
    for (int IterHauteur = 0; IterHauteur < mNbCasesHauteur; IterHauteur++)
    {
@@ -116,7 +118,14 @@ void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
          CCase::ETypeCase EtatCase = mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->GetType ();
          if (EtatCase == CCase::eTour)
          {
-            mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr);
+            if (mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->EstSelectionnee ())
+            {
+               CaseSelectioneePtr = mCases[IterHauteur * mNbCasesLargeur + IterLargeur];
+            }
+            else
+            {
+               mCases[IterHauteur * mNbCasesLargeur + IterLargeur]->OnAffiche (aEcranPtr);
+            }
          }
          else
          {
@@ -130,6 +139,12 @@ void CTerrain::OnAffiche (CSurface::Ptr& aEcranPtr)
             }
          }
       }
+   }
+
+   // Si une tour est sélectionnée on l'affiche en dernière afin d'afficher sa portée au dessus du reste
+   if (CaseSelectioneePtr)
+   {
+      CaseSelectioneePtr->OnAffiche (aEcranPtr);
    }
 }
 
