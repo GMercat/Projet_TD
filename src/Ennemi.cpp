@@ -4,15 +4,29 @@
 
 CEnnemi::CEnnemi (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee):
    mConfig           (aConfig),
-   mLogger              ("Ennemi"),
+   mLogger           ("Ennemi"),
    mpIA              (apIA),
    mType             (aType),
    mNumCaseArrivee   (aNumCaseArrivee)
 {
-   std::string Ressource; // TODO non utilisé !
+   std::string CheminRessource;
+   std::string NomFichier;
 
-   mConfig.GetCaracsEnnemiParId ((int)mType, Ressource, mLargeur, mHauteur, mVitesse, mVie);
-
+   bool bLectureConf = mConfig.Get ("ressourcesImages", CheminRessource);
+   bLectureConf     &= mConfig.GetCaracsEnnemiParId ((int)mType, NomFichier, mLargeur, mHauteur, mVitesse, mVie);
+   
+   if (bLectureConf)
+   {
+      //On charge toutes les images dans les surfaces associées
+      mImagePtr.reset (new CImage (CheminRessource));
+      mImagePtr->Load (NomFichier);
+	   mImagePtr->SetTransparence (255, 255, 255);
+   }
+   else
+   {
+      // TODO LOG
+   }
+   
    mpIA->GetCoordonneesCentreCaseCaseParNumero (aNumCaseDepart, mCoordonnee);
 }
 
@@ -28,24 +42,6 @@ CEnnemi::EType CEnnemi::GetType (void)
 void CEnnemi::SetType (EType aType)
 {
    mType = aType;
-}
-
-bool CEnnemi::OnInit (void)
-{
-   bool bReturn = true;
-
-   std::string CheminRessource;
-   std::string NomFichier;
-
-   bool bLectureConf = mConfig.Get ("ressourcesImages", CheminRessource);
-   bLectureConf     &= mConfig.GetRessourceEnnemiParType ((int)mType,NomFichier);
-   
-   //On charge toutes les images dans les surfaces associées
-   mImagePtr.reset (new CImage (CheminRessource));
-   bReturn = mImagePtr->Load (NomFichier);
-	mImagePtr->SetTransparence (255, 255, 255);
-   
-	return bReturn;
 }
 
 void CEnnemi::OnAffiche (CSurface::Ptr& aScreenPtr)

@@ -25,7 +25,6 @@ public:
    CEnnemi  (CConfiguration& aConfig, CIA* apIA, EType aType, int aNumCaseDepart, int aNumCaseArrivee);
    ~CEnnemi (void);
 
-   bool  OnInit    (void);
    void  OnAffiche (CSurface::Ptr& aScreenPtr);
 
    EType GetType           (void);
@@ -43,7 +42,7 @@ public:
    
 private:
    CConfiguration&   mConfig;
-   Log::Logger              mLogger;
+   Log::Logger       mLogger;
    CIA*              mpIA;
 
    EType mType;

@@ -62,9 +62,7 @@ void CVagueEnnemis::AjoutEnnemi (void)
    std::list<int> PlusCourtChemin;
 
    CEnnemi::Ptr EnnemiPtr (new CEnnemi(mConfig, mpIA, CEnnemi::eType1, mNumCaseDepart, mNumCaseArrivee));
-   
-   EnnemiPtr->OnInit ();
-   
+      
    mpIA->CalculPlusCourtChemin (EnnemiPtr->DetermineCaseCourante (), mNumCaseArrivee, PlusCourtChemin);
    EnnemiPtr->SetPCCheminCase (PlusCourtChemin);
 
